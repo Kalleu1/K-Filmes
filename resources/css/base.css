@@ -1,0 +1,11 @@
+:root{
+  --color-black: #0D0D0D;
+  --color-gold: #FFD700;
+  --color-gray: #999999;
+  --color-white: #F5F5F5;
+  --color-hoverGold: #C9A500;
+}
+
+body{
+    background: var(--color-black);
+}

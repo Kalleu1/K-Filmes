@@ -1,26 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>K-Filmes</title>
-    @vite('resources/css/app.css')
-</head>
-<body>
-    <header>
-        <h1> Meus filmes</h1>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        @vite('resources/css/app.css')
+        <title>Laravel</title>
 
-        <nav>
-            <a href="{{route('filmes.index')}}">Home</a>
-            <a href="{{route('filmes.create')}}">Cadastrar um novo filme</a>
-        </nav>
-    </header>
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        
+        @include('components.header')
 
-    <main>
-        @yield('content')
-    </main>
+        @yield('content', 'Nenhum Conteudo')
 
-    <footer>
-        <p>&copy; 2025 Meus Filmes</p>
-    </footer>
-</body>
+        @stack('scripts')
+        
+    </body>
 </html>

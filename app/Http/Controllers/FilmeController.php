@@ -34,13 +34,13 @@ class FilmeController extends Controller
         if($request->hasFile('poster')){
             $file = $request->file('poster');
             $filename = time().'_'.$file->getClientOriginalName();
-            $file->storeAs('public/posters', $filename);
+            $file->storeAs('posters', $filename, 'public'); // garante o disco correto
             $data['poster'] = $filename;
         }
 
         Filme::create($data);
 
-        return redirect()->route('filme.index');
+        return redirect()->route('filmes.index');
     }
 
     /**
@@ -54,24 +54,40 @@ class FilmeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Filme $filme)
     {
-        //
+        return view('filmes.edit', compact('filme'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Filme $filme)
     {
-        //
+        $data = $request->validate([
+        'titulo' => 'required|string|max:255',
+        'descricao' => 'nullable|string',
+        'poster' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+    ]);
+
+    if($request->hasFile('poster')) {
+        $file = $request->file('poster');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('posters', $filename, 'public');
+        $data['poster'] = $filename;
+    }
+
+    $filme->update($data);
+
+    return redirect()->route('filmes.index')->with('success', 'Filme atualizado com sucesso!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Filme $filme)
     {
-        //
+        $filme->delete();
+    return redirect()->route('filmes.index')->with('success', 'Filme deletado com sucesso!');
     }
 }

@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Lista de Filmes</h2>
-
     <div class ="filmes-grid">
         @foreach($filmes as $filme)
           <div class="filme-card">
@@ -18,6 +16,15 @@
 
             <a href="{{ route('filmes.show', $filme->id) }}" class="filme-link">Ver detalhes</a>
           </div>  
+
+          <a href="{{ route('filmes.edit', $filme->id) }}">Editar</a>
+
+          <form action="{{ route('filmes.destroy', $filme->id) }}" method="POST" style="display:inline;">
+              @csrf
+              @method('DELETE')
+              <button type="submit" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</button>
+          </form>
+
         @endforeach
     </div>
 @endsection

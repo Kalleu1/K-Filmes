@@ -1,14 +1,11 @@
 /* Tailwind */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Estilos do projeto */
 @import "./base.css";
 @import "./layout.css";
 @import "./components/button.css";
 @import "./components/card.css";
 @import "./pages/filmes.css";
+@import "./components/header.css";
 
 /* Variáveis globais */
 :root {
