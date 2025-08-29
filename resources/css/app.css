@@ -3,16 +3,11 @@
 @import "./base.css";
 @import "./layout.css";
 @import "./components/button.css";
+@import './pages/dashboard.css';
 @import "./components/card.css";
 @import "./pages/filmes.css";
 @import "./components/header.css";
 
-/* Variáveis globais */
-:root {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
-                 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    --color-primary: #01fe87;
-    --color-secondary: #1e1e1e;
-    --color-bg: #fafafa;
-    --color-text: #111111;
-}
+
+
+
