@@ -1,11 +1,18 @@
-:root{
+:root {
   --color-black: #0D0D0D;
   --color-gold: #FFD700;
   --color-gray: #999999;
   --color-white: #F5F5F5;
   --color-hoverGold: #C9A500;
   --color-sidebar: #1e1e1e;
+
+  --color-input-bg: #1A1A1A;
+  --color-input-border: #333333;
+  --color-button-bg: #FFD700;
+  --color-button-text: #0D0D0D;
+  --color-button-hover: #C9A500;
 }
+
 
 body{
     background: var(--color-black);

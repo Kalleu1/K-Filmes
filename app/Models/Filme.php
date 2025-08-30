@@ -18,5 +18,6 @@ class Filme extends Model
         'nota',
         'comentarios',
         'poster',
+        'poster_banner'
     ];
 }

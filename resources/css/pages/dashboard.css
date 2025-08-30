@@ -67,14 +67,16 @@
 .dashboard-hero {
     position: relative;
     width: 100%;
-    height: 300px;
+    aspect-ratio: 16 / 9; /* mantém proporção 16:9 */
     border-radius: 12px;
     overflow: hidden;
+    background-color: #111; /* cor de fundo caso a imagem não preencha */
 }
 
+/* Slides */
 .hero-slide {
     position: absolute;
-    inset: 0;
+    inset: 0; /* top:0; right:0; bottom:0; left:0 */
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
@@ -84,19 +86,22 @@
     z-index: 1;
 }
 
+/* Poster do filme */
 .hero-poster {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* mantém proporção e preenche a área */
-    border-radius: 12px;
+    object-fit: contain; /* mostra toda a imagem sem cortar */
+    object-position: center;
+    display: block;
 }
 
+/* Informações sobre o filme */
 .hero-info {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    color: var(--color-gold); 
-    text-shadow: 1px 1px 4px #000; 
+    color: var(--color-gold);
+    text-shadow: 1px 1px 4px #000;
 }
 
 

@@ -1,0 +1,106 @@
+.form_main form {
+    max-width: 600px;
+    margin: 0px auto;
+    padding: 40px;
+    background-color: var(--color-sidebar);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.form_main form h2 {
+    text-align: center;
+    color: var(--color-gold);
+    margin-bottom: 20px;
+}
+
+.form_main form label {
+    color: var(--color-gold);
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form_main form input,
+.form_main form textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--color-input-border);
+    background-color: var(--color-input-bg);
+    color: var(--color-white);
+    font-size: 1rem;
+}
+
+.form_main form input:hover,
+.form_main form textarea:hover {
+    border: 1px solid var(--color-gold);
+    background-color: var(--color-input-bg);
+    
+}
+
+.form_main form input:focus ,
+.form_main form textarea:focus  {
+    border: 1px solid var(--color-gold);
+    background-color: var(--color-input-bg);
+    outline: none;
+    
+}
+
+
+
+.form_main form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form_main form button {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--color-button-bg);
+    color: var(--color-button-text);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form_main form button:hover {
+    background-color: var(--color-button-hover);
+}
+
+@media(min-width: 768px) {
+    .dashboard_main form {
+        padding: 25px;
+        gap: 15px;
+    }
+
+    .dashboard_main form input,
+    .dashboard_main form textarea {
+        font-size: 1.05rem;
+    }
+
+    .dashboard_main form button {
+        font-size: 1.1rem;
+    }
+}
+
+@media(min-width: 1024px) {
+    .dashboard_main form {
+        padding: 30px;
+        gap: 18px;
+    }
+
+    .dashboard_main form input,
+    .dashboard_main form textarea {
+        font-size: 1.1rem;
+    }
+
+    .dashboard_main form button {
+        font-size: 1.15rem;
+        padding: 14px;
+    }
+}
+
+

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Filme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FilmeController extends Controller
 {
@@ -31,11 +32,25 @@ class FilmeController extends Controller
     {
         $data = $request->all();
 
+        $data = $request->validate([
+        'nome' => 'required|string|max:255',
+        'descricao' => 'nullable|string',
+        'plataforma' => 'nullable|string',
+        'data_assistida' => 'nullable|date',
+        'diretor' => 'nullable|string|max:255',
+        'genero' => 'nullable|string|max:255',
+        'nota' => 'nullable|numeric|min:0|max:10',
+        'comentarios' => 'nullable|string',
+        'poster' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'poster_banner' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+    ]);
+
         if($request->hasFile('poster')){
-            $file = $request->file('poster');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->storeAs('posters', $filename, 'public'); // garante o disco correto
-            $data['poster'] = $filename;
+            $data['poster'] = $request->file('poster')->store('posters', 'public');
+        }
+
+        if ($request->hasFile('poster_banner')) {
+            $data['poster_banner'] = $request->file('poster_banner')->store('posters_banners', 'public');
         }
 
         Filme::create($data);
@@ -64,10 +79,17 @@ class FilmeController extends Controller
      */
     public function update(Request $request, Filme $filme)
     {
-        $data = $request->validate([
-        'titulo' => 'required|string|max:255',
+    $data = $request->validate([
+        'nome' => 'required|string|max:255',
         'descricao' => 'nullable|string',
-        'poster' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+        'plataforma' => 'nullable|string',
+        'data_assistida' => 'nullable|date',
+        'diretor' => 'nullable|string|max:255',
+        'genero' => 'nullable|string|max:255',
+        'nota' => 'nullable|numeric|min:0|max:10',
+        'comentarios' => 'nullable|string',
+        'poster' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'poster_banner' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
     ]);
 
     if($request->hasFile('poster')) {
@@ -76,6 +98,13 @@ class FilmeController extends Controller
         $file->storeAs('posters', $filename, 'public');
         $data['poster'] = $filename;
     }
+
+    if($request->hasFile('poster_banner')) {
+    $file = $request->file('poster_banner');
+    $filename = time() . '_' . $file->getClientOriginalName();
+    $file->storeAs('posters_banners', $filename, 'public');
+    $data['poster_banner'] = $filename;
+}
 
     $filme->update($data);
 
@@ -87,6 +116,12 @@ class FilmeController extends Controller
      */
     public function destroy(Filme $filme)
     {
+    if($filme->poster) {
+        Storage::disk('public')->delete($filme->poster);
+    }
+    if($filme->poster_banner) {
+        Storage::disk('public')->delete($filme->poster_banner);
+    }
         $filme->delete();
     return redirect()->route('filmes.index')->with('success', 'Filme deletado com sucesso!');
     }

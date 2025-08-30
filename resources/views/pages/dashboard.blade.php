@@ -7,7 +7,7 @@
         <aside class="dashboard_sidebar">
             <h2>Ações</h2>
             <ul>
-                <li><a href="">➕ Adicionar Filme</a></li>
+                <li><a href="{{ route('filmes.create') }}">➕ Adicionar Filme</a></li>
                 <li><a href="">❤️ Ver Favoritos</a></li>
                 <li><a href="">✨ Explorar Recomendações</a></li>
             </ul>
@@ -23,7 +23,7 @@
             <section class="dashboard-hero">
                 @foreach($destaques as $index => $filme)
                     <div class="hero-slide {{ $index === 0 ? 'active' : '' }}">
-                        <img src="{{ asset('storage/posters/' . $filme->poster) }}" 
+                        <img src="{{ asset('storage/posters_banners/' . $filme->poster) }}" 
                             alt="{{ $filme->nome }}" 
                             class="hero-poster">
                         <div class="hero-info">
@@ -41,14 +41,6 @@
                 <div class="dashboard_grid">
                     @foreach ($recentes as $filme)
                         <x-filmecard :filme="$filme" :campos="['nome','poster']" />
-                    @endforeach
-                </div>
-
-                <h3 class="dashboard_section_title">Filmes Com Maiores Notas</h3>
-                
-                <div class="dashboard_grid">
-                    @foreach ($topNotas as $filme)
-                        <x-filmecard :filme="$filme" :campos="['nome','poster','nota']"/>
                     @endforeach
                 </div>
             </section>
