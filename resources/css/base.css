@@ -1,5 +1,7 @@
-:root {
-  --color-black: #0D0D0D;
+/* Paleta Login */
+/*:root {
+  
+   --color-black: #0D0D0D;
   --color-gold: #FFD700;
   --color-gray: #999999;
   --color-white: #F5F5F5;
@@ -11,9 +13,44 @@
   --color-button-bg: #FFD700;
   --color-button-text: #0D0D0D;
   --color-button-hover: #C9A500;
+} */
+
+:root {
+  /* Fundo geral */
+  --color-background: #040DBF;      /* azul universo */
+  --color-background-alt: #274F73;  /* azul petróleo (gradiente secundário) */
+
+  /* Sidebar e cards */
+  --color-sidebar: #FFFFFF;         /* sidebar limpa */
+  --color-card: rgba(255, 255, 255, 0.95);      /* cards levemente cinza para destacar */
+
+  /* Destaques principais */
+  --color-primary: #FFD700;         /* dourado mais vivo para contraste */
+  --color-primary-hover: #E6C200;   /* dourado mais forte no hover */
+
+  /* Texto */
+--color-text-main: #F3F4F6;       /* quase branco com leve tom lilás */
+--color-text-secondary: #E5E7EB;  /* cinza suave para não cansar */
+
+  /* Bordas e inputs */
+  --color-border: #3B4A6B;          /* borda sutil azulada */
+  --color-input-bg: #ffffff81;        /* inputs claros */
+  --color-input-border: #CCCCCC;    /* borda input */
+
+  /* Botões */
+  --color-button-bg: #FFD700;       /* botões dourados */
+  --color-button-text: #1B263B;     /* texto escuro para contraste */
+  --color-button-hover: #E6C200;    /* hover dourado forte */
 }
 
 
-body{
-    background: var(--color-black);
+body {
+  min-height: 100vh; /* ocupa tela toda */
+  background: url('/public/imgs/background_star.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: 'Roboto', 'Arial', sans-serif;
 }
+
+
+

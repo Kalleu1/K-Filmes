@@ -1,106 +1,182 @@
 .form_main form {
-    max-width: 600px;
-    margin: 0px auto;
-    padding: 40px;
-    background-color: var(--color-sidebar);
+    width: 95%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1.8rem clamp(1rem, 3vw, 3rem); 
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
     border-radius: 16px;
+    display: grid;
+    grid-template-columns: 1fr; /* mobile default */
+    gap: 1.8rem 2.5rem;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+.form_group {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    gap: 0.3rem;
+    min-width: 0; 
 }
 
-.form_main form h2 {
-    text-align: center;
-    color: var(--color-gold);
-    margin-bottom: 20px;
+.form_full {
+    grid-column: 1 / -1; /* ocupa largura total */
 }
 
+/* Labels */
 .form_main form label {
-    color: var(--color-gold);
+    color: var(--color-text-secondary);
     font-weight: 500;
-    margin-bottom: 5px;
+    font-size: 0.95rem;
 }
 
+/* Inputs & Textarea */
 .form_main form input,
-.form_main form textarea {
-    padding: 10px;
-    border-radius: 8px;
+.form_main form textarea,
+.form_main form select {
+    padding: 12px;
+    border-radius: 10px;
     border: 1px solid var(--color-input-border);
     background-color: var(--color-input-bg);
-    color: var(--color-white);
+    color: #1B263B;
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
+.form_main form select{
+    display: inline;
+    align-items: end;
+    appearance: none; /* remove setinha padrão */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%231B263B' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+
+}
+
+.form_main form select option {
+    background-color: rgba(47, 47, 182, 0.678);        /* fundo branco */
+    color: #1B263B;                   /* texto escuro */
+    padding: 10px;                    /* espaçamento */
+    font-size: 0.95rem;
+}
+
+.form_main form select:hover,
 .form_main form input:hover,
 .form_main form textarea:hover {
-    border: 1px solid var(--color-gold);
-    background-color: var(--color-input-bg);
-    
+    border-color: var(--color-primary);
 }
-
-.form_main form input:focus ,
-.form_main form textarea:focus  {
-    border: 1px solid var(--color-gold);
-    background-color: var(--color-input-bg);
-    outline: none;
-    
-}
-
-
 
 .form_main form textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px;
+}
+
+/* Focus */
+.form_main form input:focus,
+.form_main form textarea:focus,
+.form_main form select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+    outline: none;
+}
+
+/* Botão */
+.form_actions {
+    text-align: center;
 }
 
 .form_main form button {
-    padding: 12px;
-    border-radius: 10px;
+    padding: 14px 20px;
+    border-radius: 12px;
     border: none;
     background-color: var(--color-button-bg);
     color: var(--color-button-text);
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .form_main form button:hover {
     background-color: var(--color-button-hover);
+    transform: translateY(-2px);
 }
 
-@media(min-width: 768px) {
-    .dashboard_main form {
-        padding: 25px;
-        gap: 15px;
-    }
+/* Ícone */
+.tooltip_icon {
+    display: inline-block;
+    margin-left: 5px;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    position: relative;
+}
 
-    .dashboard_main form input,
-    .dashboard_main form textarea {
-        font-size: 1.05rem;
-    }
+/* Caixa de texto escondida */
+.tooltip_text {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 120%; /* aparece acima */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(247, 244, 244, 0.85);
+    color: #020202;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
 
-    .dashboard_main form button {
-        font-size: 1.1rem;
+/* Setinha embaixo */
+.tooltip_text::after {
+    content: '';
+    position: absolute;
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.85) transparent transparent transparent;
+}
+
+/* Mostrar ao passar o mouse */
+.tooltip_icon:hover .tooltip_text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* ===== Responsividade ===== */
+
+/* Tablet: 2 colunas */
+@media (min-width: 768px) {
+    .form_main form {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
 }
 
-@media(min-width: 1024px) {
-    .dashboard_main form {
-        padding: 30px;
-        gap: 18px;
+/* Desktop: 2 colunas largas */
+@media (min-width: 1024px) {
+    .form_main form {
+        grid-template-columns: repeat(2, minmax(300px, 1fr));
     }
-
-    .dashboard_main form input,
-    .dashboard_main form textarea {
-        font-size: 1.1rem;
-    }
-
-    .dashboard_main form button {
-        font-size: 1.15rem;
-        padding: 14px;
-    }
+    .form_actions {
+    text-align: start;
+}
 }
 
+/* Ultra-wide (opcional: 3 colunas) */
+@media (min-width: 1440px) {
+    .form_main form {
+        grid-template-columns: repeat(3, 1fr);
+    }
 
+    .form_full {
+        grid-column: 1 / -1; /* continua ocupando largura toda */
+    }
+}

@@ -1,13 +1,18 @@
 /* Tailwind */
 /* Estilos do projeto */
 @import "./base.css";
-@import "./layout.css";
-@import "./components/button.css";
-@import './pages/dashboard.css';
-@import "./components/card.css";
-@import "./pages/filmes.css";
-@import "./pages/createForms.css";
 @import "./components/header.css";
+@import "./layout.css";
+@import "./components/back-button.css";
+@import './pages/dashboard.css';
+@import "./components/filme-card.css";
+@import "./components/sidebar.css";
+@import "./pages/show.css";
+@import "./pages/show_tmdb.css";
+@import "./pages/createForms.css";
+@import "./pages/busca.css";
+@import "./pages/biblioteca.css";
+
 
 
 

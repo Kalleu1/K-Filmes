@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('nota', 3, 1)->nullable(); // Nota (ex: 8.5)
             $table->text('comentarios')->nullable(); // Comentários adicionais
             $table->string('poster')->nullable(); // Caminho da imagem/poster
+            $table->string('poster_banner')->nullable();
             $table->timestamps(); // created_at e updated_at
         });
     }
