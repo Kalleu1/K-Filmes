@@ -8,7 +8,10 @@
 
     {{-- Conteúdo principal --}}
     <main class="personal-main">
-        <x-back-button />
+        <div class="personal-back-button-container">
+            <x-back-button />
+        </div>
+
         <div class="personal-content">
             {{-- Seção Hero Pessoal --}}
             <div class="personal-hero">
@@ -26,22 +29,14 @@
 
                     {{-- Sua nota --}}
                     @if($filme->nota)
-                    <div class="personal-rating-badge">
-                        <span class="rating-label">Sua nota</span>
-                        <span class="rating-score">{{ number_format($filme->nota, 1) }}</span>
-                        <div class="rating-stars">
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($filme->nota >= $i * 2)
-                                    <span class="star filled">★</span>
-                                @elseif($filme->nota >= ($i * 2) - 1)
-                                    <span class="star half">★</span>
-                                @else
-                                    <span class="star empty">☆</span>
-                                @endif
-                            @endfor
+                        <div class="personal-rating-badge">
+                            <span class="star-icon">⭐</span>
+                            <span class="rating-score">{{ number_format($filme->nota, 1) }}</span>
                         </div>
-                    </div>
                     @endif
+
+
+
                 </div>
 
                 <div class="personal-info">
@@ -183,6 +178,31 @@
                     @endif
                 </div>
             </div>
+
+            {{-- Filmes Similares --}}
+            @if(!empty($similarMovies))
+            <div class="similar-movies-section">
+                <h2>Filmes Similares</h2>
+                <div class="similar-movies-list dashboard_grid">
+                    @foreach($similarMovies as $similar)
+                        <x-filmecard :filme="$similar" :campos="['poster']" />
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- Filmes do mesmo diretor --}}
+            @if(!empty($directorMovies))
+            <div class="director-movies-section">
+                <h2>Filmes do mesmo diretor</h2>
+                <div class="similar-movies-list dashboard_grid" >
+                    @foreach($directorMovies as $movie)
+                        <x-filmecard :filme="$movie" :campos="['poster']" />
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            
         </div>
     </main>
 </div>

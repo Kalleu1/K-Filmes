@@ -93,6 +93,8 @@ class FilmeController extends Controller
     $genres = null;
     $posterUrl = null;
     $backdropUrl = null;
+    $similarMovies = [];
+    $directorMovies = [];
 
     // Se o filme tem tmdb_id, busca os dados do TMDB
     if ($filme->tmdb_id) {
@@ -113,17 +115,23 @@ class FilmeController extends Controller
             // Poster e Banner
             $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
             $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w780');
+            // Filmes similares
+            $similarMovies = $this->tmdb->getSimilarMovies((int) $filme->tmdb_id);
+            // Filmes do mesmo diretor
+            if ($director) {
+                $directorMovies = $this->tmdb->getMoviesByDirector($director, 7);
+            }
         }
     }
 
     // Escolhe a view com base no status do filme
     if ($filme->assistido) {
         return view('filmes.show', compact(
-            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl'
+            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies'
         ));
     } else {
         return view('filmes.show_tmdb', compact(
-            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl'
+            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies'
         ));
     }
 }
@@ -295,9 +303,10 @@ class FilmeController extends Controller
         $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w780');
 
         $filme = Filme::where('tmdb_id', $tmdb_id)->first();
+        $similarMovies = $this->tmdb->getSimilarMovies((int) $tmdb_id);
 
         return view('filmes.show_tmdb', compact(
-            'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'filme', 'tmdb_id'
+            'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'filme', 'tmdb_id', 'similarMovies'
         ));
     }
 

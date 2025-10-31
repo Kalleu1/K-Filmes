@@ -116,6 +116,30 @@
                         </div>
                     @endif
                 </div>
+
+                {{-- Filmes Similares --}}
+            @if(!empty($similarMovies))
+            <div class="similar-movies-section">
+                <h2>Filmes Similares</h2>
+                <div class="similar-movies-list dashboard_grid">
+                    @foreach($similarMovies as $similar)
+                        <x-filmecard :filme="$similar" :campos="['poster']" />
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+                {{-- Filmes do mesmo diretor --}}
+            @if(!empty($directorMovies))
+            <div class="director-movies-section">
+                <h2>Filmes do mesmo diretor</h2>
+                <div class="similar-movies-list dashboard_grid" >
+                    @foreach($directorMovies as $movie)
+                        <x-filmecard :filme="$movie" :campos="['poster']" />
+                    @endforeach
+                </div>
+            </div>
+            @endif
             </div>
         </main>
     </div>

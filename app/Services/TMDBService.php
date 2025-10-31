@@ -6,8 +6,15 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
+
 class TMDBService
 {
+
+    /**
+     * Busca filmes dirigidos por um diretor (nome).
+     * Retorna até $limit filmes dirigidos por essa pessoa.
+     */
+    
     protected $base;
     protected $key;
     protected $imageBase;
@@ -31,10 +38,10 @@ class TMDBService
 
         if ($config && isset($config['images'])) {
             $this->imageBase  = $config['images']['secure_base_url'] ?? $config['images']['base_url'];
-            $this->imageSizes = $config['images']['poster_sizes'] ?? ['w500'];
+            $this->imageSizes = $config['images']['poster_sizes'] ?? ['w780'];
         } else {
             $this->imageBase  = config('services.tmdb.image_url', 'https://image.tmdb.org/t/p/');
-            $this->imageSizes = ['w500'];
+            $this->imageSizes = ['w780'];
         }
     }
 
@@ -154,10 +161,42 @@ public function getSimilarMovies(int $tmdbId, string $language = 'pt-BR', int $l
     ]);
 
     $results = $response['results'] ?? [];
-
-    // Pega os primeiros $limit sem embaralhar
+    // Ordena por popularidade decrescente
+    
+    // Pega os mais populares
     return $this->normalizeMovies(array_slice($results, 0, $limit));
 }
+
+public function getMoviesByDirector(string $directorName, int $limit = 7, string $language = 'pt-BR'): array
+    {
+        // 1. Buscar pessoa pelo nome
+        $search = $this->get('search/person', [
+            'query' => $directorName,
+            'language' => $language,
+        ]);
+        if (empty($search['results'])) return [];
+
+        // 2. Pega o primeiro resultado (mais relevante)
+        $person = $search['results'][0] ?? null;
+        if (!$person || empty($person['id'])) return [];
+
+        // 3. Buscar créditos da pessoa
+        $credits = $this->get('person/' . $person['id'] . '/movie_credits', [
+            'language' => $language,
+        ]);
+        if (empty($credits['crew'])) return [];
+
+        // 4. Filtrar apenas filmes onde foi diretor
+        $directed = array_filter($credits['crew'], function($c) {
+            return isset($c['job']) && strtolower($c['job']) === 'director';
+        });
+        // Ordena por popularidade decrescente
+        $directed = array_values($directed);
+        usort($directed, fn($a, $b) => ($b['popularity'] ?? 0) <=> ($a['popularity'] ?? 0));
+        // 5. Normalizar e limitar
+        $movies = $this->normalizeMovies(array_slice($directed, 0, $limit));
+        return $movies;
+    }
 
 
 

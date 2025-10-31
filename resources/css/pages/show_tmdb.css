@@ -28,12 +28,15 @@
   height: 100%;
   background: linear-gradient(
     135deg,
-    rgba(14, 13, 64, 0.85) 0%,
-    rgba(39, 79, 115, 0.85) 50%,
-    rgba(14, 13, 64, 0.9) 100%
+    rgba(14, 13, 64, 0.4) 0%,
+    rgba(39, 79, 115, 0.3) 50%,
+    rgba(14, 13, 64, 0.5) 100%
   );
   z-index: -1;
+  backdrop-filter: blur(2px);
+
 }
+
 
 /* ===== HEADER ===== */
 .movie-header {
@@ -317,6 +320,8 @@
   color: var(--color-text-main);
   font-size: 0.95rem;
 }
+
+
 
 /* ===== MODAL ===== */
 .modal-overlay {
