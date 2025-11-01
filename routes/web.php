@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FilmeController;
+use App\Http\Controllers\FilmeDoDiaController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard
@@ -28,6 +29,15 @@ Route::get('/biblioteca/buscar', [FilmeController::class, 'buscarBiblioteca'])->
 
 Route::post('/filmes/{id}/favorito', [FilmeController::class, 'toggleFavorito'])
     ->name('filmes.toggleFavorito');
+
+
+// Filme do dia
+Route::get('/filme-do-dia/aleatorios', [FilmeDoDiaController::class, 'aleatorios'])->name('filme-do-dia.aleatorios');
+
+Route::get('/filme-do-dia', [FilmeDoDiaController::class, 'index'])->name('filmes.filme-do-dia');
+Route::post('/filme-do-dia/sortear', [FilmeDoDiaController::class, 'sortear'])->name('filme-do-dia.sortear');
+
+
 
 
 

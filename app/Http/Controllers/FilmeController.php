@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Filme;
 use App\Services\TMDBService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class FilmeController extends Controller
@@ -185,6 +186,7 @@ class FilmeController extends Controller
 
         if ($request->has('assistido') && $request->assistido !== '') {
             $query->where('assistido', $request->boolean('assistido'));
+            
         }
 
         if ($request->has('favorito') && $request->favorito !== '') {
@@ -193,7 +195,6 @@ class FilmeController extends Controller
 
         if ($request->filled('genero')) {
             $query->where('genero', 'LIKE', '%' . $request->genero . '%');
-            
         }
 
         if ($request->filled('ano_lancamento')) {

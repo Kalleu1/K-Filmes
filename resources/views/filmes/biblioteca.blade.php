@@ -99,7 +99,7 @@
                     </button>
                     <div class="filter-menu" data-menu="genre">
                         <form method="GET" action="{{ route('filmes.biblioteca') }}">
-                            <input type="text" name="generos" placeholder="Ex: Ação, Drama..." value="{{ request('generos') }}" class="filter-input">
+                            <input type="text" name="genero" placeholder="Ex: Ação, Drama..." value="{{ request('genero') }}" class="filter-input">
                             <button type="submit" class="apply-filter">Aplicar</button>
                         </form>
                     </div>

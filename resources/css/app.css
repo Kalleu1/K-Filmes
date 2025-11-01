@@ -9,6 +9,7 @@
 @import "./components/sidebar.css";
 @import "./pages/show.css";
 @import "./pages/show_tmdb.css";
+@import "./pages/filme-do-dia.css";
 @import "./pages/createForms.css";
 @import "./pages/busca.css";
 @import "./pages/biblioteca.css";
