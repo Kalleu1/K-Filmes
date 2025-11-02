@@ -15,27 +15,42 @@ class FilmeDoDiaController extends Controller
         return view('filmes.filme-do-dia');
     }
 
-        public function aleatorios()
-{
-    try {
-        // Busca 10 filmes aleatórios
-        $filmes = Filme::inRandomOrder()->take(10)->get(['id', 'nome', 'poster']);
+        public function aleatorios(Request $request) {
+            
+        try {
+            $ano = $request->input('ano');
+            $diretor = $request->input('diretor');
+            $genero = $request->input('genero');
 
-        $results = $filmes->map(function ($filme) {
-            return [
-                'id' => $filme->id,
-                'titulo' => $filme->nome,
-                'poster' => $filme->poster ?? asset('images/placeholder-poster.png'),
-            ];
-        })->values();
+            $query = Filme::query();
 
-        return response()->json(['results' => $results]);
+            if ($ano) $query->where('ano_lancamento', $ano);
+            if ($diretor) $query->where('diretor', 'like', "%{$diretor}%");
+            if ($genero) $query->where('genero', 'like', "%{$genero}%");
 
-    } catch (\Exception $e) {
-        Log::error('Erro ao buscar filmes aleatórios: ' . $e->getMessage());
-        return response()->json(['results' => [], 'error' => 'Erro interno no servidor'], 500);
+            // Se não houver nenhum resultado filtrado, traz aleatórios de todo o banco
+            $filmes = $query->inRandomOrder()->take(10)->get(['id', 'nome', 'poster']);
+
+            if ($filmes->isEmpty()) {
+                $filmes = Filme::inRandomOrder()->take(10)->get(['id', 'nome', 'poster']);
+            }
+
+            $results = $filmes->map(function ($filme) {
+                return [
+                    'id' => $filme->id,
+                    'titulo' => $filme->nome,
+                    'poster' => $filme->poster ?? asset('images/placeholder-poster.png'),
+                ];
+            })->values();
+
+            return response()->json(['results' => $results]);
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao buscar filmes aleatórios: ' . $e->getMessage());
+            return response()->json(['results' => [], 'error' => 'Erro interno no servidor'], 500);
+        }
     }
-}
+
 
 
 
