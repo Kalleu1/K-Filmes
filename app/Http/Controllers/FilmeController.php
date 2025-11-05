@@ -102,6 +102,10 @@ class FilmeController extends Controller
         $tmdbData = $this->tmdb->getMovie((int) $filme->tmdb_id);
 
         if ($tmdbData) {
+            
+            //rating
+            
+
             // Diretor
             if (!empty($tmdbData['credits']['crew'])) {
                 foreach ($tmdbData['credits']['crew'] as $crew) {
@@ -122,17 +126,20 @@ class FilmeController extends Controller
             if ($director) {
                 $directorMovies = $this->tmdb->getMoviesByDirector($director, 7);
             }
+
+            $tmdbRating = isset($tmdbData['vote_average']) ? round($tmdbData['vote_average'], 1) : null;
+            
         }
     }
 
     // Escolhe a view com base no status do filme
     if ($filme->assistido) {
         return view('filmes.show', compact(
-            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies'
+            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies','tmdbRating'
         ));
     } else {
         return view('filmes.show_tmdb', compact(
-            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies'
+            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies','tmdbRating'
         ));
     }
 }
@@ -305,9 +312,14 @@ class FilmeController extends Controller
 
         $filme = Filme::where('tmdb_id', $tmdb_id)->first();
         $similarMovies = $this->tmdb->getSimilarMovies((int) $tmdb_id);
+        if ($director) {
+                $directorMovies = $this->tmdb->getMoviesByDirector($director, 7);
+            }
+        $tmdbRating = isset($tmdbData['vote_average']) ? round($tmdbData['vote_average'], 1) : null;
+            
 
         return view('filmes.show_tmdb', compact(
-            'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'filme', 'tmdb_id', 'similarMovies'
+            'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'filme', 'tmdb_id', 'similarMovies','tmdbRating'
         ));
     }
 

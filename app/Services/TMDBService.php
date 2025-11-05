@@ -90,18 +90,39 @@ class TMDBService
         ]);
     }
 
-    public function getMovie(int $id, string $language = 'pt-BR')
+        public function getMovie(int $id, string $language = 'pt-BR')
     {
         $movie = $this->get("movie/{$id}", [
             'append_to_response' => 'credits,images',
             'language' => $language,
         ]);
 
+        // Se não veio nada, tenta em inglês
+        if (!$movie || empty($movie['id'])) {
+            $movie = $this->get("movie/{$id}", [
+                'append_to_response' => 'credits,images',
+                'language' => 'en-US',
+            ]);
+        }
+
         if (!$movie) {
             return null;
         }
 
-        // Pegar o diretor do array de crew
+       if (!isset($movie['vote_average'])) {
+    // Busca em inglês como fallback
+    $movieEn = $this->get("movie/{$id}", [
+        'append_to_response' => 'credits,images',
+        'language' => 'en-US',
+    ]);
+
+    // Se o inglês tiver o vote_average, aplica ele
+    if (isset($movieEn['vote_average'])) {
+        $movie['vote_average'] = $movieEn['vote_average'];
+    }
+}
+
+        // 🔹 Pega o diretor
         $director = '';
         if (!empty($movie['credits']['crew'])) {
             $dir = collect($movie['credits']['crew'])->firstWhere('job', 'Director');
@@ -111,6 +132,8 @@ class TMDBService
 
         return $movie;
     }
+
+
 
     public function getImageUrl(?string $path, string $size = 'w500')
     {

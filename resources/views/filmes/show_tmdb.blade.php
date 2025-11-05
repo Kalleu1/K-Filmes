@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="movie-details-page">
         {{-- Background com backdrop do filme --}}
         <div class="movie-backdrop" style="background-image: url('{{ $backdropUrl ?? '' }}');"></div>
@@ -45,7 +46,31 @@
                                     <span>{{ $genres }}</span>
                                 </div>
                             @endif
+
+                            {{-- Exibição da nota da TMDB (estilo circular inline) --}}
+                            @if(isset($tmdbRating))
+                                @php
+                                    $percent = round($tmdbRating * 10); // TMDB vem de 0–10 → 0–100%
+                                    if ($percent >= 70) {
+                                        $color = '#21d07a'; // verde
+                                    } elseif ($percent >= 40) {
+                                        $color = '#d2d531'; // amarelo
+                                    } else {
+                                        $color = '#db2360'; // vermelho
+                                    }
+                                @endphp
+
+                                <div class="meta-item tmdb-meta">
+                                    <div class="tmdb-score">
+                                        <div class="circle" style="--percent: {{ $percent }}; --color: {{ $color }}">
+                                            <span>{{ $percent }}<small>%</small></span>
+                                        </div>
+                                    </div>
+                                    <span class="tmdb-label">TMDB</span>
+                                </div>
+                            @endif
                         </div>
+
 
                         {{-- Botões de ação --}}
                         <div class="movie-actions">
@@ -71,7 +96,10 @@
 
                             </button>
                         </div>
+                        
                     </div>
+
+                    
                 </div>
 
                 {{-- Sinopse --}}
