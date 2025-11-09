@@ -330,18 +330,11 @@ function closeDeleteModal() {
 }
 
 function shareMovie() {
-    if (navigator.share) {
-        navigator.share({
-            title: '{{ $filme->nome }}',
-            text: 'Confira este filme que assisti: {{ $filme->nome }}',
-            url: window.location.href
-        });
-    } else {
-        // Fallback para copiar URL
-        navigator.clipboard.writeText(window.location.href);
-        alert('Link copiado para a área de transferência!');
-    }
+    
+    const url = "{{ route('filmes.share-image', $filme->id) }}";
+    window.open(url, '_blank');
 }
+
 
 // Rating slider
 document.getElementById('nota').addEventListener('input', function() {

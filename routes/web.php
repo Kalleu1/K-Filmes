@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FilmeController;
 use App\Http\Controllers\FilmeDoDiaController;
+use App\Http\Controllers\ShareController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard
@@ -29,6 +30,13 @@ Route::get('/biblioteca/buscar', [FilmeController::class, 'buscarBiblioteca'])->
 
 Route::post('/filmes/{id}/favorito', [FilmeController::class, 'toggleFavorito'])
     ->name('filmes.toggleFavorito');
+
+//IMAGEM COMPARTILHADA
+Route::get('/filme/{id}/share', [ShareController::class, 'gerarShareImage'])->name('filme.share');
+Route::get('/filmes/{id}/share-image', [ShareController::class, 'gerarShareImage'])->name('filmes.share-image');
+
+
+
 
 
 // Filme do dia
