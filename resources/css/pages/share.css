@@ -144,6 +144,71 @@
     font-weight: 500;
 }
 
+/* ============================= */
+/* 🎨 Seletor de temas do fundo  */
+/* ============================= */
+
+.theme-selector {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.theme-selector p {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 12px;
+}
+
+.theme-options {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* TEMAS */
+.theme-selector {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.theme-selector p {
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.theme-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.theme-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.theme-btn:hover {
+    transform: scale(1.1);
+    border-color: #fff;
+}
+
+.theme-btn.active {
+    border-color: #ffd166;
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+}
+
+
+
+
 /* Responsividade */
 @media (max-width: 600px) {
     .share-container {
@@ -169,4 +234,6 @@
     .share-container .share-btn {
         width: 100%;
     }
+
+    
 }

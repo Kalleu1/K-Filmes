@@ -34,6 +34,8 @@ Route::post('/filmes/{id}/favorito', [FilmeController::class, 'toggleFavorito'])
 //IMAGEM COMPARTILHADA
 Route::get('/filme/{id}/share', [ShareController::class, 'gerarShareImage'])->name('filme.share');
 Route::get('/filmes/{id}/share-image', [ShareController::class, 'gerarShareImage'])->name('filmes.share-image');
+Route::post('/filmes/{id}/share-image', [ShareController::class, 'gerarShareAjax'])->name('filmes.share-image-ajax');
+
 
 
 
