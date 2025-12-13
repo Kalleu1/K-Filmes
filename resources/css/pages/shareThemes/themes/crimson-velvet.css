@@ -1,0 +1,45 @@
+
+.theme-crimson-velvet {
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(255, 120, 140, 0.10),
+            rgba(20, 5, 8, 0.95) 65%
+        ),
+        linear-gradient(
+            180deg,
+            #1a060a,
+            #050102
+        );
+}
+
+/* Poster */
+.theme-crimson-velvet .preview-poster {
+    border-radius: var(--share-radius-poster);
+    border: 1px solid rgba(255, 120, 140, 0.22);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        inset 0 0 0 1px rgba(255, 120, 140, 0.06);
+}
+
+/* Título */
+.theme-crimson-velvet .preview-title {
+    color: #f3efe6; /* mesmo off-white elegante que você gostou */
+    letter-spacing: 1.8px;
+    font-weight: 700;
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.6),
+        0 0 14px rgba(160, 40, 60, 0.25);
+}
+
+/* Nota */
+.theme-crimson-velvet .preview-rating {
+    color: #e8a1ad;
+    text-shadow:
+        0 0 12px rgba(160, 40, 60, 0.35);
+}
+
+/* Rodapé */
+.theme-crimson-velvet .preview-footer {
+    color: rgba(240, 200, 210, 0.55);
+}

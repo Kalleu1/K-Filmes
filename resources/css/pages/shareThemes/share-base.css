@@ -1,0 +1,10 @@
+.share-preview {
+    font-family: var(--font-primary);
+    color: #fff;
+}
+
+.preview-title,
+.preview-rating,
+.preview-footer {
+    transition: color .3s ease;
+}

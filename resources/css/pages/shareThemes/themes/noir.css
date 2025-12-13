@@ -1,0 +1,32 @@
+
+.theme-noir {
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(255,255,255,.06),
+            rgba(0,0,0,.95) 70%
+        ),
+        linear-gradient(180deg, #0a0a0a, #000);
+}
+
+.theme-noir .preview-poster {
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow:
+        var(--shadow-heavy),
+        inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+.theme-noir .preview-title {
+    color: #fff;
+    letter-spacing: 2px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.theme-noir .preview-rating {
+    color: #cfcfcf;
+}
+
+.theme-noir .preview-footer {
+    color: rgba(255,255,255,.55);
+}

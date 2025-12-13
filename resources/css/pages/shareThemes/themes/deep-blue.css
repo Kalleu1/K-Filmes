@@ -1,0 +1,57 @@
+
+.theme-deep-blue {
+    background:
+        /* Luz central (tela do cinema) */
+        radial-gradient(
+            circle at 50% 32%,
+            rgba(110,203,255,0.22),
+            rgba(18,58,92,0.35) 35%,
+            rgba(6,11,26,0.92) 70%
+        ),
+
+        /* Reflexo inferior sutil */
+        radial-gradient(
+            circle at bottom,
+            rgba(110,203,255,0.08),
+            transparent 60%
+        ),
+
+        /* Base profunda */
+        linear-gradient(
+            180deg,
+            #060b1a,
+            #0b1c2d 55%,
+            #060b1a
+        );
+}
+
+/* Poster */
+.theme-deep-blue .preview-poster {
+    border-radius: var(--share-radius-poster);
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.55),
+        0 0 45px rgba(110, 203, 255, 0.18);
+}
+
+/* Título */
+.theme-deep-blue .preview-title {
+    color: #f2f7fb;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    text-shadow:
+        0 3px 12px rgba(0,0,0,0.65);
+}
+
+/* Nota */
+.theme-deep-blue .preview-rating {
+    color: #b8e6ff;
+    font-weight: 700;
+    text-shadow:
+        0 0 12px rgba(110,203,255,0.35);
+}
+
+/* Rodapé */
+.theme-deep-blue .preview-footer {
+    color: rgba(242,247,251,0.65);
+}

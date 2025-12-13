@@ -1,88 +1,63 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+@import "./shareThemes/share-themes.css";
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+/* SELETOR DE TEMAS */
+.theme-selector p {
+    margin-bottom: 10px;
 }
 
-/* Container principal */
-.share-container {
-    font-family: 'Inter', sans-serif;
-    width: 100%;
-    min-height: 100vh;
-    padding: 40px 20px;
+.theme-options {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
-    color: #fff;
-    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
 }
 
-/* Fundo desfocado do poster */
-.share-container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: url('{{ $filme->poster }}') center/cover no-repeat;
-    filter: blur(30px) brightness(0.25);
-    z-index: 0;
+.theme-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    outline: 2px solid transparent;
+    transition: 0.12s;
+}
+.theme-btn:hover { transform: scale(1.06); }
+.theme-btn.selected { outline: 3px solid #fff; }
+
+
+
+.preview-poster {
+    width: 75%;
+    border-radius: 22px;
+    margin-bottom: 35px;
 }
 
-/* Conteúdo sobre o fundo */
-.share-container .share-content {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 600px;
-    background: rgba(30, 30, 30, 0.85);
-    border-radius: 20px;
-    padding: 40px;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+.preview-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: var(--title-color);
 }
 
-/* Títulos */
-.share-container .share-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
+.preview-rating {
+    font-size: 26px;
     font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-    text-align: center;
+    margin-top: 10px;
+    color: var(--rating-color);
 }
 
-.share-container .share-subtitle {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.75);
-    margin-bottom: 30px;
-    font-weight: 500;
-    text-align: center;
-}
-
-/* Wrapper da imagem */
-.share-container .share-image-wrapper {
+.preview-footer {
+    position: absolute;
+    bottom: 25px;
     width: 100%;
-    margin-bottom: 30px;
-    background: #000;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    font-size: 15px;
+    color: var(--footer-color);
 }
 
-.share-container .share-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 12px;
-}
-
-/* Ações */
-.share-container .share-actions {
+/* BOTÕES */
+.share-actions {
     display: flex;
     gap: 16px;
     margin-bottom: 24px;
@@ -90,150 +65,26 @@
     justify-content: center;
 }
 
-.share-container .share-btn {
-    flex: 1;
+.share-btn {
     min-width: 140px;
     padding: 16px 24px;
     border: none;
     border-radius: 12px;
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    text-align: center;
+    font-weight: 600;
 }
 
-.share-container .share-btn-primary {
-    background: linear-gradient(135deg, #e8b55d 0%, #d4941f 100%);
-    color: #1a1a1a;
-    box-shadow: 0 8px 25px rgba(232, 181, 93, 0.3);
-}
-
-.share-container .share-btn-primary:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 12px 35px rgba(232, 181, 93, 0.5);
-}
-
-.share-container .share-btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
+.share-btn-primary {
+    background: #347fff;
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.share-container .share-btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Ícones */
-.share-container .share-btn-icon {
-    font-size: 18px;
-}
-
-/* Informações adicionais */
-.share-container .share-info {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.6);
-    text-align: center;
-    font-weight: 500;
-}
-
-/* ============================= */
-/* 🎨 Seletor de temas do fundo  */
-/* ============================= */
-
-.theme-selector {
-    text-align: center;
-    margin-bottom: 28px;
-}
-
-.theme-selector p {
-    font-size: 15px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 12px;
-}
-
-.theme-options {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-/* TEMAS */
-.theme-selector {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.theme-selector p {
-    margin-bottom: 10px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.theme-options {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-}
-
-.theme-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-.theme-btn:hover {
-    transform: scale(1.1);
-    border-color: #fff;
-}
-
-.theme-btn.active {
-    border-color: #ffd166;
-    transform: scale(1.15);
-    box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+.share-btn-secondary {
+    background: #eee;
+    color: #333;
 }
 
 
 
 
-/* Responsividade */
-@media (max-width: 600px) {
-    .share-container {
-        padding: 20px;
-    }
 
-    .share-container .share-content {
-        padding: 24px;
-    }
-
-    .share-container .share-title {
-        font-size: 32px;
-    }
-
-    .share-container .share-subtitle {
-        font-size: 14px;
-    }
-
-    .share-container .share-actions {
-        flex-direction: column;
-    }
-
-    .share-container .share-btn {
-        width: 100%;
-    }
-
-    
-}

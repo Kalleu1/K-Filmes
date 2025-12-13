@@ -1,0 +1,9 @@
+:root {
+    --font-primary: 'Inter', sans-serif;
+
+    --radius-card: 28px;
+    --radius-poster: 18px;
+
+    --shadow-heavy: 0 25px 60px rgba(0,0,0,.8);
+    --shadow-soft: 0 12px 25px rgba(0,0,0,.45);
+}
