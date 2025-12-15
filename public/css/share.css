@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.share-container {
+    text-align: center;
+}
+
+.share-poster {
+    max-width: 300px;
+    border-radius: 8px;
+}
+
+.share-title {
+    margin-top: 20px;
+    font-size: 24px;
+}

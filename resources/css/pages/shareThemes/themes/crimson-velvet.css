@@ -15,7 +15,7 @@
 
 /* Poster */
 .theme-crimson-velvet .preview-poster {
-    border-radius: var(--share-radius-poster);
+    
     border: 1px solid rgba(255, 120, 140, 0.22);
     box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.6),

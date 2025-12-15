@@ -128,7 +128,10 @@
   background: var(--color-primary-hover);
 }
 
-
+.test-css {
+    display: block !important;
+    color: red;
+}
 
 /* ===== GRID DE FILMES - MOBILE FIRST ===== */
 .dashboard_grid {

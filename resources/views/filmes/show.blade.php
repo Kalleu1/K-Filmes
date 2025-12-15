@@ -331,7 +331,7 @@ function closeDeleteModal() {
 
 function shareMovie() {
     
-    const url = "{{ route('filmes.share-image', $filme->id) }}";
+    const url = "{{ route('filme.share.preview', $filme->id) }}";
     window.open(url, '_blank');
 }
 

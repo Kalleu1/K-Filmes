@@ -5,6 +5,7 @@ use App\Http\Controllers\FilmeController;
 use App\Http\Controllers\FilmeDoDiaController;
 use App\Http\Controllers\ShareController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Browsershot\Browsershot;
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -32,13 +33,18 @@ Route::post('/filmes/{id}/favorito', [FilmeController::class, 'toggleFavorito'])
     ->name('filmes.toggleFavorito');
 
 //IMAGEM COMPARTILHADA
-Route::get('/filme/{id}/share', [ShareController::class, 'gerarShareImage'])->name('filme.share');
+
+
+Route::get('/filmes/{id}/share', [ShareController::class, 'preview'])
+    ->name('filme.share.preview');
+
+Route::post('/filmes/{id}/share-image', [ShareController::class, 'generate'])
+    ->name('filme.share.generate');
+
+Route::get('/filmes/{id}/share-render', [ShareController::class, 'render'])
+    ->name('filme.share.render');
+
 Route::get('/filmes/{id}/share-image', [ShareController::class, 'gerarShareImage'])->name('filmes.share-image');
-Route::post('/filmes/{id}/share-image', [ShareController::class, 'gerarShareAjax'])->name('filmes.share-image-ajax');
-
-
-
-
 
 
 // Filme do dia

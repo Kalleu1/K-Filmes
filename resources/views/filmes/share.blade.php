@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/share.css') }}">
-<script src="{{ asset('js/share.js') }}" defer></script>
 
 <div class="share-container">
 
@@ -69,38 +67,70 @@
 
         {{-- AÇÕES --}}
         <div class="share-actions">
-            <button id="btn-download" class="share-btn share-btn-primary">
-                Fazer Download
-            </button>
+            <form id="share-form" method="POST" action="{{ route('filme.share.generate', $filme->id) }}">
+            @csrf
+            <input type="hidden" name="theme" id="share-theme-input" value="noir"> <!-- tema selecionado dinamicamente -->
+            <button type="submit">Gerar Imagem</button>
+        </form>
 
             <button id="btn-copy" class="share-btn share-btn-secondary">
                 Copiar Link
             </button>
         </div>
 
-        <p class="share-info">Resolução: 1080×1920px (Ideal para Stories)</p>
+        <p class="share-info">Resolução: 1080×1920px </p>
     </div>
 </div>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const preview = document.getElementById("share-preview");
+    const themeInput = document.getElementById("share-theme-input");
+    let selectedTheme = 'noir';
 
     document.querySelectorAll(".theme-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-            document
-                .querySelectorAll(".theme-btn")
+            document.querySelectorAll(".theme-btn")
                 .forEach(b => b.classList.remove("selected"));
 
             btn.classList.add("selected");
 
-            const theme = btn.dataset.theme;
-            preview.className = `share-preview theme-${theme}`;
+            selectedTheme = btn.dataset.theme;
+
+            preview.className = `share-preview theme-${selectedTheme}`;
+
+            themeInput.value = selectedTheme;
         });
     });
+
+document.getElementById('share-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const res = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': formData.get('_token')
+        }
+    });
+
+    const data = await res.json();
+    if(data.success){
+        // Criar link temporário para download
+        const link = document.createElement('a');
+        link.href = data.url;
+        link.download = `filme_${{{ $filme->id }}}.png`; // nome do arquivo
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert('Erro ao gerar imagem: ' + data.message);
+    }
 });
-
-
-
+});
 </script>
+
 @endsection

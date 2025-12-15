@@ -10,6 +10,7 @@
 }
 
 .theme-noir .preview-poster {
+    
     border: 1px solid rgba(255,255,255,.18);
     box-shadow:
         var(--shadow-heavy),
