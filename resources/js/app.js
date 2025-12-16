@@ -1,4 +1,13 @@
-// resources/js/app.js
+import initShare from './pages/share';
+import InitBiblioteca from './pages/biblioteca';
+import initFilmeDoDia from './pages/filmedodia';
+import initPersonalMovie from './pages/show';
+import initMovieDetails from './pages/showTmdb';
 
-import './bootstrap'; // se estiver usando o bootstrap padrão do Laravel
-
+document.addEventListener('DOMContentLoaded', () => {
+    initShare();
+    InitBiblioteca();
+    initFilmeDoDia();
+    initPersonalMovie();
+    initMovieDetails();
+});

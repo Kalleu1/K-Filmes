@@ -66,10 +66,6 @@
                                 </div>
                             </div>
 
-                            {{-- <div class="movie-info">
-                                <h3 class="movie-title">{{ $filme->nome }}</h3>
-                                <p class="movie-year">{{ $filme->ano }}</p>
-                            </div> --}}
                             </a>
                         </div>
 

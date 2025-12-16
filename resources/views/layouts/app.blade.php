@@ -25,8 +25,6 @@
         @include('components.header')
 
         @yield('content', 'Nenhum Conteudo')
-
-        @stack('scripts')
         
     </body>
 </html>
