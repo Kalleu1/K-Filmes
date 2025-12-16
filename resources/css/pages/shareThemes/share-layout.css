@@ -40,7 +40,12 @@
 
     background: var(--bg);
     color: var(--title-color);
-    transition: background 0.35s, color 0.25s;
+    transition: transform .25s ease, opacity .25s ease;
+}
+
+.share-preview.is-transitioning {
+    opacity: .4;
+    transform: scale(.98);
 }
 
 .preview-poster {

@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 
 <div class="share-container">
@@ -13,10 +12,9 @@
             <p>Escolha o estilo do fundo:</p>
 
             <div class="theme-options">
-                {{-- Botões de tema (visuais) --}}
                 <button class="theme-btn"
                 data-theme="noir"
-                style="background: linear-gradient(180deg, #111, #000);"
+                style="background: linear-gradient(180deg, #111, #777575);"
                 title="Noir Cinematográfico">
             </button>
 
@@ -51,7 +49,7 @@
         </div>
 
         {{-- PREVIEW HTML --}}
-        <div id="share-preview" class="share-preview" aria-live="polite">
+        <div id="share-preview" class="share-preview theme-noir" >
             <img src="{{ $filme->poster }}" class="preview-poster" alt="Poster {{ $filme->nome }}">
 
             <div class="preview-title">{{ strtoupper($filme->nome) }}</div>
@@ -69,16 +67,33 @@
         <div class="share-actions">
             <form id="share-form" method="POST" action="{{ route('filme.share.generate', $filme->id) }}">
             @csrf
-            <input type="hidden" name="theme" id="share-theme-input" value="noir"> <!-- tema selecionado dinamicamente -->
-            <button type="submit">Gerar Imagem</button>
+            <input type="hidden" name="theme" id="share-theme-input" value="noir">
+            <button type="submit" class= "share-btn share-btn-primary">Gerar Imagem</button>
         </form>
 
-            <button id="btn-copy" class="share-btn share-btn-secondary">
-                Copiar Link
+            <button id="btn-instagram" class="share-btn insta" disabled>
+                <i class="fa-brands fa-instagram"></i>
+                Instagram
+            </button>
+
+            <button id="btn-whatsapp" class="share-btn whatsapp" disabled>
+                <i class="fa-brands fa-whatsapp"></i>
+                WhatsApp
+            </button>
+
+            <button id="btn-twitter" class="share-btn twitter" disabled>
+                <i class="fa-brands fa-x-twitter"></i>
+                Twitter / X
             </button>
         </div>
 
         <p class="share-info">Resolução: 1080×1920px </p>
+
+        <div id="share-loading" class="share-loading hidden">
+            <div class="loader"></div>
+            <p>Gerando imagem…</p>
+        </div>
+
     </div>
 </div>
 
@@ -87,8 +102,33 @@
 document.addEventListener("DOMContentLoaded", () => {
     const preview = document.getElementById("share-preview");
     const themeInput = document.getElementById("share-theme-input");
-    let selectedTheme = 'noir';
+    const form = document.getElementById('share-form');
+    const loading = document.getElementById('share-loading');
+    const submitBtn = form.querySelector('button[type="submit"]');
 
+    const btnInstagram = document.getElementById('btn-instagram');
+    const btnWhatsapp  = document.getElementById('btn-whatsapp');
+    const btnTwitter   = document.getElementById('btn-twitter');
+
+    let selectedTheme = 'noir';
+    let generatedImageUrl = null;
+
+    // VERIFICAR SE É MOBILE
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+    const shareText = encodeURIComponent(
+        ''
+    );
+
+    function applyTheme(theme) {
+    preview.classList.add('is-transitioning');
+
+    setTimeout(() => {
+        preview.className = `share-preview theme-${theme}`;
+        preview.classList.remove('is-transitioning');
+    }, 120);
+}
+
+    // Troca de tema 
     document.querySelectorAll(".theme-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             document.querySelectorAll(".theme-btn")
@@ -97,40 +137,98 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.add("selected");
 
             selectedTheme = btn.dataset.theme;
-
-            preview.className = `share-preview theme-${selectedTheme}`;
-
+            applyTheme(selectedTheme);
             themeInput.value = selectedTheme;
         });
     });
 
-document.getElementById('share-form').addEventListener('submit', async function(e){
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
+    // Download
+    form.addEventListener('submit', async function(e){
+        e.preventDefault();
 
-    const res = await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': formData.get('_token')
+        loading.classList.remove('hidden');
+        submitBtn.disabled = true;
+
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': formData.get('_token')
+                }
+            });
+
+            const data = await res.json();
+
+            if(data.success){
+                generatedImageUrl = data.url;
+
+                // download automático
+                const link = document.createElement('a');
+                link.href = generatedImageUrl;
+                link.download = `filme_{{ $filme->id }}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // habilita botões de share
+                btnInstagram.disabled = false;
+                btnWhatsapp.disabled = false;
+                btnTwitter.disabled = false;
+            } else {
+                alert('Erro ao gerar imagem: ' + data.message);
+            }
+        } catch (err) {
+            alert('Erro ao gerar imagem.');
+            console.error(err);
+        } finally {
+            submitBtn.disabled = false;
+            loading.classList.add('hidden');
         }
     });
 
-    const data = await res.json();
-    if(data.success){
-        // Criar link temporário para download
-        const link = document.createElement('a');
-        link.href = data.url;
-        link.download = `filme_${{{ $filme->id }}}.png`; // nome do arquivo
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    } else {
-        alert('Erro ao gerar imagem: ' + data.message);
-    }
-});
+    // Instagram
+    btnInstagram.addEventListener('click', () => {
+        if (!generatedImageUrl) return;
+
+        if (isMobile) {
+            window.location.href = "instagram://story-camera";
+        } else {
+            window.open("https://www.instagram.com/", "_blank");
+            alert(
+                "No computador o Instagram não permite postar Stories.\n" +
+                "A imagem já foi baixada, abra no celular para postar."
+            );
+        }
+    });
+
+    // WhatsApp
+    btnWhatsapp.addEventListener('click', () => {
+        if (!generatedImageUrl) return;
+
+        const url = isMobile
+            ? `whatsapp://send?text=${shareText}`
+            : `https://web.whatsapp.com/send?text=${shareText}`;
+
+        window.open(url, '_blank');
+    });
+
+    // 🔵 Twitter / X
+    btnTwitter.addEventListener('click', () => {
+        if (!generatedImageUrl) return;
+
+        const twitterUrl =
+            `https://twitter.com/intent/tweet?text=${shareText}`;
+
+        window.open(twitterUrl, '_blank');
+    });
+
+    
 });
 </script>
+
+
 
 @endsection

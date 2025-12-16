@@ -23,7 +23,7 @@ class ShareController extends Controller
         
         $theme = $request->input('theme','deep-blue');
 
-        // Lista de CSS fixos + tema dinâmico
+        // LISTA DE CSS FIXOS + TEMA DINAMICO
         $cssFiles = [
             resource_path('css/pages/share.css'),
             resource_path('css/pages/shareThemes/share-base.css'),
@@ -43,7 +43,7 @@ class ShareController extends Controller
         // Renderiza a view Blade
         $html = view('filmes.share-render', compact('filme', 'theme'))->render();
 
-        // Injeta o CSS inline
+        // Injeta o CSS
         $htmlWithCss = str_replace('</head>', "<style>{$cssContent}</style></head>", $html);
 
         // Caminho final da imagem
@@ -58,7 +58,7 @@ class ShareController extends Controller
             'x' => 295,
             'y' => 40,
             'width' => 490,
-            'height' => 780 // 🔥 área recortada
+            'height' => 780 // 
         ])
             ->save($path);
 
