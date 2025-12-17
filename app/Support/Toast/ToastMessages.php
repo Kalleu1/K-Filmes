@@ -2,7 +2,7 @@
 
 namespace App\Support\Toast;
 
-use App\Support\ToastManager;
+use App\Support\Toast\ToastManager;
 
 class ToastMessages
 {

@@ -171,7 +171,7 @@ class FilmeController extends Controller
 
     $filme->update($data);
 
-    return redirect()->route('filmes.biblioteca')->with('success', 'Filme atualizado com sucesso!');
+    return redirect()->route('filmes.biblioteca')->with(ToastMessages::movieUpdated());
     }
 
     
@@ -341,10 +341,7 @@ class FilmeController extends Controller
         $tmdbData = $this->tmdb->getMovie((int) $tmdb_id);
 
         if (!$tmdbData) {
-            return back()->with('toast', [
-                'type' => 'error',
-                'message' => 'Não foi possível obter dados do TMDB. Tente novamente mais tarde.',
-            ]);
+            return back()->with(ToastMessages::tmdbUnavailable());
         }
 
         $director = null;
@@ -378,15 +375,15 @@ class FilmeController extends Controller
                 'ano_lancamento' => !empty($tmdbData['release_date']) ? date('Y', strtotime($tmdbData['release_date'])) : null,
                 'assistido' => $data['assistido'],
             ]
-);
+        );
 
+        $toast = $filme->wasRecentlyCreated
+            ? ToastMessages::movieAdded()
+            : ToastMessages::movieUpdated();
 
         return redirect()
-        ->route('filmes.showTmdb', $filme->tmdb_id)
-        ->with('toast', [
-            'type' => 'success',
-            'message' => 'Filme salvo/atualizado com sucesso.',
-        ]);
+            ->route('filmes.showTmdb', $filme->tmdb_id)
+            ->with($toast);
     }
 
     public function assistidos(Filme $filme)
@@ -405,18 +402,18 @@ class FilmeController extends Controller
     }
 
         public function marcarAssistido(Request $request, $id)
-    {
-        $filme = Filme::findOrFail($id);
+        {
+            $filme = Filme::findOrFail($id);
 
-        $filme->assistido = true;
-        $filme->nota = $request->input('nota');
-        $filme->comentario = $request->input('comentario');
-        $filme->data_visualizacao = $request->input('data_visualizacao');
-        $filme->save();
+            $filme->assistido = true;
+            $filme->nota = $request->input('nota');
+            $filme->comentario = $request->input('comentario');
+            $filme->data_visualizacao = $request->input('data_visualizacao');
+            $filme->save();
 
-        return redirect()->route('filmes.show', $filme->id)
-                        ->with('success', 'Filme marcado como assistido!');
-    }
+            return redirect()->route('filmes.show', $filme->id)
+                            ->with(ToastMessages::markedAsWatched());
+        }
 
 
     // Tela inicial da busca
@@ -431,7 +428,7 @@ class FilmeController extends Controller
         $query = $request->input('q');
 
         if (!$query) {
-            return redirect()->route('filmes.busca')->with('error', 'Digite algo para pesquisar.');
+            return redirect()->route('filmes.busca')->with(ToastMessages::missingData());
         }
 
         $response = $this->tmdb->searchMovies($query);
@@ -450,10 +447,5 @@ class FilmeController extends Controller
 
         return view('filmes.busca', compact('results', 'query'));
     }
-
-
-
-
-
 
 }
