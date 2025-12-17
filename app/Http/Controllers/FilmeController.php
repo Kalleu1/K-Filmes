@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Filme;
 use App\Services\TMDBService;
+use App\Support\Toast\ToastMessages;
+use App\Support\Toast\ToastMessages as ToastToastMessages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -79,7 +81,7 @@ class FilmeController extends Controller
 
         Filme::create($data);
 
-        return redirect()->route('dashboard')->with('success', 'Filme adicionado com sucesso!');
+        return redirect()->route('dashboard')->with(ToastMessages::movieAdded());
     }
 
     /**
@@ -172,9 +174,7 @@ class FilmeController extends Controller
     return redirect()->route('filmes.biblioteca')->with('success', 'Filme atualizado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Filme $filme)
     {
     if($filme->poster) {
@@ -184,7 +184,8 @@ class FilmeController extends Controller
         Storage::disk('public')->delete($filme->poster_banner);
     }
         $filme->delete();
-    return redirect()->route('filmes.biblioteca')->with('success', 'Filme deletado com sucesso!');
+        return redirect()->route('filmes.biblioteca')
+            ->with(ToastMessages::movieDeleted());
     }
 
     public function biblioteca(Request $request)
@@ -340,7 +341,10 @@ class FilmeController extends Controller
         $tmdbData = $this->tmdb->getMovie((int) $tmdb_id);
 
         if (!$tmdbData) {
-            return back()->withErrors('Não foi possível obter dados do TMDB.');
+            return back()->with('toast', [
+                'type' => 'error',
+                'message' => 'Não foi possível obter dados do TMDB. Tente novamente mais tarde.',
+            ]);
         }
 
         $director = null;
@@ -377,8 +381,12 @@ class FilmeController extends Controller
 );
 
 
-        return redirect()->route('filmes.showTmdb', $filme->tmdb_id)
-            ->with('success', 'Filme salvo/atualizado com sucesso.');
+        return redirect()
+        ->route('filmes.showTmdb', $filme->tmdb_id)
+        ->with('toast', [
+            'type' => 'success',
+            'message' => 'Filme salvo/atualizado com sucesso.',
+        ]);
     }
 
     public function assistidos(Filme $filme)

@@ -25,6 +25,8 @@
         @include('components.header')
 
         @yield('content', 'Nenhum Conteudo')
+
+        @include('components.toast')
         
     </body>
 </html>

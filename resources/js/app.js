@@ -3,11 +3,15 @@ import InitBiblioteca from './pages/biblioteca';
 import initFilmeDoDia from './pages/filmedodia';
 import initPersonalMovie from './pages/show';
 import initMovieDetails from './pages/showTmdb';
+import initToast from './components/toastComp/init_Toast';
 
 document.addEventListener('DOMContentLoaded', () => {
+    initToast();
+
     initShare();
     InitBiblioteca();
     initFilmeDoDia();
     initPersonalMovie();
     initMovieDetails();
+    
 });
