@@ -10,11 +10,6 @@ use Illuminate\Support\Str;
 class TMDBService
 {
 
-    /**
-     * Busca filmes dirigidos por um diretor (nome).
-     * Retorna até $limit filmes dirigidos por essa pessoa.
-     */
-    
     protected $base;
     protected $key;
     protected $imageBase;
@@ -26,6 +21,12 @@ class TMDBService
         $this->key  = config('services.tmdb.key');
         $this->initConfig();
     }
+
+    protected function remember(string $key, int $minutes, \Closure $callback)
+    {
+        return Cache::remember($key, now()->addMinutes($minutes), $callback);
+    }
+
 
     protected function initConfig()
     {
@@ -90,48 +91,37 @@ class TMDBService
         ]);
     }
 
-        public function getMovie(int $id, string $language = 'pt-BR')
+    public function getMovie(int $id, string $language = 'pt-BR')
     {
-        $movie = $this->get("movie/{$id}", [
-            'append_to_response' => 'credits,images',
-            'language' => $language,
-        ]);
+        $cacheKey = "tmdb:movie:{$id}:{$language}";
 
-        // Se não veio nada, tenta em inglês
-        if (!$movie || empty($movie['id'])) {
+        return $this->remember($cacheKey, 720, function () use ($id, $language) {
             $movie = $this->get("movie/{$id}", [
                 'append_to_response' => 'credits,images',
-                'language' => 'en-US',
+                'language' => $language,
             ]);
-        }
 
-        if (!$movie) {
-            return null;
-        }
+            if (!$movie || empty($movie['id'])) {
+                $movie = $this->get("movie/{$id}", [
+                    'append_to_response' => 'credits,images',
+                    'language' => 'en-US',
+                ]);
+            }
 
-       if (!isset($movie['vote_average'])) {
-    // Busca em inglês como fallback
-    $movieEn = $this->get("movie/{$id}", [
-        'append_to_response' => 'credits,images',
-        'language' => 'en-US',
-    ]);
+            if (!$movie) return null;
 
-    // Se o inglês tiver o vote_average, aplica ele
-    if (isset($movieEn['vote_average'])) {
-        $movie['vote_average'] = $movieEn['vote_average'];
+            // Diretor
+            $director = '';
+            if (!empty($movie['credits']['crew'])) {
+                $dir = collect($movie['credits']['crew'])->firstWhere('job', 'Director');
+                $director = $dir['name'] ?? '';
+            }
+            $movie['director'] = $director;
+
+            return $movie;
+        });
     }
-}
 
-        // 🔹 Pega o diretor
-        $director = '';
-        if (!empty($movie['credits']['crew'])) {
-            $dir = collect($movie['credits']['crew'])->firstWhere('job', 'Director');
-            $director = $dir['name'] ?? '';
-        }
-        $movie['director'] = $director;
-
-        return $movie;
-    }
 
 
 
@@ -148,47 +138,60 @@ class TMDBService
 
     public function getNowPlaying(string $language = 'pt-BR')
 {
-    return $this->get('movie/now_playing', [
-        'language' => $language,
-        'region' => 'BR', // opcional: traz em cartaz no Brasil
-    ])['results'] ?? [];
+    $key = "tmdb:now_playing:{$language}";
+    return $this->remember($key, 30, function () use ($language) {
+        return $this->get('movie/now_playing', [
+            'language' => $language,
+            'region' => 'BR',
+        ])['results'] ?? [];
+    });
 }
 
 public function getTrending(string $timeWindow = 'week', string $language = 'pt-BR')
 {
-    // timeWindow pode ser 'day' ou 'week'
-    return $this->get("trending/movie/{$timeWindow}", [
-        'language' => $language,
-    ])['results'] ?? [];
+    $key = "tmdb:trending:{$timeWindow}:{$language}";
+    return $this->remember($key, 60, function () use ($timeWindow, $language) {
+        return $this->get("trending/movie/{$timeWindow}", [
+            'language' => $language,
+        ])['results'] ?? [];
+    });
 }
 
 public function getTopRated(string $language = 'pt-BR')
 {
-    return $this->get('movie/top_rated', [
-        'language' => $language,
-    ])['results'] ?? [];
+    $key = "tmdb:top_rated:{$language}";
+    return $this->remember($key, 360, function () use ($language) {
+        return $this->get('movie/top_rated', [
+            'language' => $language,
+        ])['results'] ?? [];
+    });
 }
 
 public function getUpcoming(string $language = 'pt-BR')
 {
-    return $this->get('movie/upcoming', [
-        'language' => $language,
-        'region' => 'BR', // opcional
-    ])['results'] ?? [];
+    $key = "tmdb:upcoming:{$language}";
+    return $this->remember($key, 720, function () use ($language) {
+        return $this->get('movie/upcoming', [
+            'language' => $language,
+            'region' => 'BR',
+        ])['results'] ?? [];
+    });
 }
 
 public function getSimilarMovies(int $tmdbId, string $language = 'pt-BR', int $limit = 7): array
 {
-    $response = $this->get("movie/{$tmdbId}/similar", [
-        'language' => $language,
-    ]);
+    $key = "tmdb:similar:{$tmdbId}:{$language}";
 
-    $results = $response['results'] ?? [];
-    // Ordena por popularidade decrescente
-    
-    // Pega os mais populares
-    return $this->normalizeMovies(array_slice($results, 0, $limit));
+    return $this->remember($key, 360, function () use ($tmdbId, $language, $limit) {
+        $response = $this->get("movie/{$tmdbId}/similar", [
+            'language' => $language,
+        ]);
+
+        $results = $response['results'] ?? [];
+        return $this->normalizeMovies(array_slice($results, 0, $limit));
+    });
 }
+
 
 public function getMoviesByDirector(string $directorName, int $limit = 7, string $language = 'pt-BR'): array
     {

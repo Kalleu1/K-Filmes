@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Filme;
 use App\Services\TMDBService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -29,16 +30,11 @@ class DashboardController extends Controller
         $filmesDiretor = Filme::filtrarPor('diretor', 'Christopher Nolan', 7, 'desc', 'nota'); 
         $filmesPlataforma = Filme::filtrarPor('plataforma', 'Netflix', 7); 
         
-        //API SEÇÃO DASHBOARD
-        $emCartaz  = $tmdb->normalizeMovies($tmdb->getNowPlaying());   // filmes em cartaz
-        $trending  = $tmdb->normalizeMovies($tmdb->getTrending());     // em alta semana
-        $topRated  = $tmdb->normalizeMovies($tmdb->getTopRated());     // melhores notas
-        $upcoming  = $tmdb->normalizeMovies($tmdb->getUpcoming());
-
-
-
-
-
+        //API SEÇÃO DASHBOARD (com cache das listas normalizadas)
+        $emCartaz = Cache::remember('dashboard:tmdb:now_playing:pt-BR', 30 * 60, fn() => $tmdb->normalizeMovies($tmdb->getNowPlaying()));
+        $trending = Cache::remember('dashboard:tmdb:trending:week:pt-BR', 60 * 60, fn() => $tmdb->normalizeMovies($tmdb->getTrending()));
+        $topRated = Cache::remember('dashboard:tmdb:top_rated:pt-BR', 360 * 60, fn() => $tmdb->normalizeMovies($tmdb->getTopRated()));
+        $upcoming = Cache::remember('dashboard:tmdb:upcoming:pt-BR', 720 * 60, fn() => $tmdb->normalizeMovies($tmdb->getUpcoming()));
 
         return view('pages.dashboard',compact(
             'recentes',
@@ -60,7 +56,8 @@ class DashboardController extends Controller
             'topRated',
             'upcoming',
             
-
         ));
     }
+
+    
 }
