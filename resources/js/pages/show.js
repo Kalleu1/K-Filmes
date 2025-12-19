@@ -97,13 +97,24 @@ function bindCloseButtons(ui) {
     });
 }
 
-function bindShare(ui, shareUrl) {
+function bindShare(ui) {
     if (!ui.shareBtn) return;
+
+    const shareUrl = ui.shareBtn.dataset.shareUrl;
+
+    if (!shareUrl) {
+        console.warn('Share URL não encontrada no botão');
+        return;
+    }
+
+    console.log('Share URL:', shareUrl);
 
     ui.shareBtn.addEventListener('click', () => {
         window.open(shareUrl, '_blank');
     });
 }
+
+
 /* =========================
    RATING
 ========================= */

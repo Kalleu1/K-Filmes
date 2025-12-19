@@ -6,6 +6,7 @@ use App\Models\Filme;
 use App\Services\TMDBService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Support\Toast\ToastMessages;
 
 class FilmeDoDiaController extends Controller
 {
@@ -39,15 +40,18 @@ class FilmeDoDiaController extends Controller
                 return [
                     'id' => $filme->id,
                     'titulo' => $filme->nome,
-                    'poster' => $filme->poster ?? asset('images/placeholder-poster.png'),
+                    'poster' => $filme->poster ?? asset('images/placeholder-poster.png'), //LEMBRAR DE ALTERAR
                 ];
             })->values();
 
             return response()->json(['results' => $results]);
 
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar filmes aleatórios: ' . $e->getMessage());
-            return response()->json(['results' => [], 'error' => 'Erro interno no servidor'], 500);
+            return response()->json([
+                'results' => [],
+                'error' => 'Erro interno no servidor',
+                'toast' => ToastMessages::tmdbUnavailable()
+            ], 500);
         }
     }
 
@@ -74,7 +78,10 @@ class FilmeDoDiaController extends Controller
             $filme = $query->inRandomOrder()->first();
 
             if (!$filme) {
-                return response()->json(['error' => 'Nenhum filme encontrado.'], 404);
+                return response()->json([
+                    'error' => 'Nenhum filme encontrado.',
+                    'toast' => ToastMessages::custom('warning', 'Nenhum filme encontrado.')
+                ], 404);
             }
 
             return response()->json([
@@ -88,7 +95,10 @@ class FilmeDoDiaController extends Controller
             $filme = collect($movies)->random();
 
             if (!$filme) {
-                return response()->json(['error' => 'Nenhum filme encontrado.'], 404);
+                return response()->json([
+                    'error' => 'Nenhum filme encontrado.',
+                    'toast' => ToastMessages::custom('warning', 'Nenhum filme encontrado.')
+                ], 404);
             }
 
             return response()->json([
