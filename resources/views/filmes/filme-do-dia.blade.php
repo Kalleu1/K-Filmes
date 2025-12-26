@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@include('components.header')
 
 @section('content')
 <div class="filme-dia-page"

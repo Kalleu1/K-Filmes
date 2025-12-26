@@ -1,212 +1,214 @@
 @extends('layouts.app')
 
+
 @section('content')
-<div class="personal-movie-page"
-     id="personal-movie-page">
-    {{-- Background com backdrop do filme --}}
-    <div class="personal-backdrop" style="background-image: url('{{ $backdropUrl ?? ($filme->poster_banner ? asset('storage/posters_banners/' . $filme->poster_banner) : '') }}');"></div>
-    <div class="personal-backdrop-overlay"></div>
 
-    {{-- Conteúdo principal --}}
-    <main class="personal-main">
-        <div class="personal-back-button-container">
-            <x-back-button />
-        </div>
 
-        <div class="personal-content">
-            {{-- Seção Hero Pessoal --}}
-            <div class="personal-hero">
-                <div class="personal-poster-container">
-                    <img src="{{ $posterUrl ?? ($filme->poster ? asset('storage/posters/' . $filme->poster) : asset('img/poster-placeholder.png')) }}" 
-                         alt="Poster de {{ $filme->nome ?? 'Sem título' }}" 
-                         class="personal-poster">
+    <div class="movie-page">
+        {{-- ============================= --}}
+        {{-- HERO — O FILME --}}
+        {{-- ============================= --}}
+        <section class="movie-hero"
+            style="background-image: url('{{ $backdropUrl ?? ($filme->poster_banner ? asset('storage/posters_banners/' . $filme->poster_banner) : '') }}');">
+
+            
+
+            <div class="movie-hero-overlay"></div>
+
+            <div class="movie-hero-content">
+
+                <div class="hero-left">
                     
-                    {{-- Badge de status --}}
-                    @if($filme->assistido)
-                        <div class="status-badge watched">
-                            Assistido
-                        </div>
-                    @endif
+                    <div class="hero-poster-wrapper">
+                        
 
-                    {{-- Sua nota --}}
-                    @if($filme->nota)
-                        <div class="personal-rating-badge">
-                            <span class="star-icon">⭐</span>
-                            <span class="rating-score">{{ number_format($filme->nota, 1) }}</span>
-                        </div>
-                    @endif
+                        <img
+                            src="{{ $posterUrl ?? ($filme->poster ? asset('storage/posters/' . $filme->poster) : asset('img/poster-placeholder.png')) }}"
+                            alt="Poster de {{ $filme->nome }}"
+                            class="hero-poster">
 
-
-
-                </div>
-
-                <div class="personal-info">
-                    <h1 class="personal-title">{{ $filme->nome ?? 'Sem título' }}</h1>
-                    
-                    {{-- Informações pessoais --}}
-                    <div class="personal-meta">
-                        @if($filme->data_assistida)
-                        <div class="meta-item-personal">
-                            <span class="meta-icon">📅</span>
-                            <div class="meta-content">
-                                <span class="meta-label">Assistido em</span>
-                                <span class="meta-value">{{ \Carbon\Carbon::parse($filme->data_assistida)->format('d/m/Y') }}</span>
+                        {{-- Badges sobre o poster --}}
+                        @if($filme->nota)
+                            <div class="badge badge-rating">
+                                ⭐ {{ number_format($filme->nota, 1) }}
                             </div>
-                        </div>
                         @endif
 
-                        @if($filme->plataforma)
-                        <div class="meta-item-personal">
-                            <span class="meta-icon">📺</span>
-                            <div class="meta-content">
-                                <span class="meta-label">Plataforma</span>
-                                <span class="meta-value">{{ $filme->plataforma }}</span>
-                            </div>
-                        </div>
+                        <button class="badge badge-favorite {{ $filme->favorito ? 'favorited' : '' }}">
+                            <i class="fa-solid fa-heart"></i>
+                        </button>
+
+                    
+                        
+
+                    <h1 class="movie-title">{{ $filme->nome }}</h1>
+
+                    <div class="movie-subinfo">
+                        @if($filme->ano_lancamento)
+                            <span>{{ $filme->ano_lancamento }}</span>
                         @endif
 
                         @if($filme->diretor)
-                        <div class="meta-item-personal">
-                            <span class="meta-icon">🎬</span>
-                            <div class="meta-content">
-                                <span class="meta-label">Diretor</span>
-                                <span class="meta-value">{{ $filme->diretor }}</span>
-                            </div>
-                        </div>
-                        @endif
-
-                        @if($filme->genero)
-                        <div class="meta-item-personal">
-                            <span class="meta-icon">🎭</span>
-                            <div class="meta-content">
-                                <span class="meta-label">Gênero</span>
-                                <span class="meta-value">{{ $filme->genero }}</span>
-                            </div>
-                        </div>
+                            <span>• {{ $filme->diretor }}</span>
                         @endif
                     </div>
 
-                    {{-- Botões de ação pessoais --}}
-                    <div class="personal-actions">
-                        <button class="btn-primary-personal" data-action="open-edit-modal">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                            </svg>
-                        </button>
+                    <div class="hero-actions">
+
+                        <x-back-button context="icon" />
                         
+                        <button class="btn-icon" data-action="open-edit-modal">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
 
-                        <div class="personal-actions-header">
+                        <button class="btn-icon" data-action="open-delete-modal">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
 
-                            <button class="btn-delete" title="Remover da biblioteca" data-action="open-delete-modal">
-                                <!-- Heroicon Trash -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                </svg>
+                        <button class="btn-icon"
+                            data-action="share-movie"
+                            data-share-url="{{ route('filme.share.preview', $filme->id) }}">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
 
-                            </button>
+                        
+                    </div>
 
-                            <button class="btn-secondary-personal" data-action="share-movie" data-share-url="{{ route('filme.share.preview', $filme->id) }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                            </svg>
-
-                            </button>
-                        </div>
+                    
                     </div>
                 </div>
-            </div>
 
-            {{-- Seção de comentários pessoais --}}
+
+            </div>
+        </section>
+
+        {{-- ============================= --}}
+        {{-- TRANSIÇÃO --}}
+        {{-- ============================= --}}
+        <div class="hero-transition"></div>
+
+        <main class="movie-content">
+
+            {{-- ============================= --}}
+            {{-- DIÁRIO — MINHAS IMPRESSÕES --}}
+            {{-- ============================= --}}
             @if($filme->comentarios)
-            <div class="personal-review">
-                <h2 class="review-title">
-                    Suas Impressões
-                </h2>
-                <div class="review-content">
-                    <blockquote class="personal-comment">
-                        "{{ $filme->comentarios }}"
+                <section class="movie-diary">
+                    <h2>Minhas Impressões</h2>
+
+                    <blockquote>
+                        “{{ $filme->comentarios }}”
                     </blockquote>
-                    <div class="review-meta">
-                        <span class="review-author">Você</span>
-                        <span class="review-date">{{ $filme->data_assistida ? \Carbon\Carbon::parse($filme->data_assistida)->format('d/m/Y') : 'Data não informada' }}</span>
-                    </div>
-                </div>
-            </div>
-            @endif
 
-            {{-- Sinopse --}}
-            @if($filme->descricao)
-            <div class="personal-synopsis">
-                <h2 class="synopsis-title">Sinopse</h2>
-                <p class="synopsis-text">{{ $filme->descricao }}</p>
-            </div>
-            @endif
-
-            {{-- Timeline pessoal --}}
-            <div class="personal-timeline">
-                <h2 class="timeline-title">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12,6 12,12 16,14"/>
-                    </svg>
-                    Sua Jornada com este Filme
-                </h2>
-                <div class="timeline-content">
-                    <div class="timeline-item">
-                        <div class="timeline-marker added"></div>
-                        <div class="timeline-info">
-                            <span class="timeline-action">Adicionado à biblioteca</span>
-                            <span class="timeline-date">{{ $filme->created_at ? $filme->created_at->format('d/m/Y') : 'Data não disponível' }}</span>
-                        </div>
-                    </div>
                     @if($filme->data_assistida)
-                    <div class="timeline-item">
-                        <div class="timeline-marker watched"></div>
-                        <div class="timeline-info">
-                            <span class="timeline-action">Assistido</span>
-                            <span class="timeline-date">{{ \Carbon\Carbon::parse($filme->data_assistida)->format('d/m/Y') }}</span>
-                        </div>
-                    </div>
+                        <span class="diary-date">
+                            Assistido em {{ \Carbon\Carbon::parse($filme->data_assistida)->format('d/m/Y') }}
+                        </span>
                     @endif
+                </section>
+            @endif
+
+            {{-- ============================= --}}
+            {{-- AVALIAÇÃO --}}
+            {{-- ============================= --}}
+            <section class="movie-experience">
+                <div class="experience-grid">
+
                     @if($filme->nota)
-                    <div class="timeline-item">
-                        <div class="timeline-marker rated"></div>
-                        <div class="timeline-info">
-                            <span class="timeline-action">Avaliado com {{ $filme->nota }}/10</span>
-                            <span class="timeline-date">{{ $filme->updated_at ? $filme->updated_at->format('d/m/Y') : 'Data não disponível' }}</span>
+                        <div class="experience-item">
+                            <span class="label">Minha Nota</span>
+                            <strong>{{ number_format($filme->nota, 1) }}/10</strong>
                         </div>
-                    </div>
                     @endif
-                </div>
-            </div>
 
-            {{-- Filmes Similares --}}
+                    @if($filme->plataforma)
+                        <div class="experience-item">
+                            <span class="label">Onde assisti</span>
+                            <strong>{{ $filme->plataforma }}</strong>
+                        </div>
+                    @endif
+
+                    @if($filme->data_assistida)
+                        <div class="experience-item">
+                            <span class="label">Quando</span>
+                            <strong>{{ \Carbon\Carbon::parse($filme->data_assistida)->format('d/m/Y') }}</strong>
+                        </div>
+                    @endif
+
+                </div>
+            </section>
+
+            {{-- ============================= --}}
+            {{-- LINHA DO TEMPO --}}
+            {{-- ============================= --}}
+            <section class="movie-timeline">
+                <h2>Sua jornada com este filme</h2>
+
+                <ul>
+                    <li>
+                        <span class="dot"></span>
+                        Adicionado à biblioteca em {{ $filme->created_at->format('d/m/Y') }}
+                    </li>
+
+                    @if($filme->data_assistida)
+                        <li>
+                            <span class="dot"></span>
+                            Assistido em {{ \Carbon\Carbon::parse($filme->data_assistida)->format('d/m/Y') }}
+                        </li>
+                    @endif
+
+                    @if($filme->nota)
+                        <li>
+                            <span class="dot"></span>
+                            Avaliado
+                        </li>
+                    @endif
+                </ul>
+            </section>
+
+            {{-- ============================= --}}
+            {{-- CONTEXTO DO FILME --}}
+            {{-- ============================= --}}
+            @if($filme->descricao)
+                <section class="movie-synopsis">
+                    <h2>Sobre o filme</h2>
+                    <p>{{ $filme->descricao }}</p>
+                </section>
+            @endif
+
+            {{-- ============================= --}}
+            {{-- FILMES RELACIONADOS --}}
+            {{-- ============================= --}}
             @if(!empty($similarMovies))
-            <div class="similar-movies-section">
-                <h2>Filmes Similares</h2>
-                <div class="similar-movies-list dashboard_grid">
-                    @foreach($similarMovies as $similar)
-                        <x-filmecard :filme="$similar" :campos="['poster']" />
-                    @endforeach
-                </div>
-            </div>
+                <section class="movie-related">
+                    <h2>Filmes Similares</h2>
+
+                    <div class="dashboard_grid">
+                        @foreach($similarMovies as $similar)
+                            <x-filmecard :filme="$similar" :campos="['poster']" />
+                        @endforeach
+                    </div>
+                </section>
             @endif
 
-            {{-- Filmes do mesmo diretor --}}
             @if(!empty($directorMovies))
-            <div class="director-movies-section">
-                <h2>Filmes do mesmo diretor</h2>
-                <div class="similar-movies-list dashboard_grid" >
-                    @foreach($directorMovies as $movie)
-                        <x-filmecard :filme="$movie" :campos="['poster']" />
-                    @endforeach
-                </div>
-            </div>
+                <section class="movie-related">
+                    <h2>Do mesmo diretor</h2>
+
+                    <div class="dashboard_grid">
+                        @foreach($directorMovies as $movie)
+                            <x-filmecard :filme="$movie" :campos="['poster']" />
+                        @endforeach
+                    </div>
+                </section>
             @endif
-            
-        </div>
-    </main>
-</div>
+
+        </main>
+
+    </div>
+
+
+
 
 {{-- Modal para editar informações --}}
 <div id="editModal" class="modal-overlay">

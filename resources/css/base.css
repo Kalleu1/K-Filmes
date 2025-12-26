@@ -26,6 +26,11 @@
   --color-button-bg: #FFD700;       /* botões dourados */
   --color-button-text: #1B263B;     /* texto escuro para contraste */
   --color-button-hover: #E6C200;    /* hover dourado forte */
+
+    --bg-main: #0c0c0e;
+  --bg-section: rgba(255,255,255,0.03);
+  --bg-section-soft: rgba(255,255,255,0.02);
+  --bg-divider: rgba(255,255,255,0.06);
 }
 
 
