@@ -13,7 +13,14 @@ class TMDBService
     protected $base;
     protected $key;
     protected $imageBase;
-    protected $imageSizes = [];
+    protected $imageSizes = [
+    'w92', 
+    'w154', 
+    'w185', 
+    'w342', 
+    'w500', 
+    'w1280', 
+    'original'];
 
     public function __construct()
     {
@@ -39,10 +46,17 @@ class TMDBService
 
         if ($config && isset($config['images'])) {
             $this->imageBase  = $config['images']['secure_base_url'] ?? $config['images']['base_url'];
-            $this->imageSizes = $config['images']['poster_sizes'] ?? ['w780'];
+            
+            // CORREÇÃO:
+            // Pegamos os tamanhos de poster E de backdrop e juntamos tudo num array só
+            $posters = $config['images']['poster_sizes'] ?? [];
+            $backdrops = $config['images']['backdrop_sizes'] ?? [];
+            
+            // array_merge junta as duas listas e array_unique remove duplicados (como w780 que tem nos dois)
+            $this->imageSizes = array_unique(array_merge($posters, $backdrops));
         } else {
             $this->imageBase  = config('services.tmdb.image_url', 'https://image.tmdb.org/t/p/');
-            $this->imageSizes = ['w780'];
+            $this->imageSizes = ['w1280'];
         }
     }
 
@@ -127,6 +141,7 @@ class TMDBService
 
     public function getImageUrl(?string $path, string $size = 'w500')
     {
+         
         if (!$path) return null;
         $sizeToUse = in_array($size, $this->imageSizes) ? $size : $this->imageSizes[0];
         return rtrim($this->imageBase, '/') . '/' . $sizeToUse . '/' . ltrim($path, '/');

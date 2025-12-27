@@ -121,7 +121,8 @@ class FilmeController extends Controller
             $genres = !empty($tmdbData['genres']) ? implode(', ', array_column($tmdbData['genres'], 'name')) : null;
             // Poster e Banner
             $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
-            $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w780');
+            $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path']?? null, 'w1280');
+
             // Filmes similares
             $similarMovies = $this->tmdb->getSimilarMovies((int) $filme->tmdb_id);
             // Filmes do mesmo diretor
@@ -171,7 +172,7 @@ class FilmeController extends Controller
 
     $filme->update($data);
 
-    return redirect()->route('filmes.biblioteca')->with(ToastMessages::movieUpdated());
+    return redirect()->route('#')->with(ToastMessages::movieUpdated());
     }
 
     
@@ -309,7 +310,7 @@ class FilmeController extends Controller
         $genres = !empty($tmdbData['genres']) ? implode(', ', array_column($tmdbData['genres'], 'name')) : null;
 
         $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
-        $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w780');
+        $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280');
 
         $filme = Filme::where('tmdb_id', $tmdb_id)->first();
         $similarMovies = $this->tmdb->getSimilarMovies((int) $tmdb_id);
@@ -357,7 +358,7 @@ class FilmeController extends Controller
         $genres = !empty($tmdbData['genres']) ? implode(', ', array_column($tmdbData['genres'], 'name')) : null;
 
         $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
-        $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w780');
+        $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280');
 
         $filme = Filme::updateOrCreate(
             ['tmdb_id' => $tmdb_id],
