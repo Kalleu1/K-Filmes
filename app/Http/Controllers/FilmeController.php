@@ -172,7 +172,7 @@ class FilmeController extends Controller
 
     $filme->update($data);
 
-    return redirect()->route('#')->with(ToastMessages::movieUpdated());
+    return back()->with(ToastMessages::movieUpdated());
     }
 
     

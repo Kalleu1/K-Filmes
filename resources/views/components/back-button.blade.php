@@ -2,7 +2,6 @@
     'context' => 'page',
     'href' => url()->previous(),
 ])
-
 <a href="{{ $href }}"
    @class([
         'back-button',
