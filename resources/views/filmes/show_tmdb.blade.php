@@ -2,48 +2,48 @@
 
 @section('content')
 
-    <div class="movie-details-page"
+    <div class="tmdb-movie-details-page"
          id="movie-details-page">
         {{-- Background com backdrop do filme --}}
-        <div class="movie-backdrop" style="background-image: url('{{ $backdropUrl ?? '' }}');"></div>
-        <div class="movie-backdrop-overlay"></div>
+        
+        <div class="tmdb-movie-backdrop-overlay"></div>
         
         {{-- Conteúdo principal --}}
-        <main class="movie-main">
-            <x-back-button />
+        <main class="tmdb-movie-main">
+            <x-back-button context="page" />
 
-            <div class="movie-content">
+            <div class="movieTmdb-content">
                 {{-- Poster e informações principais --}}
-                <div class="movie-hero">
-                    <div class="movie-poster-container">
+                <div class="tmdb-movie-hero">
+                    <div class="tmdb-movie-poster-container">
                         <img src="{{ $posterUrl ?? asset('img/poster-placeholder.png') }}" 
                             alt="Poster de {{ $tmdbData['title'] ?? 'Sem título' }}" 
-                            class="movie-poster">
+                            class="tmdb-movie-poster">
                     </div>
 
-                    <div class="movie-info">
-                        <h1 class="movie-title">{{ $tmdbData['title'] ?? 'Sem título' }}</h1>
+                    <div class="tmdb-movie-info">
+                        <h1 class="tmdb-movie-title">{{ $tmdbData['title'] ?? 'Sem título' }}</h1>
                         
                         @if(!empty($tmdbData['tagline']))
-                            <p class="movie-tagline">"{{ $tmdbData['tagline'] }}"</p>
+                            <p class="tmdb-movie-tagline">"{{ $tmdbData['tagline'] }}"</p>
                         @endif
 
-                        <div class="movie-meta">
-                            <div class="meta-item">
-                                <span class="meta-icon">🎬</span>
+                        <div class="tmdb-movie-meta">
+                            <div class="tmdb-meta-item">
+                                <span class="tmdb-meta-icon">🎬</span>
                                 <span>{{ $director ?? 'Diretor desconhecido' }}</span>
                             </div>
-                            <div class="meta-item">
-                                <span class="meta-icon">📅</span>
+                            <div class="tmdb-meta-item">
+                                <span class="tmdb-meta-icon">📅</span>
                                 <span>{{ !empty($tmdbData['release_date']) ? date('Y', strtotime($tmdbData['release_date'])) : 'Ano desconhecido' }}</span>
                             </div>
-                            <div class="meta-item">
-                                <span class="meta-icon">⏱️</span>
+                            <div class="tmdb-meta-item">
+                                <span class="tmdb-meta-icon">⏱️</span>
                                 <span>{{ !empty($tmdbData['runtime']) ? $tmdbData['runtime'] . ' min' : 'Duração desconhecida' }}</span>
                             </div>
                             @if(!empty($genres))
-                                <div class="meta-item">
-                                    <span class="meta-icon">🎭</span>
+                                <div class="tmdb-meta-item">
+                                    <span class="tmdb-meta-icon">🎭</span>
                                     <span>{{ $genres }}</span>
                                 </div>
                             @endif
@@ -61,9 +61,9 @@
                                     }
                                 @endphp
 
-                                <div class="meta-item tmdb-meta">
+                                <div class="tmdb-meta-item tmdb-tmdb-meta">
                                     <div class="tmdb-score">
-                                        <div class="circle" style="--percent: {{ $percent }}; --color: {{ $color }}">
+                                        <div class="tmdb-circle" style="--percent: {{ $percent }}; --color: {{ $color }}">
                                             <span>{{ $percent }}<small>%</small></span>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
 
 
                         {{-- Botões de ação --}}
-                        <div class="movie-actions">
+                        <div class="tmdb-movie-actions">
                             {{-- Botão para adicionar sem assistir --}}
                             <form action="{{ route('filmes.saveTmdb', $tmdbData['id']) }}" method="POST" style="display:inline;">
                                 @csrf
@@ -105,42 +105,42 @@
 
                 {{-- Sinopse --}}
                 @if(!empty($tmdbData['overview']))
-                    <div class="movie-overview">
+                    <div class="tmdb-movie-overview">
                         <h2 class="section-title">Sinopse</h2>
-                        <p class="overview-text">{{ $tmdbData['overview'] }}</p>
+                        <p class="tmdb-overview-text">{{ $tmdbData['overview'] }}</p>
                     </div>
                 @endif
 
                 {{-- Informações adicionais --}}
-                <div class="movie-details-grid">
+                <div class="tmdb-movie-details-grid">
                     @if(!empty($tmdbData['production_companies']))
-                        <div class="detail-card">
-                            <h3 class="detail-title">Produção</h3>
-                            <div class="production-companies">
+                        <div class="tmdb-detail-card">
+                            <h3 class="tmdb-detail-title">Produção</h3>
+                            <div class="tmdb-production-companies">
                                 @foreach(array_slice($tmdbData['production_companies'], 0, 3) as $company)
-                                    <span class="company-name">{{ $company['name'] }}</span>
+                                    <span class="tmdb-company-name">{{ $company['name'] }}</span>
                                 @endforeach
                             </div>
                         </div>
                     @endif
 
                     @if(!empty($tmdbData['production_countries']))
-                        <div class="detail-card">
-                            <h3 class="detail-title">País</h3>
+                        <div class="tmdb-detail-card">
+                            <h3 class="tmdb-detail-title">País</h3>
                             <p>{{ collect($tmdbData['production_countries'])->pluck('name')->join(', ') }}</p>
                         </div>
                     @endif
 
                     @if(!empty($tmdbData['spoken_languages']))
-                        <div class="detail-card">
-                            <h3 class="detail-title">Idiomas</h3>
+                        <div class="tmdb-detail-card">
+                            <h3 class="tmdb-detail-title">Idiomas</h3>
                             <p>{{ collect($tmdbData['spoken_languages'])->pluck('name')->join(', ') }}</p>
                         </div>
                     @endif
 
                     @if(!empty($tmdbData['budget']) && $tmdbData['budget'] > 0)
-                        <div class="detail-card">
-                            <h3 class="detail-title">Orçamento</h3>
+                        <div class="tmdb-detail-card">
+                            <h3 class="tmdb-detail-title">Orçamento</h3>
                             <p>${{ number_format($tmdbData['budget']) }}</p>
                         </div>
                     @endif
@@ -148,9 +148,9 @@
 
                 {{-- Filmes Similares --}}
             @if(!empty($similarMovies))
-            <div class="similar-movies-section">
+            <div class="tmdb-similar-movies-section">
                 <h2>Filmes Similares</h2>
-                <div class="similar-movies-list dashboard_grid">
+                <div class="tmdb-similar-movies-list tmdb-dashboard_grid">
                     @foreach($similarMovies as $similar)
                         <x-filmecard :filme="$similar" :campos="['poster']" />
                     @endforeach
@@ -160,9 +160,9 @@
 
                 {{-- Filmes do mesmo diretor --}}
             @if(!empty($directorMovies))
-            <div class="director-movies-section">
+            <div class="tmdb-director-movies-section">
                 <h2>Filmes do mesmo diretor</h2>
-                <div class="similar-movies-list dashboard_grid" >
+                <div class="tmdb-similar-movies-list tmdb-dashboard_grid" >
                     @foreach($directorMovies as $movie)
                         <x-filmecard :filme="$movie" :campos="['poster']" />
                     @endforeach
@@ -174,46 +174,46 @@
     </div>
 
     {{-- Modal para marcar como assistido --}}
-    <div id="watchedModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Marcar como Assistido</h2>
-                <button class="modal-close" data-action="close-modal">
+    <div id="watchedModal" class="tmdb-modal-overlay">
+        <div class="tmdb-modal-content">
+            <div class="tmdb-modal-header">
+                <h2 class="tmdb-modal-title">Marcar como Assistido</h2>
+                <button class="tmdb-modal-close" data-action="close-modal">
                 </button>
             </div>
             
-            <div class="modal-body">
-                <form action="{{ route('filmes.saveTmdb', $tmdbData['id']) }}" method="POST" class="watched-form">
+            <div class="tmdb-modal-body">
+                <form action="{{ route('filmes.saveTmdb', $tmdbData['id']) }}" method="POST" class="tmdb-watched-form">
                     @csrf
                     <input type="hidden" name="assistido" value="1">
 
-                    <div class="form-group">
-                        <label for="nota" class="form-label">
-                            <span class="label-icon">⭐</span>
+                    <div class="tmdb-form-group">
+                        <label for="nota" class="tmdb-form-label">
+                            <span class="tmdb-label-icon">⭐</span>
                             Sua Nota (0-10)
                         </label>
 
                         
-                        <div class="rating-input">
-                            <input type="range" name="nota" id="nota" min="0" max="10" step="0.1" value="5" class="rating-slider">
-                            <span class="rating-display">5.0</span>
+                        <div class="tmdb-rating-input">
+                            <input type="range" name="nota" id="nota" min="0" max="10" step="0.1" value="5" class="tmdb-rating-slider">
+                            <span class="tmdb-rating-display">5.0</span>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="data_assistida" class="form-label">
-                            <span class="label-icon">📅</span>
+                    <div class="tmdb-form-group">
+                        <label for="data_assistida" class="tmdb-form-label">
+                            <span class="tmdb-label-icon">📅</span>
                             Data que Assistiu
                         </label>
-                        <input type="date" name="data_assistida" id="data_assistida" class="form-input" value="{{ date('Y-m-d') }}">
+                        <input type="date" name="data_assistida" id="data_assistida" class="tmdb-form-input" value="{{ date('Y-m-d') }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="plataforma" class="form-label">
-                            <span class="label-icon">📺</span>
+                    <div class="tmdb-form-group">
+                        <label for="plataforma" class="tmdb-form-label">
+                            <span class="tmdb-label-icon">📺</span>
                             Plataforma
                         </label>
-                        <select name="plataforma" id="plataforma" class="form-select">
+                        <select name="plataforma" id="plataforma" class="tmdb-form-select">
                             <option value="">Selecione uma plataforma</option>
                             <option value="Netflix">Netflix</option>
                             <option value="Amazon Prime">Amazon Prime</option>
@@ -226,18 +226,18 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="comentarios" class="form-label">
-                            <span class="label-icon">💬</span>
+                    <div class="tmdb-form-group">
+                        <label for="comentarios" class="tmdb-form-label">
+                            <span class="tmdb-label-icon">💬</span>
                             Seus Comentários
                         </label>
-                        <textarea name="comentarios" id="comentarios" class="form-textarea" 
+                        <textarea name="comentarios" id="comentarios" class="tmdb-form-textarea" 
                                 placeholder="O que você achou do filme? Compartilhe sua opinião..."></textarea>
                     </div>
 
-                    <div class="modal-actions">
-                        <button type="button" class="btn-cancel" data-action="close-modal">Cancelar</button>
-                        <button type="submit" class="btn-save">
+                    <div class="tmdb-modal-actions">
+                        <button type="button" class="tmdb-btn-cancel" data-action="close-modal">Cancelar</button>
+                        <button type="submit" class="tmdb-btn-save">
                             Salvar como Assistido
                         </button>
 
@@ -252,29 +252,29 @@
     </div>
 
     {{-- Modal de confirmação para deletar --}}
-    <div id="deleteModal" class="modal-overlay">
-        <div class="modal-content delete-modal">
-            <div class="modal-header">
-                <h2 class="modal-title">Remover da Biblioteca</h2>
-                <button class="modal-close" data-action="close-modal"></button>
+    <div id="deleteModal" class="tmdb-modal-overlay">
+        <div class="tmdb-modal-content tmdb-delete-modal">
+            <div class="tmdb-modal-header">
+                <h2 class="tmdb-modal-title">Remover da Biblioteca</h2>
+                <button class="tmdb-modal-close" data-action="close-modal"></button>
             </div>
-            <div class="modal-body">
-                <div class="delete-warning">
+            <div class="tmdb-modal-body">
+                <div class="tmdb-delete-warning">
                     <h3>Tem certeza?</h3>
                     <p>Esta ação removerá "{{ $tmdbData['title'] ?? 'este filme' }}" da sua biblioteca permanentemente.</p>
                 </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" data-action="close-modal"></button>Cancelar</button>
+                <div class="tmdb-modal-actions">
+                    <button type="button" class="tmdb-btn-cancel" data-action="close-modal"></button>Cancelar</button>
                     @if($filme)
                         <form action="{{ route('filmes.destroy', $filme->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-delete-confirm">
+                            <button type="submit" class="tmdb-btn-delete-confirm">
                                 Sim, Remover
                             </button>
                         </form>
                     @else
-                        <button type="button" class="btn-delete-confirm" disabled>
+                        <button type="button" class="tmdb-btn-delete-confirm" disabled>
                             Filme não está na biblioteca
                         </button>
                     @endif

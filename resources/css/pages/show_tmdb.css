@@ -1,401 +1,350 @@
-/* ===== MOVIE DETAILS PAGE ===== */
-.movie-details-page {
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
+/* ======================================================
+   ESCOPO GERAL
+   ====================================================== */
+
+.tmdb-movie-details-page {
+    position: relative;
+    min-height: 100vh;
+    background-color: #0b0b0b;
+    color: #cfcfcf;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ===== BACKGROUND ===== */
-.movie-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -2;
-  filter: blur(3px);
-  transform: scale(1.1);
+/* Backdrop (escurecido e técnico) */
+.tmdb-movie-backdrop-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+        circle at top,
+        rgba(255,255,255,0.04),
+        rgba(0,0,0,0.95)
+    );
+    z-index: 0;
+    pointer-events: none;
 }
 
-.movie-backdrop-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    135deg,
-    rgba(14, 13, 64, 0.4) 0%,
-    rgba(39, 79, 115, 0.3) 50%,
-    rgba(14, 13, 64, 0.5) 100%
-  );
-  z-index: -1;
-  backdrop-filter: blur(2px);
+/* ======================================================
+   CONTEÚDO PRINCIPAL
+   ====================================================== */
 
+.tmdb-movie-main {
+    position: relative;
+    z-index: 1;
+    padding: 32px 24px 80px;
 }
 
-
-/* ===== HEADER ===== */
-.movie-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 0;
+.movieTmdb-content {
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-.movie-header-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ======================================================
+   HERO (PAINEL TÉCNICO)
+   ====================================================== */
+
+.tmdb-movie-hero {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 32px;
+
+    background: linear-gradient(145deg, #141414, #0f0f0f);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+
+    padding: 32px;
+    margin-bottom: 56px;
 }
 
-.btn-back {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--color-text-main);
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-  font-weight: 500;
+/* Poster */
+
+.tmdb-movie-poster-container {
+    max-width: 260px;
 }
 
-.btn-back:hover {
-  background: rgba(255, 215, 0, 0.2);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  transform: translateX(-5px);
+.tmdb-movie-poster {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.6);
 }
 
-.movie-actions-header {
-  display: flex;
-  gap: 1rem;
+/* ======================================================
+   INFO DO FILME
+   ====================================================== */
+
+.tmdb-movie-info {
+    display: flex;
+    flex-direction: column;
 }
 
-.btn-favorite {
-  padding: 0.75rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-text-main);
-  cursor: pointer;
-  transition: all 0.3s ease;
+/* Título */
+
+.tmdb-movie-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.2;
 }
 
-.btn-favorite:hover {
-  background: rgba(255, 215, 0, 0.2);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  transform: scale(1.1);
+.tmdb-movie-tagline {
+    font-size: 0.95rem;
+    color: #8a8a8a;
+    margin-bottom: 24px;
 }
 
-/* ===== MAIN CONTENT ===== */
-.movie-main {
-  padding: 2rem 0;
+/* ======================================================
+   METADADOS
+   ====================================================== */
+
+.tmdb-movie-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 16px 0;
+    margin-bottom: 24px;
+
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-.movie-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
+.tmdb-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85rem;
 }
 
-/* ===== HERO SECTION ===== */
-.movie-hero {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 3rem;
-  margin-bottom: 3rem;
-  align-items: start;
+.tmdb-meta-icon {
+    opacity: 0.6;
 }
 
-.movie-poster-container {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease;
+.tmdb-meta-item span:last-child {
+    font-weight: 600;
+    color: #ffffff;
 }
 
-.movie-poster-container:hover {
-  transform: translateY(-10px);
-}
+/* TMDB SCORE */
 
-.movie-poster {
-  width: 100%;
-  height: auto;
-  display: block;
-  aspect-ratio: 2/3;
-  object-fit: cover;
-}
-
-.movie-rating-badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.rating-score {
-  color: var(--color-primary);
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.rating-max {
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-}
-
-/* ===== MOVIE INFO ===== */
-.movie-info {
-  padding-top: 1rem;
-}
-
-.movie-title {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  color: var(--color-text-main);
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.movie-tagline {
-  font-size: 1.2rem;
-  color: var(--color-primary);
-  font-style: italic;
-  margin-bottom: 2rem;
-  opacity: 0.9;
-}
-
-.movie-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--color-text-secondary);
-  font-size: 1rem;
-}
-
-.meta-icon {
-font-size: 1.2rem;
-}
-
-/* ===== ACTION BUTTONS ===== */
-.movie-actions {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.btn-primary, .btn-secondary {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
-  color: var(--color-button-text);
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
-}
-
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
-}
-
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-main);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  transform: translateY(-3px);
-}
-
-.tmdb-meta {
+.tmdb-tmdb-meta {
+    margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
 
-.tmdb-score .circle {
-    --size: 48px;
-    width: var(--size);
-    height: var(--size);
-    border-radius: 50%;
+.tmdb-score {
+    display: flex;
+    align-items: center;
+}
+
+.tmdb-circle {
     position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
     background: conic-gradient(
-        var(--color) calc(var(--percent) * 1%), 
-        #204529 calc(var(--percent) * 1%)
+        var(--color) calc(var(--percent) * 1%),
+        rgba(255,255,255,0.08) 0
     );
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    color: #fff;
-    font-size: 0.9rem;
-    animation: fill-animation 1.2s ease-out;
-    box-shadow: 0 0 8px rgba(0,0,0,0.4);
 }
 
-.tmdb-score .circle::before {
+.tmdb-circle::before {
     content: '';
     position: absolute;
-    width: 78%;
-    height: 78%;
-    background-color: #081c22;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
+    background: #141414;
 }
 
-.tmdb-score .circle span {
+.tmdb-circle span {
     position: relative;
-    z-index: 2;
-}
-
-.tmdb-score .circle small {
-    font-size: 0.55rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
 }
 
 .tmdb-label {
-    font-size: 0.8rem;
-    color: #bbb;
+    font-size: 0.7rem;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    color: #777;
+}
+
+/* ======================================================
+   AÇÕES
+   ====================================================== */
+
+.tmdb-movie-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+/* Botões herdam seus estilos globais,
+   aqui só ajustamos comportamento para usar variáveis do :root (base.css) */
+
+.tmdb-movie-actions .btn-watchlist {
+    padding: 12px 20px;
+    background: var(--bg-section); /* neutro */
+    border: 1px solid var(--bg-divider);
+    color: var(--color-text-main);
+    border-radius: 10px;
+}
+.tmdb-movie-actions .btn-watchlist:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+.tmdb-movie-actions .btn-watched {
+    padding: 12px 22px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+    color: var(--color-button-text);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.tmdb-movie-actions .btn-watched:hover {
+    filter: brightness(1.03);
+    transform: translateY(-1px);
+}
+
+.tmdb-movie-actions .btn-delete {
+    margin-left: auto;
+    opacity: 0.6;
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: none;
+}
+.tmdb-movie-actions .btn-delete:hover {
+    opacity: 1;
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.06);
+}
+
+/* ======================================================
+   SINOPSE
+   ====================================================== */
+
+.tmdb-movie-overview {
+    margin-bottom: 56px;
+}
+
+.tmdb-overview-text {
+    max-width: 900px;
+    line-height: 1.7;
+    font-size: 1rem;
+    color: #dddddd;
+}
+
+/* ======================================================
+   DETALHES (WIDGETS)
+   ====================================================== */
+
+.tmdb-movie-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 64px;
+}
+
+.tmdb-detail-card {
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.tmdb-detail-title {
+    font-size: 0.7rem;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: #777;
+    margin-bottom: 12px;
+    font-weight: 700;
 }
 
-.tmdb-score .circle {
-    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+.tmdb-company-name {
+    display: block;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-.tmdb-score .circle:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25), 0 0 18px var(--color);
-    filter: brightness(1.15);
+.tmdb-company-name:last-child {
+    border-bottom: none;
 }
 
-/* Animação de preenchimento */
-@keyframes fill-animation {
-    from {
-        background: conic-gradient(var(--color) 0%, #204529 0%);
+/* ======================================================
+   GRIDS (SIMILARES / DIRETOR)
+   ====================================================== */
+
+.tmdb-dashboard_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.tmdb-dashboard_grid img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tmdb-dashboard_grid img:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* ======================================================
+   RESPONSIVO
+   ====================================================== */
+
+@media (max-width: 900px) {
+
+    .tmdb-movie-hero {
+        grid-template-columns: 1fr;
+        padding: 24px;
+        gap: 24px;
     }
-    to {
-        background: conic-gradient(var(--color) calc(var(--percent) * 1%), #204529 calc(var(--percent) * 1%));
+
+    .tmdb-movie-poster-container {
+        margin: 0 auto;
+    }
+
+    .tmdb-movie-info {
+        text-align: center;
+    }
+
+    .tmdb-movie-meta {
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .tmdb-tmdb-meta {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tmdb-movie-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .tmdb-movie-actions .btn-delete {
+        margin-left: 0;
+        order: -1;
     }
 }
 
-/* ===== OVERVIEW SECTION ===== */
-.movie-overview {
-  margin-bottom: 3rem;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  color: var(--color-primary);
-  margin-bottom: 1rem;
-  font-weight: 600;
-  border-bottom: 3px solid var(--color-primary);
-  display: inline-block;
-  padding-bottom: 0.5rem;
-}
-
-.overview-text {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--color-text-main);
-  max-width: 800px;
-  text-align: justify;
-}
-
-/* ===== DETAILS GRID ===== */
-.movie-details-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.detail-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 1.5rem;
-  transition: transform 0.3s ease;
-}
-
-.detail-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.detail-title {
-  color: var(--color-primary);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.detail-card p {
-  color: var(--color-text-main);
-  margin: 0;
-  line-height: 1.5;
-}
-
-.production-companies {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.company-name {
-  color: var(--color-text-main);
-  font-size: 0.95rem;
-}
 
 
 
-/* ===== MODAL ===== */
-.modal-overlay {
+/* ===== MODAL =====
+    todas as regras genéricas foram convertidas para tmdb-* para evitar colisões */
+.tmdb-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -412,12 +361,12 @@ font-size: 1.2rem;
   transition: all 0.3s ease;
 }
 
-.modal-overlay.active {
+.tmdb-modal-overlay.active {
   opacity: 1;
   visibility: visible;
 }
 
-.modal-content {
+.tmdb-modal-content {
   background: var(--color-card);
   border-radius: 20px;
   width: 90%;
@@ -429,11 +378,11 @@ font-size: 1.2rem;
   transition: transform 0.3s ease;
 }
 
-.modal-overlay.active .modal-content {
+.tmdb-modal-overlay.active .tmdb-modal-content {
   transform: scale(1) translateY(0);
 }
 
-.modal-header {
+.tmdb-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -441,14 +390,14 @@ font-size: 1.2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.modal-title {
+.tmdb-modal-title {
   color: var(--color-button-text);
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
 }
 
-.modal-close {
+.tmdb-modal-close {
   background: none;
   border: none;
   color: var(--color-button-text);
@@ -458,28 +407,28 @@ font-size: 1.2rem;
   transition: background-color 0.3s ease;
 }
 
-.modal-close:hover {
+.tmdb-modal-close:hover {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.modal-body {
+.tmdb-modal-body {
   padding: 2rem;
 }
 
-/* ===== FORM STYLES ===== */
-.watched-form {
+/* ===== FORM STYLES (prefixadas) ===== */
+.tmdb-watched-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.form-group {
+.tmdb-form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.form-label {
+.tmdb-form-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -488,11 +437,13 @@ font-size: 1.2rem;
   font-size: 1rem;
 }
 
-.label-icon {
+.tmdb-label-icon {
   font-size: 1.2rem;
 }
 
-.form-input, .form-select, .form-textarea {
+.tmdb-form-input,
+.tmdb-form-select,
+.tmdb-form-textarea {
   padding: 1rem;
   border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
@@ -502,19 +453,21 @@ font-size: 1.2rem;
   transition: border-color 0.3s ease;
 }
 
-.form-input:focus, .form-select:focus, .form-textarea:focus {
+.tmdb-form-input:focus,
+.tmdb-form-select:focus,
+.tmdb-form-textarea:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
 }
 
-.form-textarea {
+.tmdb-form-textarea {
   resize: vertical;
   min-height: 100px;
 }
 
-/* ===== RATING INPUT ===== */
-.rating-input {
+/* ===== RATING INPUT (prefixado) ===== */
+.tmdb-rating-input {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -524,7 +477,7 @@ font-size: 1.2rem;
   border: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-.rating-slider {
+.tmdb-rating-slider {
   flex: 1;
   height: 6px;
   border-radius: 3px;
@@ -533,7 +486,7 @@ font-size: 1.2rem;
   -webkit-appearance: none;
 }
 
-.rating-slider::-webkit-slider-thumb {
+.tmdb-rating-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 20px;
@@ -544,7 +497,7 @@ font-size: 1.2rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.rating-slider::-moz-range-thumb {
+.tmdb-rating-slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -554,7 +507,7 @@ font-size: 1.2rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.rating-display {
+.tmdb-rating-display {
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-primary);
@@ -562,15 +515,16 @@ font-size: 1.2rem;
   text-align: center;
 }
 
-/* ===== MODAL ACTIONS ===== */
-.modal-actions {
+/* ===== MODAL ACTIONS (prefixadas) ===== */
+.tmdb-modal-actions {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
   margin-top: 2rem;
 }
 
-.btn-cancel, .btn-save {
+.tmdb-btn-cancel,
+.tmdb-btn-save {
   padding: 1rem 2rem;
   border-radius: 12px;
   font-weight: 600;
@@ -583,23 +537,46 @@ font-size: 1.2rem;
   gap: 0.5rem;
 }
 
-.btn-cancel {
-  background: rgba(0, 0, 0, 0.1);
+.tmdb-btn-cancel {
+  background: rgba(0,0,0,0.08);
   color: var(--color-button-text);
 }
 
-.btn-cancel:hover {
-  background: rgba(0, 0, 0, 0.2);
+.tmdb-btn-cancel:hover {
+  background: rgba(0,0,0,0.12);
 }
 
-.btn-save {
+.tmdb-btn-save {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
   color: var(--color-button-text);
 }
 
-.btn-save:hover {
+.tmdb-btn-save:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS (prefixadas) ===== */
+@media (max-width: 768px) {
+  .tmdb-modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .tmdb-modal-header,
+  .tmdb-modal-body {
+    padding: 1.5rem;
+  }
+
+  .tmdb-modal-actions {
+    flex-direction: column;
+  }
+
+  .tmdb-btn-cancel,
+  .tmdb-btn-save {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===== RESPONSIVE ===== */

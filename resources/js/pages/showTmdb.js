@@ -12,17 +12,24 @@ export default function initMovieDetails() {
 }
 
 function getUIElements() {
+    const watchedModal = document.getElementById('watchedModal');
+    const deleteModal = document.getElementById('deleteModal');
+
     return {
-        watchedModal: document.getElementById('watchedModal'),
-        deleteModal: document.getElementById('deleteModal'),
+        watchedModal,
+        deleteModal,
 
         openWatchedBtn: document.querySelector('[data-action="open-watched-modal"]'),
         openDeleteBtn: document.querySelector('[data-action="open-delete-modal"]'),
 
         closeBtns: document.querySelectorAll('[data-action="close-modal"]'),
 
-        ratingInput: document.getElementById('nota'),
-        ratingDisplay: document.querySelector('.rating-display'),
+        // buscar o input/label de nota dentro do modal (evita colisão com outro modal)
+        ratingInput: watchedModal ? watchedModal.querySelector('#nota') : document.getElementById('nota'),
+        // preferir o display tmdb, com fallback para a versão sem prefixo
+        ratingDisplay: (watchedModal && (watchedModal.querySelector('.tmdb-rating-display') || watchedModal.querySelector('.rating-display'))) 
+                        || document.querySelector('.tmdb-rating-display') 
+                        || document.querySelector('.rating-display'),
     };
 }
 
