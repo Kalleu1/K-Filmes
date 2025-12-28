@@ -195,7 +195,6 @@ class FilmeController extends Controller
 
         if ($request->has('assistido') && $request->assistido !== '') {
             $query->where('assistido', $request->boolean('assistido'));
-            
         }
 
         if ($request->has('favorito') && $request->favorito !== '') {
@@ -206,18 +205,23 @@ class FilmeController extends Controller
             $query->where('genero', 'LIKE', '%' . $request->genero . '%');
         }
 
+        // Adicionado: filtro por diretor
+        if ($request->filled('diretor')) {
+            $query->where('diretor', 'LIKE', '%' . $request->diretor . '%');
+        }
+
         if ($request->filled('ano_lancamento')) {
             $query->where('ano_lancamento', $request->ano_lancamento);
         }
 
-            if ($request->filled('q')) {
+        if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
                 $sub->where('nome', 'LIKE', "%{$q}%")
-                ->orWhere('diretor', 'LIKE', "%{$q}%")
-                ->orWhere('descricao', 'LIKE', "%{$q}%");
-        });
-    }
+                    ->orWhere('diretor', 'LIKE', "%{$q}%")
+                    ->orWhere('descricao', 'LIKE', "%{$q}%");
+            });
+        }
 
         $filmes = $query->orderBy('created_at', 'desc')->paginate(50);
 
@@ -225,22 +229,23 @@ class FilmeController extends Controller
     }
 
     public function buscarBiblioteca(Request $request)
-        {
-            $query = $request->input('q');
+    {
+        $query = $request->input('q');
 
-            $filmes = Filme::when($query, function ($qBuilder) use ($query) {
-                $qBuilder->where(function ($sub) use ($query) {
-                    $sub->where('nome', 'like', '%' . $query . '%')
-                        ->orWhere('diretor', 'like', '%' . $query . '%')
-                        ->orWhere('generos', 'like', '%' . $query . '%')
-                        ->orWhere('ano_lancamento', 'like', '%' . $query . '%');
-                });
-            })
-            ->orderBy('nome') // opcional: ordena alfabeticamente
-            ->get();
+        $filmes = Filme::when($query, function ($qBuilder) use ($query) {
+            $qBuilder->where(function ($sub) use ($query) {
+                $sub->where('nome', 'like', '%' . $query . '%')
+                    ->orWhere('diretor', 'like', '%' . $query . '%')
+                    // Corrigido: coluna correta é 'genero' (singular)
+                    ->orWhere('genero', 'like', '%' . $query . '%')
+                    ->orWhere('ano_lancamento', 'like', '%' . $query . '%');
+            });
+        })
+        ->orderBy('nome')
+        ->get();
 
-            return view('filmes.biblioteca', compact('filmes', 'query'));
-        }
+        return view('filmes.biblioteca', compact('filmes', 'query'));
+    }
 
         public function toggleFavorito(Request $request, $id)
         {
