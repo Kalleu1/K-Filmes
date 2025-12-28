@@ -136,23 +136,25 @@
 /* ===== GRID DE FILMES - MOBILE FIRST ===== */
 .dashboard_grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   width: 100%;
   overflow: hidden;
 }
 
 /* Mostra apenas os primeiros 2 filmes no mobile */
-.dashboard_grid > *:nth-child(n+3) {
+.dashboard_grid > *:nth-child(n+5) {
   display: none;
 }
 
 /* ===== MEDIA QUERIES ===== */
 
+
+
 /* ===== TABLET - 768px+ ===== */
 @media (min-width: 768px) {
   .dashboard {
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 1.5rem 2rem ;
   }

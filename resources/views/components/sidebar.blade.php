@@ -5,7 +5,7 @@
     'mediaNotas' => 0
 ])
 
-<aside class="dashboard_sidebar" aria-label="Menu lateral de navegação">
+<aside id="dashboard-sidebar" class="dashboard_sidebar" aria-label="Menu lateral de navegação">
 
             {{-- Header do Sidebar --}}
             <div class="sidebar-header">

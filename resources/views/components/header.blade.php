@@ -8,8 +8,12 @@
     </div>
 
     <div class="header-right">
-        <div class="header-picture">
-            <button class="user-picture"> K</button>
-        </div>
+        <button
+            class="sidebar-toggle"
+            aria-label="Abrir menu"
+            aria-controls="dashboard-sidebar"
+        >
+            ☰
+        </button>
     </div>
 </header>

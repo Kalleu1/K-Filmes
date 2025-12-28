@@ -4,6 +4,7 @@
 @section('content')
     <div class="dashboard" style="background-image: url('{{ asset($destaques) }}');">
 
+        <div class="sidebar-overlay" data-sidebar-overlay></div>
             {{-- Barra lateral --}}
             <x-sidebar 
                 :totalFilmes="$totalFilmes"
@@ -104,4 +105,27 @@ document.addEventListener("DOMContentLoaded", function () {
     // Troca a cada 30 segundos (30000ms)
     setInterval(nextSlide, 30000);
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.getElementById("dashboard-sidebar");
+  const toggle  = document.querySelector(".sidebar-toggle");
+  const overlay = document.querySelector("[data-sidebar-overlay]");
+
+  if (!sidebar || !toggle || !overlay) return;
+
+  function openSidebar() {
+    sidebar.classList.add("is-open");
+    overlay.classList.add("is-active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove("is-open");
+    overlay.classList.remove("is-active");
+    document.body.style.overflow = "";
+  }
+
+  toggle.addEventListener("click", openSidebar);
+  overlay.addEventListener("click", closeSidebar);
+  });
 </script>
