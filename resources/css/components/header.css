@@ -49,3 +49,9 @@ header div.header-right svg:hover {
     color: #C9A500;
 }
 
+@media (min-width: 1024px) {
+  .header .sidebar-toggle {
+    display: none;
+  }
+}
+

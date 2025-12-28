@@ -98,31 +98,5 @@
                     </ul>
                 </div>
 
-                {{-- <div class="nav-section">
-                    <h3 class="nav-section-title">Descobrir</h3>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="" class="nav-link nav-link-discover">
-                                <div class="nav-icon">📈</div>
-                                <span class="nav-text">Em Alta</span>
-                                <span class="nav-badge">12</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link nav-link-discover">
-                                <div class="nav-icon">🏆</div>
-                                <span class="nav-text">Premiados</span>
-                                <span class="nav-badge">8</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link nav-link-discover">
-                                <div class="nav-icon">⭐</div>
-                                <span class="nav-text">Top Rated</span>
-                                <span class="nav-badge">25</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div> --}}
             </nav>
         </aside>
