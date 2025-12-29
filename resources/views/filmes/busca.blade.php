@@ -13,7 +13,7 @@
         </div>
 
         {{-- Formulário de busca --}}
-        <form action="{{ route('filmes.buscarTmdb') }}" method="GET" class="search-form">
+        <form action="{{ route('filmes.buscarTmdb') }}" method="GET" class="search-form" data-loading>
             <div class="searchInput-group">
                 <input 
                     type="text" 
@@ -58,7 +58,8 @@
                             <a href="{{ isset($filme->id) 
                                         ? route('filmes.show', $filme->id) 
                                         : (isset($filme->tmdb_id) ? route('filmes.showTmdb', $filme->tmdb_id) : '#') }}"
-                            class="movie-link">
+                            class="movie-link"
+                            data-loading>
                             
                             <div class="movie-poster-container">
                                 <img src="{{ $filme->poster_url }}" alt="{{ $filme->nome }}" class="movie-poster">
@@ -90,4 +91,8 @@
         @endisset
     </div>
 </div>
+
+
+<x-loading-overlay id="page-loading" text="Carregando..." />
+
 @endsection

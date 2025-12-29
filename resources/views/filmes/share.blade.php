@@ -66,7 +66,7 @@
 
         {{-- AÇÕES --}}
         <div class="share-actions">
-            <form id="share-form" method="POST" action="{{ route('filme.share.generate', $filme->id) }}">
+            <form id="share-form" method="POST" data-loading action="{{ route('filme.share.generate', $filme->id) }}">
             @csrf
             <input type="hidden" name="theme" id="share-theme-input" value="noir">
             <button type="submit" class= "share-btn share-btn-primary">Gerar Imagem</button>
@@ -90,10 +90,7 @@
 
         <p class="share-info">Resolução: 1080×1920px </p>
 
-        <div id="share-loading" class="share-loading hidden">
-            <div class="loader"></div>
-            <p>Gerando imagem…</p>
-        </div>
+        <x-loading-overlay id="page-loading" text="Carregando..." />
 
     </div>
 </div>

@@ -5,6 +5,7 @@ import initPersonalMovie from './pages/show';
 import initMovieDetails from './pages/showTmdb';
 import initToast from './components/toastComp/init_Toast';
 import initDashboard from './pages/dashboard';
+import './components/loading/auto-loading';
 
 document.addEventListener('DOMContentLoaded', () => {
     initToast();
