@@ -32,6 +32,9 @@
 .back-button--page {
     margin-bottom: 16px;
     color: #ccc;
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--color-text-main);
+    transition: transform 0.2s, background 0.2s, color 0.2s;
 }
 
 /* MODAL */
@@ -73,4 +76,23 @@
 
 .hero{
   position: relative;
+}
+
+/* Alinha o botão ícone com o texto "Filmes Encontrados" */
+.library-results {
+    position: relative;
+}
+
+.library-results .back-button--icon {
+    position: absolute;
+    top: 0px;    /* ajusta verticalmente para alinhar com o número de resultados */
+    left: 8px;  /* mantém à direita dentro da área de resultados */
+    z-index: 10;
+}
+
+.library-results .back-button--page {
+    position: absolute;
+    top: 0px;    /* ajusta verticalmente para alinhar com o número de resultados */
+    left: 8px;  /* mantém à direita dentro da área de resultados */
+    z-index: 10;
 }

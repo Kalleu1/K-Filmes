@@ -149,6 +149,8 @@
                 </div>
             @endif
 
+            <x-back-button context="page" href="{{ route('filmes.biblioteca') }}"/>
+
             {{-- Grid de filmes --}}
             <div class="library-grid">
                 @forelse($filmes as $filme)

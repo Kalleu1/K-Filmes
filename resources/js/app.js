@@ -4,6 +4,7 @@ import initFilmeDoDia from './pages/filmedodia';
 import initPersonalMovie from './pages/show';
 import initMovieDetails from './pages/showTmdb';
 import initToast from './components/toastComp/init_Toast';
+import initDashboard from './pages/dashboard';
 
 document.addEventListener('DOMContentLoaded', () => {
     initToast();
@@ -13,5 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initFilmeDoDia();
     initPersonalMovie();
     initMovieDetails();
+    initDashboard();
     
 });

@@ -86,46 +86,4 @@
 
 @endsection
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const slides = document.querySelectorAll(".hero-slide");
-    let currentIndex = 0;
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle("active", i === index);
-        });
-    }
-
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        showSlide(currentIndex);
-    }
-
-    // Troca a cada 30 segundos (30000ms)
-    setInterval(nextSlide, 30000);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const sidebar = document.getElementById("dashboard-sidebar");
-  const toggle  = document.querySelector(".sidebar-toggle");
-  const overlay = document.querySelector("[data-sidebar-overlay]");
-
-  if (!sidebar || !toggle || !overlay) return;
-
-  function openSidebar() {
-    sidebar.classList.add("is-open");
-    overlay.classList.add("is-active");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeSidebar() {
-    sidebar.classList.remove("is-open");
-    overlay.classList.remove("is-active");
-    document.body.style.overflow = "";
-  }
-
-  toggle.addEventListener("click", openSidebar);
-  overlay.addEventListener("click", closeSidebar);
-  });
-</script>
+{{-- Script JS do dashboard removido — agora está em resources/js/pages/dashboard.js --}}
