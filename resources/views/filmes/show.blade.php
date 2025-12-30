@@ -4,10 +4,14 @@
 @section('content')
 
 
-    <div class="movie-page">
-        {{-- ============================= --}}
+
+
+    <div class="movie-page" style=" --accent-rgb: {{ $colorThemeData['primary'] ?? '34,34,34' }};
+                                    --accent-secondary-rgb: {{ $colorThemeData['secondary'] ?? '18,18,18' }};">
+
+
+        
         {{-- HERO — O FILME --}}
-        {{-- ============================= --}}
         <section class="movie-hero"
             style="background-image: url('{{ $backdropUrl ?? ($filme->poster_banner ? asset('storage/posters_banners/' . $filme->poster_banner) : '') }}');">
 

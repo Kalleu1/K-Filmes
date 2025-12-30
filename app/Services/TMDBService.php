@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -163,6 +164,42 @@ public function getMovie(int $id, string $language = 'pt-BR')
         $sizeToUse = in_array($size, $this->imageSizes) ? $size : $this->imageSizes[0];
         return rtrim($this->imageBase, '/') . '/' . $sizeToUse . '/' . ltrim($path, '/');
     }
+
+    public function ensureImageSaved(?string $path, string $size, int $tmdbId, string $folder = 'posters_banners'): ?string
+{
+    if (!$path) {
+        return null;
+    }
+
+    // Monta a URL oficial (reusa sua função existente)
+    $imageUrl = $this->getImageUrl($path, $size);
+
+    if (!$imageUrl) {
+        return null;
+    }
+
+    $filename = "{$tmdbId}.jpg";
+    $storagePath = "{$folder}/{$filename}";
+
+    // Se já existe, retorna o path local
+    if (Storage::disk('public')->exists($storagePath)) {
+        return Storage::disk('public')->path($storagePath);
+    }
+
+    try {
+        $contents = file_get_contents($imageUrl);
+
+        if ($contents === false) {
+            return null;
+        }
+
+        Storage::disk('public')->put($storagePath, $contents);
+
+        return Storage::disk('public')->path($storagePath);
+    } catch (\Throwable $e) {
+        return null;
+    }
+}
 
     //
 

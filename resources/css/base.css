@@ -31,6 +31,15 @@
   --bg-section: rgba(255,255,255,0.03);
   --bg-section-soft: rgba(255,255,255,0.02);
   --bg-divider: rgba(255,255,255,0.06);
+
+
+  /* VARIAVEIS COR PREDOMINANTE */
+  --accent-rgb: 34,34,34;
+  --accent-secondary-rgb: 18,18,18;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-soft: rgba(var(--accent-rgb), .25);
+  --accent-glow: rgba(var(--accent-rgb), .45);
 }
 
 

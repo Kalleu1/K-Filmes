@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Filme;
+use App\Services\ColorThemeService;
 use App\Services\TMDBService;
 use App\Support\Toast\ToastMessages;
 use App\Support\Toast\ToastMessages as ToastToastMessages;
@@ -87,7 +88,7 @@ class FilmeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, ColorThemeService $colorTheme)
 {
     $filme = Filme::findOrFail($id);
 
@@ -123,6 +124,16 @@ class FilmeController extends Controller
             $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
             $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path']?? null, 'w1280');
 
+            $localBackdropPath = null;
+
+            if (!empty($tmdbData['backdrop_path']) && $filme->tmdb_id) {
+                $localBackdropPath = $this->tmdb->ensureImageSaved(
+                    $tmdbData['backdrop_path'],
+                    'w1280',
+                    (int) $filme->tmdb_id
+                );
+            }
+
             // Filmes similares
             $similarMovies = $this->tmdb->getSimilarMovies((int) $filme->tmdb_id);
             // Filmes do mesmo diretor
@@ -135,10 +146,21 @@ class FilmeController extends Controller
         }
     }
 
+            $colorThemeData = null;
+
+            if ($filme->assistido && !empty($localBackdropPath)) {
+                $colorThemeData = $colorTheme->extract($localBackdropPath);
+            }
+
+
+
+
+
+
     // Escolhe a view com base no status do filme
     if ($filme->assistido) {
         return view('filmes.show', compact(
-            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies','tmdbRating'
+            'filme', 'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'similarMovies', 'directorMovies','tmdbRating','colorThemeData'
         ));
     } else {
         return view('filmes.show_tmdb', compact(
