@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 
+
 class TMDBService
 {
 
@@ -97,44 +98,60 @@ class TMDBService
 
     public function searchMovies(string $query, int $page = 1)
     {
-        return $this->get('search/movie', [
-            'query' => $query,
-            'page' => $page,
-            'include_adult' => false,
-            'language' => 'pt-BR',
-        ]);
-    }
+        $key = 'tmdb:search:' . Str::slug($query) . ":{$page}";
 
-    public function getMovie(int $id, string $language = 'pt-BR')
-    {
-        $cacheKey = "tmdb:movie:{$id}:{$language}";
-
-        return $this->remember($cacheKey, 720, function () use ($id, $language) {
-            $movie = $this->get("movie/{$id}", [
-                'append_to_response' => 'credits,images',
-                'language' => $language,
+        return $this->remember($key, 15, function () use ($query, $page) {
+            return $this->get('search/movie', [
+                'query' => $query,
+                'page' => $page,
+                'include_adult' => false,
+                'language' => 'pt-BR',
             ]);
-
-            if (!$movie || empty($movie['id'])) {
-                $movie = $this->get("movie/{$id}", [
-                    'append_to_response' => 'credits,images',
-                    'language' => 'en-US',
-                ]);
-            }
-
-            if (!$movie) return null;
-
-            // Diretor
-            $director = '';
-            if (!empty($movie['credits']['crew'])) {
-                $dir = collect($movie['credits']['crew'])->firstWhere('job', 'Director');
-                $director = $dir['name'] ?? '';
-            }
-            $movie['director'] = $director;
-
-            return $movie;
         });
     }
+
+public function getMovie(int $id, string $language = 'pt-BR')
+{
+    $cacheKey = "tmdb:movie:full:{$id}:{$language}";
+
+    return $this->remember($cacheKey, 720, function () use ($id, $language) {
+
+        $movie = $this->get("movie/{$id}", [
+            'append_to_response' => 'credits,images',
+            'language' => $language,
+        ]);
+
+        if (!$movie || empty($movie['id'])) {
+            $movie = $this->get("movie/{$id}", [
+                'append_to_response' => 'credits,images',
+                'language' => 'en-US',
+            ]);
+        }
+
+        if (!$movie) return null;
+
+        
+        $director = null;
+        if (!empty($movie['credits']['crew'])) {
+            $dir = collect($movie['credits']['crew'])
+                ->firstWhere('job', 'Director');
+            $director = $dir['name'] ?? null;
+        }
+
+        return [
+            'id'            => $movie['id'],
+            'title'         => $movie['title'] ?? null,
+            'overview'      => $movie['overview'] ?? null,
+            'genres'        => $movie['genres'] ?? [],
+            'director'      => $director,
+            'vote_average'  => $movie['vote_average'] ?? null,
+            'poster_path'   => $movie['poster_path'] ?? null,
+            'backdrop_path' => $movie['backdrop_path'] ?? null,
+            'credits'       => $movie['credits'] ?? [],
+        ];
+    });
+}
+
 
 
 
@@ -195,52 +212,58 @@ public function getUpcoming(string $language = 'pt-BR')
 
 public function getSimilarMovies(int $tmdbId, string $language = 'pt-BR', int $limit = 7): array
 {
-    $key = "tmdb:similar:{$tmdbId}:{$language}";
+    $key = "tmdb:similar:{$tmdbId}:{$language}:{$limit}";
 
     return $this->remember($key, 360, function () use ($tmdbId, $language, $limit) {
+
         $response = $this->get("movie/{$tmdbId}/similar", [
             'language' => $language,
         ]);
 
         $results = $response['results'] ?? [];
-        return $this->normalizeMovies(array_slice($results, 0, $limit));
+
+        return $this->normalizeMovies(
+            array_slice($results, 0, $limit)
+        );
     });
 }
 
 
 public function getMoviesByDirector(string $directorName, int $limit = 7, string $language = 'pt-BR'): array
-    {
-        // 1. Buscar pessoa pelo nome
+{
+    $key = 'tmdb:director:' . Str::slug($directorName) . ":{$language}:{$limit}";
+
+    return $this->remember($key, 720, function () use ($directorName, $limit, $language) {
+
         $search = $this->get('search/person', [
             'query' => $directorName,
             'language' => $language,
         ]);
+
         if (empty($search['results'])) return [];
 
-        // 2. Pega o primeiro resultado (mais relevante)
         $person = $search['results'][0] ?? null;
         if (!$person || empty($person['id'])) return [];
 
-        // 3. Buscar créditos da pessoa
-        $credits = $this->get('person/' . $person['id'] . '/movie_credits', [
+        $credits = $this->get("person/{$person['id']}/movie_credits", [
             'language' => $language,
         ]);
+
         if (empty($credits['crew'])) return [];
 
-        // 4. Filtrar apenas filmes onde foi diretor
-        $directed = array_filter($credits['crew'], function($c) {
-            return isset($c['job']) && strtolower($c['job']) === 'director';
-        });
-        // Ordena por popularidade decrescente
-        $directed = array_values($directed);
-        usort($directed, fn($a, $b) => ($b['popularity'] ?? 0) <=> ($a['popularity'] ?? 0));
-        // 5. Normalizar e limitar
-        $movies = $this->normalizeMovies(array_slice($directed, 0, $limit));
-        return $movies;
-    }
+        $directed = array_filter($credits['crew'], fn($c) =>
+            isset($c['job']) && strtolower($c['job']) === 'director'
+        );
+
+        usort($directed, fn($a, $b) =>
+            ($b['popularity'] ?? 0) <=> ($a['popularity'] ?? 0)
+        );
+
+        return $this->normalizeMovies(
+            array_slice($directed, 0, $limit)
+        );
+    });
+}
 
 
-
-
-    
 }
