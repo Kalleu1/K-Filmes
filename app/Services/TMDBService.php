@@ -149,6 +149,9 @@ public function getMovie(int $id, string $language = 'pt-BR')
             'poster_path'   => $movie['poster_path'] ?? null,
             'backdrop_path' => $movie['backdrop_path'] ?? null,
             'credits'       => $movie['credits'] ?? [],
+            // Adicionado: duração e data de lançamento para uso nas views
+            'runtime'       => $movie['runtime'] ?? null,
+            'release_date'  => $movie['release_date'] ?? null,
         ];
     });
 }
