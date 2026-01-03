@@ -339,6 +339,14 @@
   opacity: 1;
   pointer-events: all;
 }
+
+.nav-link {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
 @media (max-width: 1023px) {
   .dashboard-layout {
     grid-template-columns: 1fr;

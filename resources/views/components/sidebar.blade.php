@@ -95,6 +95,26 @@
                                 <div class="nav-glow"></div>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('profile.edit') }}" class="nav-link">
+                                <div class="nav-icon">⚙️</div>
+                                <span class="nav-text">Configurações</span>
+                                <div class="nav-glow"></div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <button type="submit" class="nav-link nav-link-danger">
+                                    <div class="nav-icon">🚪</div>
+                                    <span class="nav-text">Sair</span>
+                                    <div class="nav-glow"></div>
+                                </button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
 
