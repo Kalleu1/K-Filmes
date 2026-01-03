@@ -4,7 +4,7 @@ export default function initShare() {
 
     const themeInput = document.getElementById("share-theme-input");
     const form = document.getElementById('share-form');
-    const loading = document.getElementById('share-loading');
+    const loading = document.getElementById('page-loading');
     const submitBtn = form.querySelector('button[type="submit"]');
 
     const btnInstagram = document.getElementById('btn-instagram');

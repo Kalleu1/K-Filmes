@@ -150,6 +150,10 @@ class FilmeController extends Controller
 
             if ($filme->assistido && !empty($localBackdropPath)) {
                 $colorThemeData = $colorTheme->extract($localBackdropPath);
+
+                if (file_exists($localBackdropPath)) {
+                    @unlink($localBackdropPath);
+                }
             }
 
 

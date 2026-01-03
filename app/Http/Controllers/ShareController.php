@@ -62,6 +62,12 @@ class ShareController extends Controller
         ])
             ->save($path);
 
+            
+            if (file_exists($path)) {
+                @unlink($path);
+            }
+        
+
         return response()->json([
             'success' => true,
             'url' => Storage::url("shares/{$filename}")
