@@ -1,20 +1,7 @@
-import initShare from './pages/share';
-import InitBiblioteca from './pages/biblioteca';
-import initFilmeDoDia from './pages/filmedodia';
-import initPersonalMovie from './pages/show';
-import initMovieDetails from './pages/showTmdb';
-import initToast from './components/toastComp/init_Toast';
-import initDashboard from './pages/dashboard';
-import './components/loading/auto-loading';
+import './bootstrap';
 
-document.addEventListener('DOMContentLoaded', () => {
-    initToast();
+import Alpine from 'alpinejs';
 
-    initShare();
-    InitBiblioteca();
-    initFilmeDoDia();
-    initPersonalMovie();
-    initMovieDetails();
-    initDashboard();
-    
-});
+window.Alpine = Alpine;
+
+Alpine.start();
