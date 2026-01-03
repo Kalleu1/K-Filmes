@@ -35,7 +35,7 @@
             <div class="search-results">
                 <div class="results-header">
                     <h2 class="results-title">Resultados para "<span class="query-highlight">{{ $query }}</span>"</h2>
-                    <span class="results-count">{{ count($results) }} filme(s) encontrado(s)</span>
+                    <span class="results-count">{{ $results->total() }} filme(s) encontrado(s)</span>
                 </div>
 
                 <div class="search-grid">
@@ -80,6 +80,9 @@
                         </div>
                     @endforelse
                 </div>
+
+                <x-pagination :paginator="$results" />
+
             </div>
         @else
             {{-- Estado inicial --}}

@@ -8,6 +8,7 @@ use App\Services\TMDBService;
 use App\Support\Toast\ToastMessages;
 use App\Support\Toast\ToastMessages as ToastToastMessages;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -464,21 +465,39 @@ class FilmeController extends Controller
             return redirect()->route('filmes.busca')->with(ToastMessages::missingData());
         }
 
-        $response = $this->tmdb->searchMovies($query);
-        $raw = $response['results'] ?? [];
-        $results = [];
+        $page = (int) $request->get('page', 1);
 
-        foreach ($raw as $r) {
-            $results[] = (object) [
+        $response = $this->tmdb->searchMovies($query, $page);
+
+        $raw = $response['results'] ?? [];
+        $totalPages = $response['total_pages'] ?? 1;
+        $totalResults = $response['total_results'] ?? count($raw);
+
+        $results = collect($raw)->map(function ($r) {
+            return (object) [
                 'tmdb_id'      => $r['id'],
                 'nome'         => $r['title'] ?? ($r['name'] ?? 'Sem título'),
                 'release_date' => $r['release_date'] ?? null,
                 'descricao'    => $r['overview'] ?? null,
                 'poster_url'   => $this->tmdb->getImageUrl($r['poster_path'] ?? null, 'w500'),
             ];
-        }
+        });
 
-        return view('filmes.busca', compact('results', 'query'));
+        $paginator = new LengthAwarePaginator(
+            $results,
+            $totalResults,
+            20, 
+            $page,
+            [
+                'path'  => route('filmes.buscarTmdb'),
+                'query' => $request->query(),
+            ]
+        );
+
+        return view('filmes.busca', [
+            'results' => $paginator,
+            'query'   => $query,
+        ]);
     }
 
 }
