@@ -249,7 +249,7 @@ class FilmeController extends Controller
             });
         }
 
-        $filmes = $query->orderBy('created_at', 'desc')->paginate(50);
+        $filmes = $query->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
 
         return view('filmes.biblioteca', compact('filmes'));
     }
@@ -260,15 +260,16 @@ class FilmeController extends Controller
 
         $filmes = Filme::when($query, function ($qBuilder) use ($query) {
             $qBuilder->where(function ($sub) use ($query) {
-                $sub->where('nome', 'like', '%' . $query . '%')
-                    ->orWhere('diretor', 'like', '%' . $query . '%')
-                    // Corrigido: coluna correta é 'genero' (singular)
-                    ->orWhere('genero', 'like', '%' . $query . '%')
-                    ->orWhere('ano_lancamento', 'like', '%' . $query . '%');
+                $sub->where('nome', 'like', "%{$query}%")
+                    ->orWhere('diretor', 'like', "%{$query}%")
+                    ->orWhere('genero', 'like', "%{$query}%")
+                    ->orWhere('ano_lancamento', 'like', "%{$query}%");
             });
         })
-        ->orderBy('nome')
-        ->get();
+            ->orderBy('nome')
+            ->paginate(20)
+            ->withQueryString();
+
 
         return view('filmes.biblioteca', compact('filmes', 'query'));
     }

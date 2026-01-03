@@ -143,13 +143,13 @@
 
         {{-- Resultados --}}
         <div class="library-results">
-            @if($filmes->count() > 0)
+            @if($filmes->total() > 0)
                 <div class="results-count">
-                   Filmes Encontrados: {{ $filmes->count() }} filme{{ $filmes->count() !== 1 ? 's' : '' }}
+                   Filmes Encontrados: {{ $filmes->total() }} filme{{ $filmes->total() !== 1 ? 's' : '' }}
                 </div>
             @endif
 
-            <x-back-button context="page" href="{{ route('filmes.biblioteca') }}"/>
+            <x-back-button context="page" href="{{ route('dashboard') }}"/>
 
             {{-- Grid de filmes --}}
             <div class="library-grid">
@@ -196,6 +196,12 @@
                     </div>
                 @endforelse
             </div>
+
+                        @if ($filmes->hasPages())
+                            <div class="library-pagination">
+                                <x-pagination :paginator="$filmes" />
+                            </div>
+                        @endif
         </div>
     </div>
 </div>

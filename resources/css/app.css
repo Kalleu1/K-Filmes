@@ -6,6 +6,7 @@
 @import "./components/toast.css";
 @import './pages/dashboard.css';
 @import "./components/filme-card.css";
+@import "./components/pagination.css";
 @import "./components/sidebar.css";
 @import "./components/loading-overlay.css";
 @import "./pages/share.css";
