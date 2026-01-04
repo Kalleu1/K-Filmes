@@ -63,9 +63,7 @@ class ShareController extends Controller
             ->save($path);
 
             
-            if (file_exists($path)) {
-                @unlink($path);
-            }
+            
         
 
         return response()->json([
