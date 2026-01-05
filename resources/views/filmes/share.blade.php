@@ -45,6 +45,14 @@
                 title="Crimson Velvet">
                 
             </button>
+
+            <button
+                class="theme-btn"
+                data-theme="golden-day"
+                style="background: linear-gradient(180deg, #acb61e, #cbf805);"
+                title="Dia Ensolarado">
+                
+            </button>
                 
             </div>
         </div>

@@ -1,11 +1,22 @@
 
 .theme-crimson-velvet {
     background:
+        /* Luz suave como veludo iluminado */
         radial-gradient(
-            circle at top,
-            rgba(255, 120, 140, 0.10),
-            rgba(20, 5, 8, 0.95) 65%
+            circle at 50% 30%,
+            rgba(255, 120, 140, 0.14),
+            rgba(40, 10, 16, 0.7) 45%,
+            rgba(8, 2, 4, 0.98) 75%
         ),
+
+        /* Profundidade inferior */
+        radial-gradient(
+            circle at bottom,
+            rgba(160, 40, 60, 0.06),
+            transparent 65%
+        ),
+
+        /* Base quente e profunda */
         linear-gradient(
             180deg,
             #1a060a,
@@ -13,14 +24,14 @@
         );
 }
 
+
 /* Poster */
 .theme-crimson-velvet .preview-poster {
-    
-    border: 1px solid rgba(255, 120, 140, 0.22);
     box-shadow:
-        0 20px 40px rgba(0, 0, 0, 0.6),
-        inset 0 0 0 1px rgba(255, 120, 140, 0.06);
+        0 22px 50px rgba(0, 0, 0, 0.65),
+        inset 0 0 0 1px rgba(255, 120, 140, 0.05);
 }
+
 
 /* Título */
 .theme-crimson-velvet .preview-title {

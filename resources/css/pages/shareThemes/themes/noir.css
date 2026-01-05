@@ -2,32 +2,42 @@
 .theme-noir {
     background:
         radial-gradient(
-            circle at top,
-            rgba(255,255,255,.06),
-            rgba(0,0,0,.95) 70%
+            ellipse at left top,
+            rgba(255,255,255,.08),
+            rgba(0,0,0,.92) 60%
         ),
-        linear-gradient(180deg, #0a0a0a, #000);
+        linear-gradient(
+            180deg,
+            #0b0b0b,
+            #000
+        );
 }
 
 .theme-noir .preview-poster {
-    
-    border: 1px solid rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.14);
     box-shadow:
-        var(--shadow-heavy),
-        inset 0 0 0 1px rgba(255,255,255,.06);
+        0 25px 55px rgba(0,0,0,.85),
+        0 8px 18px rgba(0,0,0,.6),
+        inset 0 0 0 1px rgba(255,255,255,.05);
 }
 
 .theme-noir .preview-title {
-    color: #fff;
-    letter-spacing: 2px;
-    font-weight: 800;
+    color: #f5f5f5;
+    letter-spacing: 2.5px;
+    font-weight: 900;
     text-transform: uppercase;
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.9),
+        -2px 0 6px rgba(255,255,255,.08);
 }
 
+
 .theme-noir .preview-rating {
-    color: #cfcfcf;
+    color: rgba(220,220,220,.85);
+    opacity: .85;
 }
 
 .theme-noir .preview-footer {
-    color: rgba(255,255,255,.55);
+    color: rgba(255,255,255,.35);
+    opacity: .5;
 }

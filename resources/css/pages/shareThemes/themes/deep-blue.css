@@ -1,57 +1,55 @@
 
 .theme-deep-blue {
     background:
-        /* Luz central (tela do cinema) */
         radial-gradient(
-            circle at 50% 32%,
-            rgba(110,203,255,0.22),
-            rgba(18,58,92,0.35) 35%,
-            rgba(6,11,26,0.92) 70%
+            ellipse at 50% 28%,
+            rgba(120,210,255,0.32),
+            rgba(30,90,140,0.45) 40%,
+            rgba(8,20,45,0.85) 75%
         ),
-
-        /* Reflexo inferior sutil */
         radial-gradient(
-            circle at bottom,
-            rgba(110,203,255,0.08),
-            transparent 60%
+            ellipse at bottom,
+            rgba(120,210,255,0.14),
+            transparent 65%
         ),
-
-        /* Base profunda */
         linear-gradient(
             180deg,
-            #060b1a,
-            #0b1c2d 55%,
-            #060b1a
+            #08162e,
+            #0e2a44 55%,
+            #08162e
         );
 }
 
+
 /* Poster */
 .theme-deep-blue .preview-poster {
-    
     box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.55),
-        0 0 45px rgba(110, 203, 255, 0.18);
+        0 22px 50px rgba(0,0,0,0.45),
+        0 0 55px rgba(120,210,255,0.22);
 }
+
 
 /* Título */
 .theme-deep-blue .preview-title {
-    color: #f2f7fb;
-    font-weight: 800;
-    letter-spacing: 1.4px;
+    color: #f4f9fd;
+    font-weight: 700;
+    letter-spacing: 1.6px;
     text-transform: uppercase;
     text-shadow:
-        0 3px 12px rgba(0,0,0,0.65);
+        0 2px 10px rgba(0,0,0,0.55);
 }
 
 /* Nota */
 .theme-deep-blue .preview-rating {
-    color: #b8e6ff;
+    color: #c9efff;
     font-weight: 700;
     text-shadow:
-        0 0 12px rgba(110,203,255,0.35);
+        0 0 18px rgba(120,210,255,0.45);
 }
+
 
 /* Rodapé */
 .theme-deep-blue .preview-footer {
-    color: rgba(242,247,251,0.65);
+    color: rgba(244,249,253,0.55);
 }
+

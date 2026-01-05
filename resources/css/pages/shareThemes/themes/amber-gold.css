@@ -1,11 +1,22 @@
 
 .theme-amber-gold {
     background:
+        /* Sol baixo no horizonte */
         radial-gradient(
-            ellipse at bottom,
-            rgba(255, 193, 92, 0.22),
-            rgba(20, 15, 10, 0.95) 65%
+            ellipse at 50% 75%,
+            rgba(255, 193, 92, 0.28),
+            rgba(80, 45, 10, 0.55) 40%,
+            rgba(15, 10, 5, 0.98) 75%
         ),
+
+        /* Brilho residual quente */
+        radial-gradient(
+            circle at top,
+            rgba(255, 220, 160, 0.06),
+            transparent 55%
+        ),
+
+        /* Base quente */
         linear-gradient(
             180deg,
             #0b0a08,
@@ -13,13 +24,14 @@
         );
 }
 
+
 /* Poster */
 .theme-amber-gold .preview-poster {
-    border: 1px solid rgba(255, 193, 92, 0.35);
     box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.65),
-        inset 0 0 0 1px rgba(255, 193, 92, 0.12);
+        0 20px 45px rgba(0, 0, 0, 0.7),
+        inset 0 0 0 1px rgba(255, 193, 92, 0.08);
 }
+
 
 /* Título */
 .theme-amber-gold .preview-title {
