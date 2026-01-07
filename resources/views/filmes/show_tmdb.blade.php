@@ -10,7 +10,7 @@
         
         {{-- Conteúdo principal --}}
         <main class="tmdb-movie-main">
-            <x-back-button context="page" />
+            <x-back-button context="page" href="{{ url()->previous() }}"/>
 
             <div class="movieTmdb-content">
                 {{-- Poster e informações principais --}}

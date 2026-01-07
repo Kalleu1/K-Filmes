@@ -1,0 +1,60 @@
+.theme-golden-day {
+    background:
+        
+        radial-gradient(
+            circle at 50% 26%,
+            rgba(255, 215, 150, 0.45),
+            rgba(255, 215, 150, 0.22) 38%,
+            rgba(210, 230, 235, 0.35) 58%
+        ),
+
+        
+        radial-gradient(
+            ellipse at bottom,
+            rgba(255, 225, 170, 0.35),
+            rgba(255, 225, 170, 0.12) 55%,
+            transparent 75%
+        ),
+
+       
+        linear-gradient(
+            180deg,
+            #e8f3f8,
+            #c6dfe8 45%,
+            #a7c7d2 75%,
+            #9abdc8
+        );
+}
+
+
+.theme-golden-day .preview-poster {
+    border-radius: var(--share-radius-poster);
+    box-shadow:
+        0 28px 55px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(255, 210, 140, 0.35);
+}
+
+.theme-golden-day .preview-title {
+    color: #2a2a2a;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    align-items: center;
+    text-shadow:
+        0 1px 3px rgba(255, 255, 255, 0.45),
+        0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+
+
+.theme-golden-day .preview-rating {
+    color: #6b4a1f;
+    font-weight: 700;
+    text-shadow:
+        0 2px 6px rgba(255, 200, 120, 0.45);
+}
+
+
+.theme-golden-day .preview-footer {
+    color: rgba(40, 40, 40, 0.55);
+}

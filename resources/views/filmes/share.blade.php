@@ -53,6 +53,14 @@
                 title="Dia Ensolarado">
                 
             </button>
+
+            <button
+                class="theme-btn"
+                data-theme="soft-bloom"
+                style="background: linear-gradient(180deg, #bd3bab, #9443ca);"
+                title="soft-bloom">
+                
+            </button>
                 
             </div>
         </div>
