@@ -1,0 +1,56 @@
+.theme-quiet-light {
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(245, 205, 215, 0.28),
+            rgba(120, 150, 160, 0.35) 40%,
+            rgba(25, 60, 75, 0.88) 72%,
+            #0f2f3a 100%
+        ),
+        linear-gradient(
+            180deg,
+            #1e4656,
+            #0f2f3a
+        );
+}
+
+.theme-quiet-light .preview-poster {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 22px 45px rgba(0, 0, 0, 0.45),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+
+
+.theme-quiet-light .preview-title {
+    color: #f1f3f4;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+
+
+
+.theme-quiet-light .preview-rating {
+    color: #d45a6a;
+    font-weight: 700;
+    text-shadow:
+        0 0 14px rgba(212, 90, 106, 0.45),
+        0 2px 6px rgba(0, 0, 0, 0.55);
+}
+
+
+
+
+.theme-quiet-light .preview-footer {
+    color: rgba(240, 240, 240, 0.45);
+}
+
+
+
+
+

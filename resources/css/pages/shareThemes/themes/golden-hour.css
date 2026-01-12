@@ -1,0 +1,60 @@
+/* ============================= */
+/* THEME: GOLDEN HOUR            */
+/* ============================= */
+
+.theme-golden-hour {
+  background:
+    radial-gradient(
+      ellipse at 55% 30%,
+      rgba(255, 210, 165, 0.32),
+      rgba(255, 185, 145, 0.22) 42%,
+      rgba(120, 145, 170, 0.28) 65%,
+      rgba(20, 24, 35, 0.92) 85%
+    ),
+    linear-gradient(
+      180deg,
+      #2a3445,
+      #121722
+    );
+}
+
+/* Poster */
+.theme-golden-hour .preview-poster {
+  border-radius: var(--share-radius-poster);
+  border: 1px solid rgba(255, 210, 165, 0.25);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(255, 190, 150, 0.22);
+}
+
+
+/* Título */
+.theme-golden-hour .preview-title {
+  color: rgba(245, 235, 225, 0.92);
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: none;
+  text-align: center;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+
+/* Nota */
+.theme-golden-hour .preview-rating {
+  margin-top: 6px;
+  color: rgba(255, 215, 175, 0.75);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+/* Rodapé */
+.theme-golden-hour .preview-footer {
+  color: rgba(230, 210, 180, 0.45);
+}

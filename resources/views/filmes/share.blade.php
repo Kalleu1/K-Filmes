@@ -48,7 +48,7 @@
 
             <button
                 class="theme-btn"
-                data-theme="golden-day"
+                data-theme="golden-hour"
                 style="background: linear-gradient(180deg, #acb61e, #cbf805);"
                 title="Dia Ensolarado">
                 
@@ -56,7 +56,7 @@
 
             <button
                 class="theme-btn"
-                data-theme="soft-bloom"
+                data-theme="quiet-light"
                 style="background: linear-gradient(180deg, #bd3bab, #9443ca);"
                 title="soft-bloom">
                 
