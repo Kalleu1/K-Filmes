@@ -8,12 +8,16 @@
     </div>
 
     <div class="header-right">
-        <button
+        @if (request()->routeIs('dashboard*'))
+            <button
             class="sidebar-toggle"
             aria-label="Abrir menu"
             aria-controls="dashboard-sidebar"
         >
             ☰
         </button>
+        
+        @endif
+        
     </div>
 </header>
