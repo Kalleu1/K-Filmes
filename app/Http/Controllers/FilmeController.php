@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 class FilmeController extends Controller
 {
@@ -24,11 +26,17 @@ class FilmeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $filmes = Filme::all();
-        return view('filmes.index', compact('filmes'));
-    }
+        public function index()
+        {
+            
+
+            $filmes = Filme::where('user_id', Auth::id())
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return view('filmes.index', compact('filmes'));
+        }
+
 
     /**
      * Show the form for creating a new resource.
@@ -91,7 +99,10 @@ class FilmeController extends Controller
      */
     public function show(string $id, ColorThemeService $colorTheme)
 {
-    $filme = Filme::findOrFail($id);
+    $filme = Filme::where('id', $id)
+    ->where('user_id', Auth::id())
+    ->firstOrFail();
+
 
     $tmdbData = null;
     $director = null;
@@ -218,7 +229,7 @@ class FilmeController extends Controller
 
     public function biblioteca(Request $request)
     {
-        $query = Filme::query();
+        $query = Filme::where('user_id', Auth::id());
 
         if ($request->has('assistido') && $request->assistido !== '') {
             $query->where('assistido', $request->boolean('assistido'));
@@ -259,14 +270,16 @@ class FilmeController extends Controller
     {
         $query = $request->input('q');
 
-        $filmes = Filme::when($query, function ($qBuilder) use ($query) {
-            $qBuilder->where(function ($sub) use ($query) {
-                $sub->where('nome', 'like', "%{$query}%")
-                    ->orWhere('diretor', 'like', "%{$query}%")
-                    ->orWhere('genero', 'like', "%{$query}%")
-                    ->orWhere('ano_lancamento', 'like', "%{$query}%");
-            });
-        })
+        $filmes = Filme::where('user_id', Auth::id())
+            ->when($query, function ($qBuilder) use ($query) {
+                $qBuilder->where(function ($sub) use ($query) {
+                    $sub->where('nome', 'like', "%{$query}%")
+                        ->orWhere('diretor', 'like', "%{$query}%")
+                        ->orWhere('genero', 'like', "%{$query}%")
+                        ->orWhere('ano_lancamento', 'like', "%{$query}%");
+                });
+            })
+
             ->orderBy('nome')
             ->paginate(20)
             ->withQueryString();
@@ -428,7 +441,8 @@ class FilmeController extends Controller
 
     public function naoAssistidos()
     {
-        $filmes = Filme::where('assistido', false)
+            Filme::where('user_id', Auth::id())
+                ->where('assistido', false)
                         ->orderBy('nome') // opcional: ordenar por título
                         ->get();
 

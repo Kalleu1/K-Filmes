@@ -9,6 +9,7 @@ class Filme extends Model
     protected $table = 'filmes';
     
     protected $fillable = [
+        'user_id',
         'tmdb_id',
         'nome',
         'descricao',
@@ -31,6 +32,11 @@ class Filme extends Model
     'favorito' => 'boolean',
     'ano_lancamento' => 'integer',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 
     // Buscar Banner 
