@@ -4,51 +4,50 @@
 <main class="login-wrapper">
     <section class="login-container">
 
-        <header class="login-header">
-            <h2 class="login-title">Acesse sua conta</h2>
-        </header>
+        <div class="page-header">
+            <h1 class="page-title">K-Filmes</h1>
+            <p class="page-subtitle">
+                Sua biblioteca pessoal de filmes
+            </p>
+        </div>
 
         <form method="POST" action="{{ route('login') }}" class="login-form">
             @csrf
 
-            <label for="email">Usuário</label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                value="{{ old('email') }}"
-                required
-                autofocus
-            >
-            @error('email')
-                <span class="form-error">{{ $message }}</span>
-            @enderror
+            <div class="form-group">
+                <label for="email">Usuário</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    required
+                    autofocus
+                >
+                @error('email')
+                    <span class="form-error">{{ $message }}</span>
+                @enderror
+            </div>
 
-            <label for="password">Senha</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                required
-            >
-            @error('password')
-                <span class="form-error">{{ $message }}</span>
-            @enderror
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                >
+                @error('password')
+                    <span class="form-error">{{ $message }}</span>
+                @enderror
+            </div>
 
             <button type="submit" class="button-submit">
                 Entrar
             </button>
-
-            <nav class="links">
-                {{-- <a href="{{ route('password.request') }}">Esqueci minha senha</a> --}}
-                
-                
-            </nav>
         </form>
 
-        <hr class="divisoria">
-
-        <footer class="rodape">
+        <footer class="login-footer">
             © {{ date('Y') }} K-Filmes
         </footer>
 
