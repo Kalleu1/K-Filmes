@@ -4,19 +4,14 @@
 @section('content')
 
 
-
-
     <div class="movie-page" style=" --accent-rgb: {{ $colorThemeData['primary'] ?? '34,34,34' }};
                                     --accent-secondary-rgb: {{ $colorThemeData['secondary'] ?? '18,18,18' }};">
 
-
-        
         {{-- HERO — O FILME --}}
         <section class="movie-hero"
             style="background-image: url('{{ $backdropUrl ?? ($filme->poster_banner ? asset('storage/posters_banners/' . $filme->poster_banner) : '') }}');">
 
-            
-
+        
             <div class="movie-hero-overlay"></div>
 
             <div class="movie-hero-content">
@@ -38,7 +33,11 @@
                             </div>
                         @endif
 
-                        <button class="badge badge-favorite {{ $filme->favorito ? 'favorited' : '' }}">
+                        <button
+                            class="favorite-btn {{ $filme->favorito ? 'favorited' : '' }}"
+                            data-filme-id="{{ $filme->id }}"
+                            aria-label="Favoritar filme"
+                        >
                             <i class="fa-solid fa-heart"></i>
                         </button>
 
