@@ -143,13 +143,15 @@
 
         {{-- Resultados --}}
         <div class="library-results">
+
+            <x-back-button context="icon" href="{{ route('dashboard') }}"/>
             @if($filmes->total() > 0)
                 <div class="results-count">
                    Filmes Encontrados: {{ $filmes->total() }} filme{{ $filmes->total() !== 1 ? 's' : '' }}
                 </div>
             @endif
 
-            <x-back-button context="page" href="{{ route('dashboard') }}"/>
+            
 
             {{-- Grid de filmes --}}
             <div class="library-grid">

@@ -342,8 +342,7 @@
 
 
 
-/* ===== MODAL =====
-    todas as regras genéricas foram convertidas para tmdb-* para evitar colisões */
+/* ===== MODAL =====*/
 .tmdb-modal-overlay {
   position: fixed;
   top: 0;

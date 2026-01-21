@@ -3,11 +3,16 @@
 
 @section('content')
 <div class="search-page">
-    <x-back-button />
+    
 
     <div class="searchContainer">
+
+        <div class="search-topbar">
+    <x-back-button context="icon" />
+</div>
         {{-- Header da busca --}}
         <div class="search-header">
+            
             <h1 class="search-title">🔍 Buscar Filmes</h1>
             <p class="search-subtitle">Descubra novos filmes para sua coleção</p>
         </div>
@@ -55,11 +60,9 @@
 
                         {{-- Card de filme customizado para busca --}}
                         <div class="search-movie-card">
-                            <a href="{{ isset($filme->id) 
-                                        ? route('filmes.show', $filme->id) 
-                                        : (isset($filme->tmdb_id) ? route('filmes.showTmdb', $filme->tmdb_id) : '#') }}"
-                            class="movie-link"
-                            data-loading>
+                            <a href="{{ route('filmes.showTmdb', $filme->tmdb_id) }}"
+                                class="movie-link"
+                                data-loading>
                             
                             <div class="movie-poster-container">
                                 <img src="{{ $filme->poster_url }}" alt="{{ $filme->nome }}" class="movie-poster">

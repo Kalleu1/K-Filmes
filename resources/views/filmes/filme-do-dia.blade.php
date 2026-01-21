@@ -31,7 +31,7 @@
 
         <div class="fonte">
             <label><input type="radio" name="fonte" value="biblioteca" checked> Minha Biblioteca</label>
-            <label><input type="radio" name="fonte" value="tmdb"> TMDB</label>
+            {{-- <label><input type="radio" name="fonte" value="tmdb"> TMDB</label> --}}
         </div>
     </form>
 </div>

@@ -104,7 +104,7 @@
 
 /* ===== SEÇÕES ===== */
 .dashboard_section {
-  margin-bottom: clamp(2rem, 2vw, 4rem);
+  margin-bottom: clamp(0.5rem, 2vw, 2rem);
 }
 
 .dashboard_section_title {
@@ -128,22 +128,17 @@
   background: var(--color-primary-hover);
 }
 
-.test-css {
-    display: block !important;
-    color: red;
-}
 
 /* ===== GRID DE FILMES - MOBILE FIRST ===== */
 .dashboard_grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
   width: 100%;
   overflow: hidden;
 }
 
-/* Mostra apenas os primeiros 2 filmes no mobile */
-.dashboard_grid > *:nth-child(n+5) {
+.dashboard_grid > *:nth-child(n+6) {
   display: none;
 }
 
@@ -169,9 +164,8 @@
     padding: 0;
   }
 
-  /* Grid: 4 colunas, mostra 4 filmes */
   .dashboard_grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1.5rem;
   }
 
@@ -181,7 +175,7 @@
   }
 
   /* Mostra apenas os primeiros 4 */
-  .dashboard_grid > *:nth-child(-n+4) {
+  .dashboard_grid > *:nth-child(-n+5) {
     display: block;
   }
 

@@ -6,6 +6,7 @@
 .movie-hero {
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
 .movie-page {

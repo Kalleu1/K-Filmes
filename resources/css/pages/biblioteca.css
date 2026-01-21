@@ -122,6 +122,9 @@
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  overflow: hidden;
+  
+
 }
 
 .filter-dropdown {
@@ -504,7 +507,6 @@
   
   .filters-minimal {
     justify-content: flex-start;
-    overflow-x: auto;
     padding-bottom: 0.5rem;
   }
   

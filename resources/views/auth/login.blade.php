@@ -40,7 +40,7 @@
             </button>
 
             <nav class="links">
-                <a href="{{ route('password.request') }}">Esqueci minha senha</a>
+                {{-- <a href="{{ route('password.request') }}">Esqueci minha senha</a> --}}
                 
                 
             </nav>

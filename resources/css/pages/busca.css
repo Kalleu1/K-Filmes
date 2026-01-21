@@ -11,12 +11,32 @@
   width: 100%;
 }
 
+.search-topbar {
+  display: flex;
+  align-items: center;
+  height: 40px;
+
+  margin-bottom: 8px;
+}
+
+.search-topbar .back-button--icon {
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0.7;
+}
+
+.search-topbar .back-button--icon:hover {
+  opacity: 1;
+  transform: translateX(-2px);
+}
+
+
 /* ===== HEADER DA BUSCA ===== */
 .search-header {
   text-align: center;
   margin-bottom: 3rem;
   padding: 2rem 0;
 }
+
 
 .search-title {
   font-size: clamp(2rem, 4vw, 3rem);
@@ -47,7 +67,8 @@
   padding: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--color-primary);
+  background: rgba(0,0,0,0.4);
+  border: 0.2px solid var(--color-primary);
   transition: all 0.3s ease;
 }
 
@@ -69,6 +90,7 @@
 
 .searchInput::placeholder {
   color:var(--color-text-main);
+  opacity: 0.8;
 }
 
 .search-button {
@@ -145,6 +167,7 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 2rem;
   padding: 1rem;
+  position: relative;
 }
 
 /* ===== CARDS DE FILME ===== */
@@ -314,6 +337,10 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
     padding: 0.5rem;
+  }
+  .movie-overlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
   }
 }
 

@@ -97,9 +97,9 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('profile.edit') }}" class="nav-link">
+                            <a href="{{ route('dashboard') }}" class="nav-link">
                                 <div class="nav-icon">⚙️</div>
-                                <span class="nav-text">Configurações</span>
+                                <span class="nav-text">Configurações(Em andamento)</span>
                                 <div class="nav-glow"></div>
                             </a>
                         </li>
