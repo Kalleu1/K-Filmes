@@ -12,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
 class FilmeController extends Controller
@@ -101,6 +102,7 @@ class FilmeController extends Controller
      */
     public function show(string $id, ColorThemeService $colorTheme)
 {
+    
     $filme = Filme::where('id', $id)
     ->where('user_id', Auth::id())
     ->firstOrFail();
@@ -192,6 +194,7 @@ class FilmeController extends Controller
      */
     public function edit(Filme $filme)
     {
+        $this->authorize('update', $filme);
         return view('filmes.edit', compact('filme'));
     }
 
@@ -200,10 +203,9 @@ class FilmeController extends Controller
      */
     public function update(Request $request, Filme $filme)
     {
-        if ($filme->user_id !== Auth::id()) {
-    abort(403);
-}
-    $data = $request->validate([
+        $this->authorize('update', $filme);
+    
+        $data = $request->validate([
         
         'plataforma' => 'nullable|string',
         'data_assistida' => 'nullable|date',
@@ -220,6 +222,8 @@ class FilmeController extends Controller
     
     public function destroy(Filme $filme)
     {
+        $this->authorize('delete', $filme);
+
     if($filme->poster) {
         Storage::disk('public')->delete($filme->poster);
     }
@@ -458,7 +462,7 @@ class FilmeController extends Controller
 
     public function naoAssistidos()
     {
-            Filme::where('user_id', Auth::id())
+        $filmes = Filme::where('user_id', Auth::id())
                 ->where('assistido', false)
                         ->orderBy('nome') // opcional: ordenar por título
                         ->get();
