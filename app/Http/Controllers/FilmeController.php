@@ -89,6 +89,8 @@ class FilmeController extends Controller
             $data['poster_banner'] = $filename;
         }
 
+        $data['user_id'] = Auth::id();
+
         Filme::create($data);
 
         return redirect()->route('dashboard')->with(ToastMessages::movieAdded());
@@ -198,7 +200,9 @@ class FilmeController extends Controller
      */
     public function update(Request $request, Filme $filme)
     {
-        
+        if ($filme->user_id !== Auth::id()) {
+    abort(403);
+}
     $data = $request->validate([
         
         'plataforma' => 'nullable|string',
@@ -290,7 +294,10 @@ class FilmeController extends Controller
 
         public function toggleFavorito(Request $request, $id)
         {
-            $filme = Filme::findOrFail($id);
+           $filme = Filme::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
 
             // Atualiza o campo favorito com base no que veio no request
             $filme->favorito = $request->input('favorito') ? 1 : 0;
@@ -407,22 +414,28 @@ class FilmeController extends Controller
         $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280');
 
         $filme = Filme::updateOrCreate(
-            ['tmdb_id' => $tmdb_id],
-            [
-                'nome' => $tmdbData['title'] ?? ($tmdbData['name'] ?? $request->input('nome', 'Sem título')),
-                'descricao' => $tmdbData['overview'] ?? $request->input('descricao'),
-                'diretor' => $director,
-                'genero' => $genres,
-                'poster' => $posterUrl,
-                'poster_banner' => $backdropUrl,
-                'plataforma' => $validated['plataforma'] ?? null,
-                'data_assistida' => $validated['data_assistida'] ?? null,
-                'nota' => $validated['nota'] ?? null,
-                'comentarios' => $validated['comentarios'] ?? null,
-                'ano_lancamento' => !empty($tmdbData['release_date']) ? date('Y', strtotime($tmdbData['release_date'])) : null,
-                'assistido' => $data['assistido'],
-            ]
-        );
+        [
+            'tmdb_id' => $tmdb_id,
+            'user_id' => Auth::id(),
+        ],
+        [
+            'nome' => $tmdbData['title'] ?? ($tmdbData['name'] ?? 'Sem título'),
+            'descricao' => $tmdbData['overview'] ?? $request->input('descricao'),
+            'diretor' => $director,
+            'genero' => $genres,
+            'poster' => $posterUrl,
+            'poster_banner' => $backdropUrl,
+            'plataforma' => $validated['plataforma'] ?? null,
+            'data_assistida' => $validated['data_assistida'] ?? null,
+            'nota' => $validated['nota'] ?? null,
+            'comentarios' => $validated['comentarios'] ?? null,
+            'ano_lancamento' => !empty($tmdbData['release_date'])
+                ? date('Y', strtotime($tmdbData['release_date']))
+                : null,
+            'assistido' => $data['assistido'],
+        ]
+    );
+
 
         $toast = $filme->wasRecentlyCreated
             ? ToastMessages::movieAdded()
@@ -435,6 +448,10 @@ class FilmeController extends Controller
 
     public function assistidos(Filme $filme)
     {
+
+        if ($filme->user_id !== Auth::id()) {
+        abort(403);
+    }
         return view('filmes.show', compact('filme'));
     }
 
@@ -451,7 +468,10 @@ class FilmeController extends Controller
 
         public function marcarAssistido(Request $request, $id)
         {
-            $filme = Filme::findOrFail($id);
+            $filme = Filme::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
 
             $filme->assistido = true;
             $filme->nota = $request->input('nota');
