@@ -10,25 +10,68 @@ use Illuminate\Support\Facades\Cache;
 class DashboardController extends Controller
 {
     public function index(TMDBService $tmdb){
+
+    
+
         //ESTATISTICAS RAPIDAS
-        $totalFilmes = Filme::count();
-        $totalAssistidos = Filme::where('assistido', true)->count();
-        $mediaNotas = number_format(Filme::avg('nota'), 2, '.', '.');
-        $totalFavoritos = Filme::where('favorito', true)->count();
+        $totalFilmes = Filme::doUsuario()->count();
+
+        $totalAssistidos = Filme::doUsuario()
+            ->where('assistido', true)
+            ->count();
+
+        $mediaNotas = number_format(
+            Filme::doUsuario()->avg('nota'),
+            2,
+            '.',
+            '.'
+        );
+
+        $totalFavoritos = Filme::doUsuario()
+            ->where('favorito', true)
+            ->count();
+
         
         //BANNER
-        $destaques = Filme::inRandomOrder()->take(6)->get();
+        $destaques = Filme::doUsuario()
+            ->inRandomOrder()
+            ->take(6)
+            ->get();
         
         // SEÇÕES DASHBOARD
-        $recentes = Filme::orderBy('created_at','desc')->take(7)->get();
-        $topNotas = Filme::orderBy('nota','desc')->take(7)->get();
-        $melhoresAno = Filme::whereYear('data_assistida', now()->year) ->orderBy('nota', 'desc')->take(7) ->get();
-        $assistidosRecentemente = Filme::whereNotNull('data_assistida')->orderBy('data_assistida', 'desc')->take(7)->get();
-        $pioresAno = Filme::orderBy('nota', 'asc')->take(7)->get();
-        $ultimoMes = Filme::where('created_at', '>=', now()->subMonth())->orderBy('created_at', 'desc')->get();
-        $filmesGenero = Filme::filtrarPor('genero', 'Ação', 7); 
-        $filmesDiretor = Filme::filtrarPor('diretor', 'Christopher Nolan', 7, 'desc', 'nota'); 
-        $filmesPlataforma = Filme::filtrarPor('plataforma', 'Netflix', 7); 
+        $recentes = Filme::doUsuario()
+            ->orderBy('created_at','desc')
+            ->take(7)
+            ->get();
+
+        $topNotas = Filme::doUsuario()
+            ->orderBy('nota','desc')
+            ->take(7)
+            ->get();
+
+        $melhoresAno = Filme::doUsuario()
+            ->whereYear('data_assistida', now()->year)
+            ->orderBy('nota', 'desc')
+            ->take(7)
+            ->get();
+
+        $assistidosRecentemente = Filme::doUsuario()
+            ->whereNotNull('data_assistida')
+            ->orderBy('data_assistida', 'desc')
+            ->take(7)
+            ->get();
+
+        $pioresAno = Filme::doUsuario()
+            ->orderBy('nota', 'asc')
+            ->take(7)
+            ->get();
+
+        $ultimoMes = Filme::doUsuario()
+            ->where('created_at', '>=', now()->subMonth())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        
         
         //API SEÇÃO DASHBOARD (com cache das listas normalizadas)
         $emCartaz = Cache::remember('dashboard:tmdb:now_playing:pt-BR', 30 * 60, fn() => $tmdb->normalizeMovies($tmdb->getNowPlaying()));
@@ -48,9 +91,6 @@ class DashboardController extends Controller
             'totalAssistidos',
             'mediaNotas',
             'totalFavoritos',
-            'filmesGenero',
-            'filmesDiretor',
-            'filmesPlataforma',
             'emCartaz',
             'trending',
             'topRated',

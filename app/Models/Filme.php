@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Filme extends Model
 {
@@ -68,14 +69,18 @@ class Filme extends Model
     return asset('storage/posters/' . $this->poster);
     }
 
-    // Filtro Dashboard Seção
-    public static function filtrarPor($campo, $valor, $limit = 5, $ordem = 'desc', $colunaOrdem = 'created_at')
+    
+
+    public function scopeDoUsuario($query)
+{
+    return $query->where('user_id', Auth::id());
+}
+
+    public function scopeNaoAssistidos($query)
     {
-        return self::where($campo, 'like', "%{$valor}%")
-                    ->orderBy($colunaOrdem, $ordem)
-                    ->take($limit)
-                    ->get();
+        return $query->where('assistido', false);
     }
+
 
 }
 

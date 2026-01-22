@@ -9,17 +9,24 @@ use Spatie\Browsershot\Browsershot;
 
 class ShareController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function preview($id)
     {
-        $filme = Filme::findOrFail($id);
+        $filme = Filme::doUsuario()->findOrFail($id);
+        $this->authorize('view', $filme);
 
         return view('filmes.share', compact('filme'));
     }
 
     public function generate(Request $request, $id)
     {
-        $filme = Filme::findOrFail($id);
-
+        $filme = Filme::doUsuario()->findOrFail($id);
+        $this->authorize('view', $filme);
         
         $theme = $request->input('theme','deep-blue');
 
@@ -74,7 +81,8 @@ class ShareController extends Controller
 
     public function render(Request $request, $id)
     {
-        $filme = Filme::findOrFail($id);
+        $filme = Filme::doUsuario()->findOrFail($id);
+        $this->authorize('view', $filme);
         $theme = $request->input('theme', 'deep-blue');
 
         return view('filmes.share-render', compact('filme', 'theme'));

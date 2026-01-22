@@ -11,6 +11,11 @@ use App\Support\Toast\ToastMessages;
 class FilmeDoDiaController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         return view('filmes.filme-do-dia');
@@ -23,18 +28,24 @@ class FilmeDoDiaController extends Controller
             $diretor = $request->input('diretor');
             $genero = $request->input('genero');
 
-            $query = Filme::query();
+            $query = Filme::doUsuario()->naoAssistidos();
 
             if ($ano) $query->where('ano_lancamento', $ano);
             if ($diretor) $query->where('diretor', 'like', "%{$diretor}%");
             if ($genero) $query->where('genero', 'like', "%{$genero}%");
 
-            // Se não houver nenhum resultado filtrado, traz aleatórios de todo o banco
-            $filmes = $query->inRandomOrder()->take(10)->get(['id', 'nome', 'poster']);
+            $filmes = $query
+                ->inRandomOrder()
+                ->take(10)
+                ->get(['id', 'nome', 'poster']);
 
             if ($filmes->isEmpty()) {
-                $filmes = Filme::inRandomOrder()->take(10)->get(['id', 'nome', 'poster']);
+                $filmes = Filme::doUsuario()
+                    ->inRandomOrder()
+                    ->take(10)
+                    ->get(['id', 'nome', 'poster']);
             }
+
 
             $results = $filmes->map(function ($filme) {
                 return [
@@ -69,7 +80,7 @@ class FilmeDoDiaController extends Controller
         $genero = $request->input('genero');
 
         if ($fonte === 'biblioteca') {
-            $query = Filme::query();
+            $query = Filme::doUsuario()->naoAssistidos();
 
             if ($ano) $query->where('ano_lancamento', $ano);
             if ($diretor) $query->where('diretor', 'like', "%{$diretor}%");
