@@ -6,13 +6,10 @@ use App\Models\Filme;
 use App\Services\ColorThemeService;
 use App\Services\TMDBService;
 use App\Support\Toast\ToastMessages;
-use App\Support\Toast\ToastMessages as ToastToastMessages;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
 class FilmeController extends Controller
@@ -369,7 +366,9 @@ class FilmeController extends Controller
         $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
         $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280');
 
-        $filme = Filme::where('tmdb_id', $tmdb_id)->first();
+        $filme = Filme::where('tmdb_id', $tmdb_id)
+            ->where('user_id', Auth::id())
+            ->first();
         $similarMovies = $this->tmdb->getSimilarMovies((int) $tmdb_id);
         if ($director) {
                 $directorMovies = $this->tmdb->getMoviesByDirector($director, 7);
