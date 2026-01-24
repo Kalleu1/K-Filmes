@@ -59,6 +59,7 @@ class ShareController extends Controller
 
         // Gera a imagem usando Browsershot
         Browsershot::html($htmlWithCss)
+            ->setChromePath('/usr/bin/chromium-browser')
             ->setOption('args', ['--no-sandbox'])
             ->setOption('viewport', ['width' => 1080, 'height' => 1920, 'deviceScaleFactor' => 1])
             ->setOption('clip', [
