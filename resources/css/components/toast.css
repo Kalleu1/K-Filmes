@@ -20,7 +20,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  animation: toastIn .4s ease forwards;
+  transform: translateX(20px);
+  transition: opacity .3s ease, transform .3s ease;
+  opacity: 0;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .toast-content {
@@ -51,21 +58,3 @@
 .toast-warning { border-color: #f59e0b; }
 .toast-info    { border-color: var(--color-primary); }
 
-/* Animações */
-@keyframes toastIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes toastOut {
-  to {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-}

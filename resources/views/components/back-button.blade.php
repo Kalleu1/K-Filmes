@@ -13,7 +13,7 @@
    ])
    aria-label="Voltar"
 >
-    <span class="back-button__icon">←</span>
+    <i class="fa-solid fa-angle-left"></i>
 
     @if(!in_array($context, ['modal', 'icon']))
         <span class="back-button__text">Voltar</span>

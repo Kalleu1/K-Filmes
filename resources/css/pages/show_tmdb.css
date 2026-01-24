@@ -185,8 +185,6 @@
     margin-top: 24px;
 }
 
-/* Botões herdam seus estilos globais,
-   aqui só ajustamos comportamento para usar variáveis do :root (base.css) */
 
 .tmdb-movie-actions .btn-watchlist {
     padding: 12px 20px;
@@ -211,18 +209,30 @@
     transform: translateY(-1px);
 }
 
-.tmdb-movie-actions .btn-delete {
-    margin-left: auto;
-    opacity: 0.6;
-    background: transparent;
-    color: var(--color-text-secondary);
-    border: none;
+.tmdb-btn-delete-confirm {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #7a1c28, #b02a37);
+  color: #fff;
+  transition: all 0.25s ease;
 }
-.tmdb-movie-actions .btn-delete:hover {
-    opacity: 1;
-    color: #e74c3c;
-    background: rgba(231, 76, 60, 0.06);
+
+.tmdb-btn-delete-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(176, 42, 55, 0.45);
 }
+
+.tmdb-btn-delete-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
 
 /* ======================================================
    SINOPSE

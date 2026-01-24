@@ -14,7 +14,7 @@
    ])
    aria-label="Voltar para o Dashboard"
 >
-    <span class="back-button__icon">←←</span>
+    <i class="fa-solid fa-angles-left"></i>
 
     @if(!in_array($context, ['modal', 'icon']))
         <span class="back-button__text">Dashboard</span>
