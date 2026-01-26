@@ -58,17 +58,12 @@ class ShareController extends Controller
         $path = storage_path("app/public/shares/{$filename}");
 
         // Gera a imagem usando Browsershot
-        Browsershot::html($htmlWithCss)
-            ->setChromePath('/usr/bin/chromium-browser')
-            ->setOption('args', ['--no-sandbox'])
-            ->setOption('viewport', ['width' => 1080, 'height' => 1920, 'deviceScaleFactor' => 1])
-            ->setOption('clip', [
-            'x' => 295,
-            'y' => 40,
-            'width' => 490,
-            'height' => 780 // 
-        ])
-            ->save($path);
+            Browsershot::html($htmlWithCss)
+                ->setChromePath('/usr/bin/google-chrome')
+                ->noSandbox()
+                ->windowSize(490, 820) 
+                ->deviceScaleFactor(1)
+                ->save($path);
 
             
             
