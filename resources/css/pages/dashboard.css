@@ -155,7 +155,7 @@
 
 @media (max-width: 767px) {
   .dashboard_grid .filme-card {
-    flex: 0 0 50%;
+    flex: 0 0 40%;
     
   }
   .dashboard_grid > *:nth-child(n+11) {
@@ -192,7 +192,7 @@
   }
 
   .hero-meta {
-    display: none; /* 🔥 mata o excesso */
+    display: none; 
   }
   
 }
