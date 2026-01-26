@@ -41,29 +41,29 @@ class DashboardController extends Controller
         // SEÇÕES DASHBOARD
         $recentes = Filme::doUsuario()
             ->orderBy('created_at','desc')
-            ->take(7)
+            ->take(10)
             ->get();
 
         $topNotas = Filme::doUsuario()
             ->orderBy('nota','desc')
-            ->take(7)
+            ->take(10)
             ->get();
 
         $melhoresAno = Filme::doUsuario()
             ->whereYear('data_assistida', now()->year)
             ->orderBy('nota', 'desc')
-            ->take(7)
+            ->take(10)
             ->get();
 
         $assistidosRecentemente = Filme::doUsuario()
             ->whereNotNull('data_assistida')
             ->orderBy('data_assistida', 'desc')
-            ->take(7)
+            ->take(10)
             ->get();
 
         $pioresAno = Filme::doUsuario()
             ->orderBy('nota', 'asc')
-            ->take(7)
+            ->take(10)
             ->get();
 
         $ultimoMes = Filme::doUsuario()

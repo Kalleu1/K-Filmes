@@ -20,14 +20,20 @@
             <section class="dashboard-hero">
                 @foreach($destaques as $index => $filme)
                     <div class="hero-slide {{ $index === 0 ? 'active' : '' }}">
-                        <img src="{{ $filme->poster_banner_url }}"
-                        alt="Banner de {{ $filme->nome }}" 
-                        class="hero-poster">
+                        <a href="{{ 
+            isset($filme->id) 
+                ? route('filmes.show', $filme->id) 
+                : (isset($filme->tmdb_id) ? route('filmes.showTmdb', $filme->tmdb_id) : '#') 
+        }}"> 
+                            <img src="{{ $filme->poster_banner_url }}"
+                            alt="Banner de {{ $filme->nome }}" 
+                            class="hero-poster">
+                        </a>
 
                         <div class="hero-info">
-                            <h2>{{ $filme->nome }}</h2>
-                            <p>⭐ Nota: {{ $filme->nota }}/10</p>
-                            <p>{{ $filme->genero }} | {{ $filme->diretor }}</p>
+                            <h2 class="hero-title">{{ $filme->nome }}</h2>
+                            <p class="hero-rating">⭐  {{ $filme->nota }}/10</p>
+                            <p class="hero-meta">{{ $filme->genero }} | {{ $filme->diretor }}</p>
                         </div>
                     </div>
                 @endforeach

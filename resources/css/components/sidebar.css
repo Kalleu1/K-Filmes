@@ -355,6 +355,8 @@
   .dashboard_sidebar {
     position: fixed;
     left: -100%;
+    overflow-y: auto;
+  overscroll-behavior: contain;
   }
 
   main {
@@ -374,7 +376,7 @@
   left: 0;
 
   height: 100dvh;
-  width: 85%;
+  width: 73%;
   max-width: 320px;
 
   transform: translateX(-100%);

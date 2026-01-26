@@ -129,21 +129,73 @@
 }
 
 
+
 /* ===== GRID DE FILMES - MOBILE FIRST ===== */
 .dashboard_grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   gap: 1rem;
-  width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
 }
 
-.dashboard_grid > *:nth-child(n+6) {
+.dashboard_grid::-webkit-scrollbar {
   display: none;
 }
 
+.dashboard_grid .filme-card {
+  flex: 0 0 70%;
+  scroll-snap-align: start;
+}
+
+
+
 /* ===== MEDIA QUERIES ===== */
 
+@media (max-width: 767px) {
+  .dashboard_grid .filme-card {
+    flex: 0 0 50%;
+    
+  }
+  .dashboard_grid > *:nth-child(n+11) {
+    display: none;
+  }
+
+  .dashboard-hero {
+    aspect-ratio: 16 / 9;
+    max-height: 220px;
+  }
+
+  .hero-info {
+  .hero-info {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.8),
+      rgba(0,0,0,0)
+    );
+  }
+    
+  }
+
+  .hero-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .hero-rating {
+    font-size: 0.9rem;
+    
+  }
+
+  .hero-meta {
+    display: none; /* 🔥 mata o excesso */
+  }
+  
+}
 
 
 /* ===== TABLET - 768px+ ===== */
@@ -165,8 +217,13 @@
   }
 
   .dashboard_grid {
+    display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 1.5rem;
+  }
+
+  .dashboard_grid .filme-card {
+    flex: unset;
   }
 
   /* Reset: esconde todos */
@@ -175,9 +232,9 @@
   }
 
   /* Mostra apenas os primeiros 4 */
-  .dashboard_grid > *:nth-child(-n+5) {
-    display: block;
-  }
+  .dashboard_grid > *:nth-child(n+6) {
+  display: none;
+}
 
   .dashboard-hero {
     max-height: 400px;
@@ -203,8 +260,8 @@
   }
 
   /* Mostra apenas os primeiros 5 */
-  .dashboard_grid > *:nth-child(-n+5) {
-    display: block;
+  .dashboard_grid > *:nth-child(n+6) {
+    display: none;
   }
 
   .dashboard-hero {
@@ -238,8 +295,8 @@
   }
 
   /* Mostra apenas os primeiros 6 */
-  .dashboard_grid > *:nth-child(-n+7) {
-    display: block;
+  .dashboard_grid > *:nth-child(n+6) {
+    display: none;
   }
 
   .dashboard-hero {
