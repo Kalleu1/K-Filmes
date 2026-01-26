@@ -499,24 +499,68 @@
   }
   
   .filters-minimal {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, max-content));
+    gap: 0.5rem;
+    justify-content: start; /* alinha à esquerda */
+    align-items: center;
   }
+
+  .filter-dropdown {
+        width: 100%;
+        position: relative;
+    }
   
   .filter-btn {
-    white-space: nowrap;
-    flex-shrink: 0;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
   
   .filter-menu {
-    left: 0;
-    transform: none;
-    min-width: 250px;
+    position: absolute;
+    top: 100%; /* aparece abaixo do botão */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+    min-width: 200px; /* largura mínima para menu */
+
   }
   
   .filter-menu.active {
-    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(5px);
+  }
+
+  .filters-overlay {
+      position: absolute;
+      top: 100%; /* ajuste a altura conforme o menu */
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 250px;
+      max-width: 90vw;
+      background: var(--color-card);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 200;
+      transition: all 0.25s ease;
+  }
+
+  .filters-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      top: -10px; /* anima para “abrir” */
   }
   
   .library-grid {

@@ -191,6 +191,28 @@
     to { transform: rotate(360deg); }
 }
 
+@media (max-width: 480px) {
+    .share-preview {
+        max-width: 300px; /* menor que o desktop */
+        width: 90%;       /* ocupa quase toda a tela */
+        margin: 0 auto;
+    }
+
+    /* Botões em duas colunas */
+    .share-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        justify-items: center;
+    }
+
+    .share-btn {
+        width: 100%;
+        max-width: 140px;
+        padding: 10px 12px;
+    }
+}
+
 
 
 

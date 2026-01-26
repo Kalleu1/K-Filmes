@@ -2,66 +2,68 @@ export default function InitBiblioteca() {
     const root = document.querySelector('.library-page') || document.getElementById('library-page');
     if (!root) return;
 
-    const filterBtns  = Array.from(root.querySelectorAll('.filter-btn'));
-    const filterMenus = Array.from(root.querySelectorAll('.filter-menu'));
+    const filterBtns = Array.from(root.querySelectorAll('.filter-btn'));
+    const overlayContainer = document.createElement('div');
+    overlayContainer.classList.add('filters-overlay');
+    root.querySelector('.filters-minimal').appendChild(overlayContainer);
 
+    // Abre overlay com o conteúdo do filtro clicado
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
 
             const filterType = this.dataset.filter;
             const menu = root.querySelector(`.filter-menu[data-menu="${filterType}"]`);
-
             if (!menu) return;
 
-            const isActive = menu.classList.contains('active');
+            const isActive = overlayContainer.classList.contains('active') && overlayContainer.dataset.activeFilter === filterType;
 
-            // Fecha outros menus e atualiza aria
-            filterMenus.forEach(m => {
-                if (m !== menu) {
-                    m.classList.remove('active');
-                    m.setAttribute('aria-hidden', 'true');
-                }
-            });
+            // Fecha overlay se estiver aberto
+            overlayContainer.classList.remove('active');
+            overlayContainer.innerHTML = '';
+            filterBtns.forEach(b => b.classList.remove('active'));
+            filterBtns.forEach(b => b.setAttribute('aria-expanded', 'false'));
 
-            filterBtns.forEach(b => {
-                if (b !== this) {
-                    b.classList.remove('active');
-                    b.setAttribute('aria-expanded', 'false');
-                }
-            });
-
-            // Toggle atual com aria
-            menu.classList.toggle('active', !isActive);
-            this.classList.toggle('active', !isActive);
-            menu.setAttribute('aria-hidden', String(isActive));
-            this.setAttribute('aria-expanded', String(!isActive));
-
-            // focus no primeiro campo do menu ao abrir
             if (!isActive) {
-                const firstInput = menu.querySelector('input, select, textarea, button');
+                // Copia conteúdo do menu para o overlay
+                overlayContainer.innerHTML = menu.innerHTML;
+                overlayContainer.classList.add('active');
+                overlayContainer.dataset.activeFilter = filterType;
+
+                // Ajusta posição vertical
+                const rect = root.querySelector('.filters-minimal').getBoundingClientRect();
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                overlayContainer.style.top = rect.bottom + scrollTop + -0 + 'px'; // 5px de espaçamento
+                overlayContainer.style.left = rect.left + rect.width / 2 + 'px';
+                overlayContainer.style.transform = 'translateX(-50%)';
+
+                // Marca botão ativo
+                this.classList.add('active');
+                this.setAttribute('aria-expanded', 'true');
+
+                // Focus no primeiro input/button
+                const firstInput = overlayContainer.querySelector('input, select, textarea, button');
                 if (firstInput) firstInput.focus();
             }
         });
     });
 
-    // Clique fora fecha tudo
+    // Fecha overlay ao clicar fora
     document.addEventListener('click', () => {
-        filterMenus.forEach(menu => {
-            menu.classList.remove('active');
-            menu.setAttribute('aria-hidden', 'true');
-        });
-        filterBtns.forEach(btn => {
-            btn.classList.remove('active');
-            btn.setAttribute('aria-expanded', 'false');
+        overlayContainer.classList.remove('active');
+        overlayContainer.innerHTML = '';
+        filterBtns.forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-expanded', 'false');
         });
     });
 
-    // Clique dentro do menu não fecha
-    filterMenus.forEach(menu => {
-        menu.addEventListener('click', e => e.stopPropagation());
-    });
+    // Não fecha ao clicar dentro do overlay
+    overlayContainer.addEventListener('click', e => e.stopPropagation());
 }
+
+
+
 
 
 // Função para favoritar/desfavoritar (aplica apenas em .favorite-btn)

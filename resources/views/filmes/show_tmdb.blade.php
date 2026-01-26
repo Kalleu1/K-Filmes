@@ -149,7 +149,7 @@
             @if(!empty($similarMovies))
             <div class="tmdb-similar-movies-section">
                 <h2>Filmes Similares</h2>
-                <div class="tmdb-similar-movies-list tmdb-dashboard_grid">
+                <div class="tmdb-similar-movies-list dashboard_grid">
                     @foreach($similarMovies as $similar)
                         <x-filmecard :filme="$similar" :campos="['poster']" />
                     @endforeach
@@ -161,7 +161,7 @@
             @if(!empty($directorMovies))
             <div class="tmdb-director-movies-section">
                 <h2>Filmes do mesmo diretor</h2>
-                <div class="tmdb-similar-movies-list tmdb-dashboard_grid" >
+                <div class="tmdb-similar-movies-list dashboard_grid" >
                     @foreach($directorMovies as $movie)
                         <x-filmecard :filme="$movie" :campos="['poster']" />
                     @endforeach
