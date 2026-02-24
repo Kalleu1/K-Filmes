@@ -88,21 +88,23 @@
             <button type="submit" class= "share-btn share-btn-primary">Gerar Imagem</button>
         </form>
 
-            <button id="btn-instagram" class="share-btn insta" disabled>
+            <button id="btn-instagram" class="share-btn insta">
                 <i class="fa-brands fa-instagram"></i>
                 Instagram
             </button>
 
-            <button id="btn-whatsapp" class="share-btn whatsapp" disabled>
+            <button id="btn-whatsapp" class="share-btn whatsapp">
                 <i class="fa-brands fa-whatsapp"></i>
                 WhatsApp
             </button>
 
-            <button id="btn-twitter" class="share-btn twitter" disabled>
+            <button id="btn-twitter" class="share-btn twitter">
                 <i class="fa-brands fa-x-twitter"></i>
                 Twitter / X
             </button>
         </div>
+
+        <p class="share-actions-hint">Gere a imagem antes de compartilhar.</p>
 
         <p class="share-info">Resolução: 1080×1920px </p>
 
@@ -112,3 +114,4 @@
 </div>
 
 @endsection
+

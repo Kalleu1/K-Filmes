@@ -113,4 +113,44 @@ class ToastMessages
             $dismissible
         );
     }
+
+    public static function customPayload(
+        string $type,
+        string $message,
+        int $timeout = 4000,
+        bool $dismissible = true
+    ): array {
+        return ToastManager::make(
+            $type,
+            $message,
+            $timeout,
+            $dismissible
+        );
+    }
+
+    public static function shareImageGeneratedPayload(): array
+    {
+        return self::customPayload(
+            'success',
+            'Imagem gerada com sucesso. Download iniciado.'
+        );
+    }
+
+    public static function shareImageGenerationFailedPayload(): array
+    {
+        return self::customPayload(
+            'error',
+            'Nao foi possivel gerar a imagem agora. Tente novamente.',
+            7000,
+            true
+        );
+    }
+
+    public static function shareGenerateFirstPayload(): array
+    {
+        return self::customPayload(
+            'info',
+            'Gere a imagem antes de compartilhar.'
+        );
+    }
 }

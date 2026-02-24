@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Filme;
+use App\Support\Toast\ToastMessages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Browsershot\Browsershot;
@@ -57,22 +58,29 @@ class ShareController extends Controller
         $filename = "share_{$id}_" . time() . ".png";
         $path = storage_path("app/public/shares/{$filename}");
 
-        // Gera a imagem usando Browsershot
+        try {
+            // Gera a imagem usando Browsershot
             Browsershot::html($htmlWithCss)
                 ->setChromePath('/usr/bin/google-chrome')
                 ->noSandbox()
-                ->windowSize(490, 820) 
+                ->windowSize(490, 820)
                 ->deviceScaleFactor(1)
                 ->save($path);
 
-            
-            
-        
+            return response()->json([
+                'success' => true,
+                'url' => Storage::url("shares/{$filename}"),
+                'toast' => ToastMessages::shareImageGeneratedPayload(),
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
 
-        return response()->json([
-            'success' => true,
-            'url' => Storage::url("shares/{$filename}")
-        ]);
+            return response()->json([
+                'success' => false,
+                'error' => 'Erro ao gerar imagem de compartilhamento.',
+                'toast' => ToastMessages::shareImageGenerationFailedPayload(),
+            ], 500);
+        }
     }
 
     public function render(Request $request, $id)

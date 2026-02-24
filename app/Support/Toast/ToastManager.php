@@ -6,13 +6,22 @@ class ToastManager
 {
     protected static string $sessionKey = 'toasts';
 
+    public static function make(
+        string $type,
+        string $message,
+        int $timeout = 4000,
+        bool $dismissible = true
+    ): array {
+        return compact('type', 'message', 'timeout', 'dismissible');
+    }
+
     public static function push(
         string $type,
         string $message,
         int $timeout = 4000,
         bool $dismissible = true
     ): array {
-        $toast = compact('type', 'message', 'timeout', 'dismissible');
+        $toast = self::make($type, $message, $timeout, $dismissible);
 
         $toasts = session()->get(self::$sessionKey, []);
         $toasts[] = $toast;
