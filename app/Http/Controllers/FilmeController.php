@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveTmdbFilmeRequest;
-use App\Http\Requests\StoreFilmeRequest;
 use App\Http\Requests\UpdateFilmeRequest;
 use App\Models\Filme;
 use App\Services\ColorThemeService;
+use App\Services\FilmeMediaService;
 use App\Services\TMDBService;
 use App\Support\Toast\ToastMessages;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -38,51 +37,6 @@ class FilmeController extends Controller
             return view('filmes.index', compact('filmes'));
         }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-        $tmdbData = null;
-
-        $tmdbId = $request->query('tmdb_id'); 
-        
-
-        if ($request->has('tmdb_id')) {
-            $tmdbData = $this->tmdb->getMovie($request->tmdb_id);
-        }
-
-        return view('filmes.create', compact('tmdbData'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreFilmeRequest $request)
-    {
-        $data = $request->validated();
-
-        if($request->hasFile('poster')){
-            $file = $request->file('poster');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->storeAs('posters', $filename, 'public'); 
-            $data['poster'] = $filename;
-        }
-
-        if($request->hasFile('poster_banner')){
-            $file = $request->file('poster_banner');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->storeAs('posters_banners', $filename, 'public'); 
-            $data['poster_banner'] = $filename;
-        }
-
-        $data['user_id'] = Auth::id();
-
-        Filme::create($data);
-
-        return redirect()->route('dashboard')->with(ToastMessages::movieAdded());
-    }
 
     /**
      * Display the specified resource.
@@ -190,16 +144,10 @@ class FilmeController extends Controller
     }
 
     
-    public function destroy(Filme $filme)
+    public function destroy(Filme $filme, FilmeMediaService $filmeMediaService)
     {
         $this->authorize('delete', $filme);
-
-    if($filme->poster) {
-        Storage::disk('public')->delete($filme->poster);
-    }
-    if($filme->poster_banner) {
-        Storage::disk('public')->delete($filme->poster_banner);
-    }
+        $filmeMediaService->deleteMovieImages($filme);
         $filme->delete();
         return redirect()->route('filmes.biblioteca')
             ->with(ToastMessages::movieDeleted());

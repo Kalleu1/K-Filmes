@@ -88,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('filme-do-dia.sortear');
 
 
-    Route::resource('filmes', FilmeController::class);
+    Route::resource('filmes', FilmeController::class)->except(['create', 'store']);
 });
 
 /*
