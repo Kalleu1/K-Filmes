@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveTmdbFilmeRequest;
+use App\Http\Requests\StoreFilmeRequest;
+use App\Http\Requests\UpdateFilmeRequest;
 use App\Models\Filme;
 use App\Services\ColorThemeService;
 use App\Services\TMDBService;
@@ -56,22 +59,9 @@ class FilmeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreFilmeRequest $request)
     {
-        $data = $request->all();
-
-        $data = $request->validate([
-        'nome' => 'required|string|max:255',
-        'descricao' => 'nullable|string',
-        'plataforma' => 'nullable|string',
-        'data_assistida' => 'nullable|date',
-        'diretor' => 'nullable|string|max:255',
-        'genero' => 'nullable|string|max:255',
-        'nota' => 'nullable|numeric|min:0|max:10',
-        'comentarios' => 'nullable|string',
-        'poster' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        'poster_banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-    ]);
+        $data = $request->validated();
 
         if($request->hasFile('poster')){
             $file = $request->file('poster');
@@ -188,18 +178,11 @@ class FilmeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Filme $filme)
+    public function update(UpdateFilmeRequest $request, Filme $filme)
     {
         $this->authorize('update', $filme);
     
-        $data = $request->validate([
-        
-        'plataforma' => 'nullable|string',
-        'data_assistida' => 'nullable|date',
-        'nota' => 'nullable|numeric|min:0|max:10',
-        'comentarios' => 'nullable|string',
-        
-    ]);
+        $data = $request->validated();
 
     $filme->update($data);
 
@@ -359,15 +342,9 @@ class FilmeController extends Controller
     }
 
     // Salvar/atualizar no banco
-    public function saveTmdb(Request $request, $tmdb_id)
+    public function saveTmdb(SaveTmdbFilmeRequest $request, $tmdb_id)
     {
-        $validated = $request->validate([
-            'nota' => 'nullable|numeric|min:0|max:10',
-            'comentarios' => 'nullable|string|max:5000',
-            'data_assistida' => 'nullable|date',
-            'plataforma' => 'nullable|string|max:255',
-            'assistido' => 'nullable|boolean',
-        ]);
+        $validated = $request->validated();
 
         $data['assistido'] = $request->input('assistido', 0) ? 1 : 0;
 
