@@ -9,6 +9,7 @@ use App\Services\FilmeBibliotecaService;
 use App\Services\ColorThemeService;
 use App\Services\FilmeMediaService;
 use App\Services\TMDBService;
+use App\Services\TmdbMovieMapperService;
 use App\Support\Toast\ToastMessages;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -19,10 +20,12 @@ class FilmeController extends Controller
 {
 
     protected $tmdb;
+    protected $tmdbMovieMapper;
 
-    public function __construct(TMDBService $tmdb)
+    public function __construct(TMDBService $tmdb, TmdbMovieMapperService $tmdbMovieMapper)
     {
         $this->tmdb = $tmdb;
+        $this->tmdbMovieMapper = $tmdbMovieMapper;
     }
     /**
      * Display a listing of the resource.
@@ -65,12 +68,13 @@ class FilmeController extends Controller
             //rating
             
 
-            // Diretor
-            $director = $this->extractDirector($tmdbData);
-            // Gêneros
-            $genres = $this->extractGenres($tmdbData);
-            // Poster e Banner
-            ['posterUrl' => $posterUrl, 'backdropUrl' => $backdropUrl] = $this->tmdbImageUrls($tmdbData);
+            [
+                'director' => $director,
+                'genres' => $genres,
+                'posterUrl' => $posterUrl,
+                'backdropUrl' => $backdropUrl,
+                'tmdbRating' => $tmdbRating,
+            ] = $this->tmdbMovieMapper->mapDetails($tmdbData);
 
             $localBackdropPath = null;
 
@@ -89,8 +93,6 @@ class FilmeController extends Controller
                 $directorMovies = $this->tmdb->getMoviesByDirector($director, 7);
             }
 
-            $tmdbRating = isset($tmdbData['vote_average']) ? round($tmdbData['vote_average'], 1) : null;
-            
         }
     }
 
@@ -204,13 +206,7 @@ class FilmeController extends Controller
 
     if ($res && isset($res['results'])) {
         foreach ($res['results'] as $r) {
-            $results[] = [
-                'tmdb_id'      => $r['id'],
-                'nome'         => $r['title'] ?? ($r['name'] ?? 'Sem título'),
-                'release_date' => $r['release_date'] ?? null,
-                'descricao'    => $r['overview'] ?? null,
-                'poster_url'   => $this->tmdb->getImageUrl($r['poster_path'] ?? null, 'w500'),
-            ];
+            $results[] = $this->tmdbMovieMapper->mapSearchResult($r);
         }
     }
 
@@ -226,9 +222,13 @@ class FilmeController extends Controller
             abort(404, 'Filme não encontrado na TMDB.');
         }
 
-        $director = $this->extractDirector($tmdbData);
-        $genres = $this->extractGenres($tmdbData);
-        ['posterUrl' => $posterUrl, 'backdropUrl' => $backdropUrl] = $this->tmdbImageUrls($tmdbData);
+        [
+            'director' => $director,
+            'genres' => $genres,
+            'posterUrl' => $posterUrl,
+            'backdropUrl' => $backdropUrl,
+            'tmdbRating' => $tmdbRating,
+        ] = $this->tmdbMovieMapper->mapDetails($tmdbData);
 
         $filme = $this->userFilmesQuery()
             ->where('tmdb_id', $tmdb_id)
@@ -237,9 +237,6 @@ class FilmeController extends Controller
         if ($director) {
                 $directorMovies = $this->tmdb->getMoviesByDirector($director, 7);
             }
-        $tmdbRating = isset($tmdbData['vote_average']) ? round($tmdbData['vote_average'], 1) : null;
-            
-
         return view('filmes.show_tmdb', compact(
             'tmdbData', 'director', 'genres', 'posterUrl', 'backdropUrl', 'filme', 'tmdb_id', 'similarMovies','tmdbRating'
         ));
@@ -259,31 +256,17 @@ class FilmeController extends Controller
             return back()->with(ToastMessages::tmdbUnavailable());
         }
 
-        $director = $this->extractDirector($tmdbData);
-        $genres = $this->extractGenres($tmdbData);
-        ['posterUrl' => $posterUrl, 'backdropUrl' => $backdropUrl] = $this->tmdbImageUrls($tmdbData);
-
         $filme = Filme::updateOrCreate(
         [
             'tmdb_id' => $tmdb_id,
             'user_id' => Auth::id(),
         ],
-        [
-            'nome' => $tmdbData['title'] ?? ($tmdbData['name'] ?? 'Sem título'),
-            'descricao' => $tmdbData['overview'] ?? $request->input('descricao'),
-            'diretor' => $director,
-            'genero' => $genres,
-            'poster' => $posterUrl,
-            'poster_banner' => $backdropUrl,
-            'plataforma' => $validated['plataforma'] ?? null,
-            'data_assistida' => $validated['data_assistida'] ?? null,
-            'nota' => $validated['nota'] ?? null,
-            'comentarios' => $validated['comentarios'] ?? null,
-            'ano_lancamento' => !empty($tmdbData['release_date'])
-                ? date('Y', strtotime($tmdbData['release_date']))
-                : null,
-            'assistido' => $data['assistido'],
-        ]
+        $this->tmdbMovieMapper->mapLocalMovieAttributesFromTmdb(
+            $tmdbData,
+            $validated,
+            $data['assistido'],
+            $request->input('descricao')
+        )
     );
 
 
@@ -356,13 +339,7 @@ class FilmeController extends Controller
         $totalResults = $response['total_results'] ?? count($raw);
 
         $results = collect($raw)->map(function ($r) {
-            return (object) [
-                'tmdb_id'      => $r['id'],
-                'nome'         => $r['title'] ?? ($r['name'] ?? 'Sem título'),
-                'release_date' => $r['release_date'] ?? null,
-                'descricao'    => $r['overview'] ?? null,
-                'poster_url'   => $this->tmdb->getImageUrl($r['poster_path'] ?? null, 'w500'),
-            ];
+            return (object) $this->tmdbMovieMapper->mapSearchResult($r);
         });
 
         $paginator = new LengthAwarePaginator(
@@ -394,36 +371,5 @@ class FilmeController extends Controller
             ->firstOrFail();
     }
 
-    private function extractDirector(?array $tmdbData): ?string
-    {
-        if (empty($tmdbData['credits']['crew']) || !is_array($tmdbData['credits']['crew'])) {
-            return null;
-        }
-
-        foreach ($tmdbData['credits']['crew'] as $crew) {
-            if (($crew['job'] ?? null) && strtolower($crew['job']) === 'director') {
-                return $crew['name'] ?? null;
-            }
-        }
-
-        return null;
-    }
-
-    private function extractGenres(?array $tmdbData): ?string
-    {
-        if (empty($tmdbData['genres']) || !is_array($tmdbData['genres'])) {
-            return null;
-        }
-
-        return implode(', ', array_column($tmdbData['genres'], 'name'));
-    }
-
-    private function tmdbImageUrls(array $tmdbData): array
-    {
-        return [
-            'posterUrl' => $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500'),
-            'backdropUrl' => $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280'),
-        ];
-    }
-
 }
+
