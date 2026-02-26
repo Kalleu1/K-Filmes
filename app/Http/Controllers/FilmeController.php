@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveTmdbFilmeRequest;
 use App\Http\Requests\UpdateFilmeRequest;
 use App\Models\Filme;
+use App\Services\FilmeBibliotecaService;
 use App\Services\ColorThemeService;
 use App\Services\FilmeMediaService;
 use App\Services\TMDBService;
@@ -153,63 +154,18 @@ class FilmeController extends Controller
             ->with(ToastMessages::movieDeleted());
     }
 
-    public function biblioteca(Request $request)
+    public function biblioteca(Request $request, FilmeBibliotecaService $filmeBibliotecaService)
     {
-        $query = $this->userFilmesQuery();
-
-        if ($request->has('assistido') && $request->assistido !== '') {
-            $query->where('assistido', $request->boolean('assistido'));
-        }
-
-        if ($request->has('favorito') && $request->favorito !== '') {
-            $query->where('favorito', $request->boolean('favorito'));
-        }
-
-        if ($request->filled('genero')) {
-            $query->where('genero', 'LIKE', '%' . $request->genero . '%');
-        }
-
-        // Adicionado: filtro por diretor
-        if ($request->filled('diretor')) {
-            $query->where('diretor', 'LIKE', '%' . $request->diretor . '%');
-        }
-
-        if ($request->filled('ano_lancamento')) {
-            $query->where('ano_lancamento', $request->ano_lancamento);
-        }
-
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function($sub) use ($q) {
-                $sub->where('nome', 'LIKE', "%{$q}%")
-                    ->orWhere('diretor', 'LIKE', "%{$q}%")
-                    ->orWhere('descricao', 'LIKE', "%{$q}%");
-            });
-        }
-
-        $filmes = $query->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
+        $filmes = $filmeBibliotecaService->paginateBiblioteca($request, Auth::id());
 
         return view('filmes.biblioteca', compact('filmes'));
     }
 
-    public function buscarBiblioteca(Request $request)
+    public function buscarBiblioteca(Request $request, FilmeBibliotecaService $filmeBibliotecaService)
     {
         $query = $request->input('q');
 
-        $filmes = $this->userFilmesQuery()
-            ->when($query, function ($qBuilder) use ($query) {
-                $qBuilder->where(function ($sub) use ($query) {
-                    $sub->where('nome', 'like', "%{$query}%")
-                        ->orWhere('diretor', 'like', "%{$query}%")
-                        ->orWhere('genero', 'like', "%{$query}%")
-                        ->orWhere('ano_lancamento', 'like', "%{$query}%");
-                });
-            })
-
-            ->orderBy('nome')
-            ->paginate(20)
-            ->withQueryString();
-
+        $filmes = $filmeBibliotecaService->searchBiblioteca($query, Auth::id());
 
         return view('filmes.biblioteca', compact('filmes', 'query'));
     }
