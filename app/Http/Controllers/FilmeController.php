@@ -28,7 +28,7 @@ class FilmeController extends Controller
         {
             
 
-            $filmes = Filme::where('user_id', Auth::id())
+            $filmes = $this->userFilmesQuery()
                 ->orderBy('created_at', 'desc')
                 ->get();
 
@@ -39,7 +39,7 @@ class FilmeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request, TMDBService $tmdb)
+    public function create(Request $request)
     {
         $tmdbData = null;
 
@@ -47,7 +47,7 @@ class FilmeController extends Controller
         
 
         if ($request->has('tmdb_id')) {
-            $tmdbData = $tmdb->getMovie($request->tmdb_id);
+            $tmdbData = $this->tmdb->getMovie($request->tmdb_id);
         }
 
         return view('filmes.create', compact('tmdbData'));
@@ -100,9 +100,7 @@ class FilmeController extends Controller
     public function show(string $id, ColorThemeService $colorTheme)
 {
     
-    $filme = Filme::where('id', $id)
-    ->where('user_id', Auth::id())
-    ->firstOrFail();
+    $filme = $this->findUserFilmeOrFail($id);
 
 
     $tmdbData = null;
@@ -123,19 +121,11 @@ class FilmeController extends Controller
             
 
             // Diretor
-            if (!empty($tmdbData['credits']['crew'])) {
-                foreach ($tmdbData['credits']['crew'] as $crew) {
-                    if (isset($crew['job']) && strtolower($crew['job']) === 'director') {
-                        $director = $crew['name'];
-                        break;
-                    }
-                }
-            }
+            $director = $this->extractDirector($tmdbData);
             // Gêneros
-            $genres = !empty($tmdbData['genres']) ? implode(', ', array_column($tmdbData['genres'], 'name')) : null;
+            $genres = $this->extractGenres($tmdbData);
             // Poster e Banner
-            $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
-            $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path']?? null, 'w1280');
+            ['posterUrl' => $posterUrl, 'backdropUrl' => $backdropUrl] = $this->tmdbImageUrls($tmdbData);
 
             $localBackdropPath = null;
 
@@ -234,7 +224,7 @@ class FilmeController extends Controller
 
     public function biblioteca(Request $request)
     {
-        $query = Filme::where('user_id', Auth::id());
+        $query = $this->userFilmesQuery();
 
         if ($request->has('assistido') && $request->assistido !== '') {
             $query->where('assistido', $request->boolean('assistido'));
@@ -275,7 +265,7 @@ class FilmeController extends Controller
     {
         $query = $request->input('q');
 
-        $filmes = Filme::where('user_id', Auth::id())
+        $filmes = $this->userFilmesQuery()
             ->when($query, function ($qBuilder) use ($query) {
                 $qBuilder->where(function ($sub) use ($query) {
                     $sub->where('nome', 'like', "%{$query}%")
@@ -295,9 +285,7 @@ class FilmeController extends Controller
 
         public function toggleFavorito(Request $request, $id)
         {
-           $filme = Filme::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+           $filme = $this->findUserFilmeOrFail($id);
 
 
             // Atualiza o campo favorito com base no que veio no request
@@ -317,14 +305,14 @@ class FilmeController extends Controller
 
 
 
-    public function search(Request $request, TMDBService $tmdb)
+    public function search(Request $request)
 {
     $q = $request->input('q');
     if (!$q) {
         return response()->json(['results' => []]);
     }
 
-    $res = $tmdb->searchMovies($q, 1);
+    $res = $this->tmdb->searchMovies($q, 1);
     $results = [];
 
     if ($res && isset($res['results'])) {
@@ -334,7 +322,7 @@ class FilmeController extends Controller
                 'nome'         => $r['title'] ?? ($r['name'] ?? 'Sem título'),
                 'release_date' => $r['release_date'] ?? null,
                 'descricao'    => $r['overview'] ?? null,
-                'poster_url'   => $tmdb->getImageUrl($r['poster_path'] ?? null, 'w500'),
+                'poster_url'   => $this->tmdb->getImageUrl($r['poster_path'] ?? null, 'w500'),
             ];
         }
     }
@@ -351,23 +339,12 @@ class FilmeController extends Controller
             abort(404, 'Filme não encontrado na TMDB.');
         }
 
-        $director = null;
-        if (!empty($tmdbData['credits']['crew'])) {
-            foreach ($tmdbData['credits']['crew'] as $crew) {
-                if (isset($crew['job']) && strtolower($crew['job']) === 'director') {
-                    $director = $crew['name'];
-                    break;
-                }
-            }
-        }
+        $director = $this->extractDirector($tmdbData);
+        $genres = $this->extractGenres($tmdbData);
+        ['posterUrl' => $posterUrl, 'backdropUrl' => $backdropUrl] = $this->tmdbImageUrls($tmdbData);
 
-        $genres = !empty($tmdbData['genres']) ? implode(', ', array_column($tmdbData['genres'], 'name')) : null;
-
-        $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
-        $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280');
-
-        $filme = Filme::where('tmdb_id', $tmdb_id)
-            ->where('user_id', Auth::id())
+        $filme = $this->userFilmesQuery()
+            ->where('tmdb_id', $tmdb_id)
             ->first();
         $similarMovies = $this->tmdb->getSimilarMovies((int) $tmdb_id);
         if ($director) {
@@ -401,20 +378,9 @@ class FilmeController extends Controller
             return back()->with(ToastMessages::tmdbUnavailable());
         }
 
-        $director = null;
-        if (!empty($tmdbData['credits']['crew'])) {
-            foreach ($tmdbData['credits']['crew'] as $crew) {
-                if (isset($crew['job']) && strtolower($crew['job']) === 'director') {
-                    $director = $crew['name'];
-                    break;
-                }
-            }
-        }
-
-        $genres = !empty($tmdbData['genres']) ? implode(', ', array_column($tmdbData['genres'], 'name')) : null;
-
-        $posterUrl   = $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500');
-        $backdropUrl = $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280');
+        $director = $this->extractDirector($tmdbData);
+        $genres = $this->extractGenres($tmdbData);
+        ['posterUrl' => $posterUrl, 'backdropUrl' => $backdropUrl] = $this->tmdbImageUrls($tmdbData);
 
         $filme = Filme::updateOrCreate(
         [
@@ -461,7 +427,7 @@ class FilmeController extends Controller
 
     public function naoAssistidos()
     {
-        $filmes = Filme::where('user_id', Auth::id())
+        $filmes = $this->userFilmesQuery()
                 ->where('assistido', false)
                         ->orderBy('nome') // opcional: ordenar por título
                         ->get();
@@ -471,9 +437,7 @@ class FilmeController extends Controller
 
         public function marcarAssistido(Request $request, $id)
         {
-            $filme = Filme::where('id', $id)
-                ->where('user_id', Auth::id())
-                ->firstOrFail();
+            $filme = $this->findUserFilmeOrFail($id);
 
 
             $filme->assistido = true;
@@ -535,6 +499,50 @@ class FilmeController extends Controller
             'results' => $paginator,
             'query'   => $query,
         ]);
+    }
+
+    private function userFilmesQuery()
+    {
+        return Filme::where('user_id', Auth::id());
+    }
+
+    private function findUserFilmeOrFail($id): Filme
+    {
+        return $this->userFilmesQuery()
+            ->where('id', $id)
+            ->firstOrFail();
+    }
+
+    private function extractDirector(?array $tmdbData): ?string
+    {
+        if (empty($tmdbData['credits']['crew']) || !is_array($tmdbData['credits']['crew'])) {
+            return null;
+        }
+
+        foreach ($tmdbData['credits']['crew'] as $crew) {
+            if (($crew['job'] ?? null) && strtolower($crew['job']) === 'director') {
+                return $crew['name'] ?? null;
+            }
+        }
+
+        return null;
+    }
+
+    private function extractGenres(?array $tmdbData): ?string
+    {
+        if (empty($tmdbData['genres']) || !is_array($tmdbData['genres'])) {
+            return null;
+        }
+
+        return implode(', ', array_column($tmdbData['genres'], 'name'));
+    }
+
+    private function tmdbImageUrls(array $tmdbData): array
+    {
+        return [
+            'posterUrl' => $this->tmdb->getImageUrl($tmdbData['poster_path'] ?? null, 'w500'),
+            'backdropUrl' => $this->tmdb->getImageUrl($tmdbData['backdrop_path'] ?? null, 'w1280'),
+        ];
     }
 
 }
