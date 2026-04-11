@@ -79,6 +79,7 @@
 
 .hero-info {
   position: absolute;
+  padding-bottom: 24px;
   bottom: 20px;
   left: 20px;
   right: 20px;
@@ -135,7 +136,8 @@
   display: flex;
   gap: 1rem;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 1rem;
   padding-bottom: 1rem;
   -webkit-overflow-scrolling: touch;
 }
@@ -145,8 +147,7 @@
 }
 
 .dashboard_grid .filme-card {
-  flex: 0 0 70%;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
 }
 
 
@@ -169,8 +170,7 @@
   }
 
   .dashboard_grid .filme-card {
-    flex: 0 0 clamp(88px, 26vw, 116px);
-    
+    flex: 0 0 clamp(92px, 28vw, 120px);
   }
   .dashboard_grid > *:nth-child(n+11) {
     display: none;
@@ -178,35 +178,41 @@
 
   .dashboard_grid {
     position: relative;
-    gap: 10px;
+    gap: 12px;
     padding: 0 0 1rem;
-
-    /* Fade mais cedo para pegar o peek */
+    scroll-behavior: smooth;
+    cursor: grab;
+    overscroll-behavior-x: contain;
+    
     -webkit-mask-image: linear-gradient(
       to right,
       rgba(0,0,0,1) 0%,
-      rgba(0,0,0,1) 72%,
+      rgba(0,0,0,1) 85%,
       rgba(0,0,0,0) 100%
     );
     mask-image: linear-gradient(
       to right,
       rgba(0,0,0,1) 0%,
-      rgba(0,0,0,1) 72%,
+      rgba(0,0,0,1) 85%,
       rgba(0,0,0,0) 100%
     );
   }
+
+  .dashboard_grid:active {
+  cursor: grabbing;
+}
 
   .dashboard_grid::after {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
-    width: 24px;
+    width: 32px;
     height: 100%;
     pointer-events: none;
     background: linear-gradient(
       to left,
-      rgba(0, 0, 0, 0.12),
+      rgba(0, 0, 0, 0.08),
       rgba(0, 0, 0, 0)
     );
   }
