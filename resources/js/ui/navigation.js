@@ -3,16 +3,85 @@ const UIState = {
 };
 
 let sidebarInitialized = false;
+let bottomNavInitialized = false;
+
+const MOBILE_BREAKPOINT = 768;
+const TOP_VISIBILITY_THRESHOLD = 50;
+const SCROLL_DELTA_THRESHOLD = 10;
+
+function initBottomNavAutoHideOnScroll() {
+  if (bottomNavInitialized) return;
+
+  const bottomNav = document.querySelector('.bottom-nav');
+  if (!bottomNav) return;
+
+  bottomNavInitialized = true;
+
+  let lastScrollY = window.scrollY || 0;
+  let ticking = false;
+  let isHidden = false;
+
+  const setHiddenState = (hidden) => {
+    if (hidden === isHidden) return;
+
+    isHidden = hidden;
+    bottomNav.classList.toggle('is-hidden', hidden);
+  };
+
+  const updateBottomNavVisibility = () => {
+    const currentScrollY = window.scrollY || 0;
+    const delta = currentScrollY - lastScrollY;
+
+    if (window.innerWidth > MOBILE_BREAKPOINT || currentScrollY < TOP_VISIBILITY_THRESHOLD) {
+      setHiddenState(false);
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    if (Math.abs(delta) < SCROLL_DELTA_THRESHOLD) {
+      ticking = false;
+      return;
+    }
+
+    if (delta > 0) {
+      setHiddenState(true);
+    } else {
+      setHiddenState(false);
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateBottomNavVisibility);
+    }
+  };
+
+  const onResize = () => {
+    if (window.innerWidth > MOBILE_BREAKPOINT) {
+      setHiddenState(false);
+    }
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize, { passive: true });
+}
 
 export function initMobileNavigation() {
+  initBottomNavAutoHideOnScroll();
+
   if (sidebarInitialized) return;
-  sidebarInitialized = true;
 
   const sidebar = document.getElementById('dashboard-sidebar');
   const toggle  = document.querySelector('.sidebar-toggle');
   const overlay = document.querySelector('[data-sidebar-overlay]');
 
   if (!sidebar || !toggle || !overlay) return;
+  sidebarInitialized = true;
 
   function openSidebar() {
     if (UIState.sidebarOpen) return;
