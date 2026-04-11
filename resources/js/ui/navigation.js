@@ -7,7 +7,8 @@ let bottomNavInitialized = false;
 
 const MOBILE_BREAKPOINT = 768;
 const TOP_VISIBILITY_THRESHOLD = 50;
-const SCROLL_DELTA_THRESHOLD = 10;
+const SCROLL_DELTA_THRESHOLD = 2;
+const NAV_TOGGLE_DISTANCE = 24;
 
 function initBottomNavAutoHideOnScroll() {
   if (bottomNavInitialized) return;
@@ -18,6 +19,7 @@ function initBottomNavAutoHideOnScroll() {
   bottomNavInitialized = true;
 
   let lastScrollY = window.scrollY || 0;
+  let lastToggleScrollY = lastScrollY;
   let ticking = false;
   let isHidden = false;
 
@@ -35,19 +37,23 @@ function initBottomNavAutoHideOnScroll() {
     if (window.innerWidth > MOBILE_BREAKPOINT || currentScrollY < TOP_VISIBILITY_THRESHOLD) {
       setHiddenState(false);
       lastScrollY = currentScrollY;
+      lastToggleScrollY = currentScrollY;
       ticking = false;
       return;
     }
 
     if (Math.abs(delta) < SCROLL_DELTA_THRESHOLD) {
+      lastScrollY = currentScrollY;
       ticking = false;
       return;
     }
 
-    if (delta > 0) {
+    if (!isHidden && delta > 0 && currentScrollY - lastToggleScrollY >= NAV_TOGGLE_DISTANCE) {
       setHiddenState(true);
-    } else {
+      lastToggleScrollY = currentScrollY;
+    } else if (isHidden && delta < 0 && lastToggleScrollY - currentScrollY >= NAV_TOGGLE_DISTANCE) {
       setHiddenState(false);
+      lastToggleScrollY = currentScrollY;
     }
 
     lastScrollY = currentScrollY;
