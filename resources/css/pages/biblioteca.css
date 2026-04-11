@@ -485,7 +485,7 @@
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
   .library-page {
-    padding: 5rem 0.5rem 1rem;
+    padding: 5rem 0.5rem calc(var(--mobile-bottom-nav-safe, 80px) + 1rem);
   }
   
   .library-header {
@@ -698,5 +698,4 @@
     50% { transform: scale(1.4); }
     100% { transform: scale(1); }
 }
-
 

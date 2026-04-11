@@ -301,7 +301,7 @@
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
   .search-page {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.5rem calc(var(--mobile-bottom-nav-safe, 80px) + 1rem);
   }
   
   .search-header {
