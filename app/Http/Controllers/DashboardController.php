@@ -36,7 +36,17 @@ class DashboardController extends Controller
         $destaques = Filme::doUsuario()
             ->inRandomOrder()
             ->take(6)
-            ->get();
+            ->get()
+            ->map(function($filme) use ($tmdb) {
+                // Se o filme tem tmdb_id, busca as imagens responsivas
+                if ($filme->tmdb_id) {
+                    $tmdbMovie = $tmdb->getMovie((int) $filme->tmdb_id);
+                    if ($tmdbMovie) {
+                        $filme->responsiveBackdrop = $tmdb->getResponsiveBackdrop($tmdbMovie);
+                    }
+                }
+                return $filme;
+            });
         
         // SEÇÕES DASHBOARD
         $recentes = Filme::doUsuario()

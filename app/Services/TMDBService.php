@@ -305,5 +305,46 @@ public function getMoviesByDirector(string $directorName, int $limit = 7, string
     });
 }
 
+/**
+ * Retorna URLs responsivas de poster (mobile) e backdrop (desktop)
+ * 
+ * Útil para <picture> tags que servem diferentes imagens por viewport
+ *
+ * Objeto com mobile_url, desktop_url, mobile_path, desktop_path
+ *                     ou null se nenhuma imagem disponível
+ *
+ * Exemplo:
+ * ```php
+ * $responsive = $tmdb->getResponsiveBackdrop($movie);
+ * // $responsive->mobile_url   // poster para mobile (w500)
+ * // $responsive->desktop_url  // backdrop para desktop (w1280)
+ * // $responsive->mobile_path  // path do poster
+ * // $responsive->desktop_path // path do backdrop
+ * ```
+ */
+public function getResponsiveBackdrop($movie): ?object
+{
+    if (is_object($movie)) {
+        $movie = (array) $movie;
+    }
 
+    $poster_path = $movie['poster_path'] ?? null;
+    $backdrop_path = $movie['backdrop_path'] ?? null;
+
+    // Fallback: se não tem backdrop, usa poster em ambas as versões
+    if (!$backdrop_path && !$poster_path) {
+        return null;
+    }
+
+    // Lógica: mobile sempre usa poster se disponível, desktop usa backdrop se disponível
+    $mobile_path = $poster_path ?? $backdrop_path;
+    $desktop_path = $backdrop_path ?? $poster_path;
+
+    return (object) [
+        'mobile_url'  => $this->getImageUrl($mobile_path, 'w500'),
+        'desktop_url' => $this->getImageUrl($desktop_path, 'w1280'),
+        'mobile_path' => $mobile_path,
+        'desktop_path' => $desktop_path,
+    ];
+}
 }

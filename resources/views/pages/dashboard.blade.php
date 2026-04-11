@@ -2,7 +2,7 @@
 @include('components.header')
 
 @section('content')
-    <div class="dashboard" style="background-image: url('{{ asset($destaques) }}');">
+    <div class="dashboard">
 
         <div class="sidebar-overlay" data-sidebar-overlay></div>
             {{-- Barra lateral --}}
@@ -16,7 +16,7 @@
 
         <div class ="dashboard_main">
         
-            {{-- Banner --}}       
+            {{-- Banner Hero com Imagens Responsivas --}}       
             <section class="dashboard-hero">
                 @foreach($destaques as $index => $filme)
                     <div class="hero-slide {{ $index === 0 ? 'active' : '' }}">
@@ -24,10 +24,29 @@
             isset($filme->id) 
                 ? route('filmes.show', $filme->id) 
                 : (isset($filme->tmdb_id) ? route('filmes.showTmdb', $filme->tmdb_id) : '#') 
-        }}"> 
-                            <img src="{{ $filme->poster_banner_url }}"
-                            alt="Banner de {{ $filme->nome }}" 
-                            class="hero-poster">
+        }}">
+                            {{-- Picture responsiva: poster mobile, backdrop desktop --}}
+                            @if(isset($filme->responsiveBackdrop))
+                                <picture>
+                                    {{-- Desktop: backdrop landscape (w1280) --}}
+                                    <source 
+                                        media="(min-width: 768px)" 
+                                        srcset="{{ $filme->responsiveBackdrop->desktop_url }}"
+                                        alt="Banner de {{ $filme->nome }}">
+                                    
+                                    {{-- Mobile: poster vertical (w500) --}}
+                                    <img 
+                                        src="{{ $filme->responsiveBackdrop->mobile_url }}"
+                                        alt="Banner de {{ $filme->nome }}"
+                                        class="hero-poster">
+                                </picture>
+                            @else
+                                {{-- Fallback para filmes sem imagem responsiva --}}
+                                <img 
+                                    src="{{ $filme->poster_banner_url ?? asset('imgs/no-poster.jpg') }}"
+                                    alt="Banner de {{ $filme->nome }}" 
+                                    class="hero-poster">
+                            @endif
                         </a>
 
                         <div class="hero-info">
