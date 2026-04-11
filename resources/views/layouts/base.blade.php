@@ -20,7 +20,7 @@
             referrerpolicy="no-referrer"
             />
     </head>
-    <body>
+    <body class="@auth has-mobile-bottom-nav @endauth">
         
         
 
@@ -30,6 +30,9 @@
             @yield('content')
         @endif
 
+        @auth
+            @include('components.bottom-nav')
+        @endauth
 
         @include('components.toast')
         

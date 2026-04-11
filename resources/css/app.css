@@ -7,6 +7,7 @@
 @import "./components/filme-card.css";
 @import "./components/pagination.css";
 @import "./components/sidebar.css";
+@import "./components/bottom-nav.css";
 @import "./components/loading-overlay.css";
 @import "./pages/share.css";
 @import "./pages/show.css";
