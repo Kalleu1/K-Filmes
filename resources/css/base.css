@@ -2,6 +2,10 @@
 
 :root {
   /* Fundo geral */
+
+  color-scheme: dark;
+
+  
   --color-background: #040DBF;      /* azul universo */
   --color-background-alt: #274F73;  /* azul petróleo (gradiente secundário) */
 
@@ -49,6 +53,7 @@ body {
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Roboto', 'Arial', sans-serif;
+  color-scheme: dark;
 }
 
 
