@@ -23,6 +23,7 @@ export default function initDashboard() {
         setInterval(nextSlide, 30000);
     }
 
-
-
+    // Descobrir: reutiliza filmedodia.js
+    // O script filmedodia.js será inicializado automaticamente
+    // pois o elemento tem id="filme-dia-page"
 }

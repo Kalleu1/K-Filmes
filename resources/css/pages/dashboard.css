@@ -182,25 +182,71 @@
   min-height: 140px;
 }
 
-.highlight-content {
+/* Discover: Layout Grid (Mobile) */
+.discover-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+}
+
+.discover-poster {
+  width: 100%;
+  max-width: 120px;
+  margin: 0 auto;
+}
+
+.discover-poster img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  aspect-ratio: 2 / 3;
+}
+
+.discover-poster img:hover {
+  transform: scale(1.05);
+}
+
+.discover-poster img:active {
+  transform: scale(0.95);
+}
+
+.discover-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
+  gap: 8px;
+  width: 100%;
 }
 
-.highlight-title {
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  font-weight: 600;
-  color: var(--color-primary);
-  margin: 0;
-  letter-spacing: 0.3px;
+.discover-input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 215, 0, 0.08);
+  background: rgba(255, 215, 0, 0.02);
+  color: var(--color-text-main);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
 }
 
-.highlight-action {
+.discover-input:focus {
+  outline: none;
+  background: rgba(255, 215, 0, 0.05);
+  border-color: rgba(255, 215, 0, 0.15);
+}
+
+.discover-input::placeholder {
+  color: rgba(var(--color-text-main-rgb, 255, 255, 255), 0.5);
+  font-size: 0.85rem;
+}
+
+.discover-button {
   padding: 10px 16px;
-  border-radius: 999px;
+  border-radius: 8px;
   background: rgba(255, 215, 0, 0.08);
   border: 1px solid rgba(255, 215, 0, 0.12);
   color: var(--color-text-main);
@@ -208,15 +254,37 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-top: 4px;
 }
 
-.highlight-action:hover {
+.discover-button:hover {
   background: rgba(255, 215, 0, 0.12);
   border-color: rgba(255, 215, 0, 0.18);
 }
 
-.highlight-action:active {
+.discover-button:active {
   transform: scale(0.96);
+}
+
+/* Animações do Poster */
+.poster-img.animate-fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.poster-img.animate-fade-in {
+  animation: fadeInPoster 0.6s ease-in forwards;
+}
+
+@keyframes fadeInPoster {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 
@@ -470,6 +538,20 @@
   .dashboard_grid > *:nth-child(n+6) {
   display: none;
 }
+
+  /* Discover: Layout para tablet (grid 2 colunas) */
+  .discover-grid {
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+  }
+
+  .discover-poster {
+    max-width: 100%;
+  }
+
+  .discover-form {
+    gap: 10px;
+  }
 
   .dashboard-hero {
     max-height: 400px;

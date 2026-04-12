@@ -2,7 +2,8 @@ export default function initFilmeDoDia() {
     const page = document.getElementById('filme-dia-page');
     if (!page) return;
 
-    
+    // Detectar contexto: dashboard ou página original
+    const isDashboard = page.classList.contains('dashboard-highlight');
 
     const form = document.getElementById('filmeDoDiaForm');
     if (!form) return;
@@ -13,11 +14,11 @@ export default function initFilmeDoDia() {
         aleatorios: page.dataset.aleatoriosUrl,
     };
 
-    const ui = getUIElements();
+    const ui = getUIElements(isDashboard);
 
     
     form.addEventListener('submit', (e) =>
-        handleSubmit(e, form, ui, urls)
+        handleSubmit(e, form, ui, urls, isDashboard)
     );
 }
 
@@ -25,7 +26,7 @@ export default function initFilmeDoDia() {
    HANDLER PRINCIPAL
 ========================= */
 
-async function handleSubmit(e, form, ui, urls) {
+async function handleSubmit(e, form, ui, urls, isDashboard = false) {
     e.preventDefault();
 
     const formData = new FormData(form);
@@ -33,6 +34,14 @@ async function handleSubmit(e, form, ui, urls) {
     fadeOutPoster(ui.posterImg);
 
     const filmeSorteado = await sortearFilme(formData, urls.sortear);
+    
+    // No dashboard: sem roleta, mostrar resultado direto
+    if (isDashboard) {
+        mostrarFilmeSorteado(ui.posterImg, filmeSorteado);
+        return;
+    }
+
+    // Página original: com roleta
     const filmes = await buscarFilmesAleatorios(formData, urls.aleatorios);
 
     if (!filmes.length) return;
@@ -76,12 +85,18 @@ async function buscarFilmesAleatorios(formData, url) {
    UI
 ========================= */
 
-function getUIElements() {
-    return {
+function getUIElements(isDashboard = false) {
+    const ui = {
         posterImg: document.getElementById('filmePoster'),
-        rouletteContainer: document.getElementById('rouletteContainer'),
-        rouletteTrack: document.getElementById('rouletteTrack'),
     };
+
+    // Elementos da roleta (opcional, só na página original)
+    if (!isDashboard) {
+        ui.rouletteContainer = document.getElementById('rouletteContainer');
+        ui.rouletteTrack = document.getElementById('rouletteTrack');
+    }
+
+    return ui;
 }
 
 function fadeOutPoster(poster) {

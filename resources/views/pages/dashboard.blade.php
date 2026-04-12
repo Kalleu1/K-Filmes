@@ -74,14 +74,48 @@
             </section>
 
             {{-- Bloco Especial: Descobrir --}}
-            <section class="dashboard-highlight">
+            <section class="dashboard-highlight"
+                id="filme-dia-page"
+                data-sortear-url="{{ route('filme-do-dia.sortear') }}"
+                data-aleatorios-url="{{ route('filme-do-dia.aleatorios') }}"
+            >
                 
-                <div class="highlight-content">
-                    <h3 class="highlight-title">Descobrir</h3>
+                <div class="discover-grid">
 
-                    <button class="highlight-action">
-                        🎲 Sortear filme
-                    </button>
+                    {{-- Poster --}}
+                    <div class="discover-poster">
+                        <img id="filmePoster"
+                             src="{{ asset('images/placeholder-poster.png') }}"
+                             class="poster-img"
+                             alt="Poster do filme">
+                    </div>
+
+                    {{-- Form com Filtros --}}
+                    <form id="filmeDoDiaForm" class="discover-form">
+                        @csrf
+
+                        <input type="number" 
+                               name="ano" 
+                               placeholder="Ano (opcional)" 
+                               min="1900" 
+                               max="{{ date('Y') }}"
+                               class="discover-input">
+
+                        <input type="text" 
+                               name="diretor" 
+                               placeholder="Diretor (opcional)"
+                               class="discover-input">
+
+                        <input type="text" 
+                               name="genero" 
+                               placeholder="Gênero (opcional)"
+                               class="discover-input">
+
+                        <button type="submit" class="discover-button">
+                            🎲 Sortear filme
+                        </button>
+                    </form>
+
                 </div>
 
             </section>
