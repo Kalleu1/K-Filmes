@@ -49,7 +49,11 @@
 
 body {
   min-height: 100vh; /* ocupa tela toda */
-  background: url('/public/imgs/background_star.jpg') no-repeat center center fixed;
+  background: linear-gradient(
+  to bottom,
+  #0B0B0F,
+  #0F0F14
+) no-repeat center center fixed;
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Roboto', 'Arial', sans-serif;

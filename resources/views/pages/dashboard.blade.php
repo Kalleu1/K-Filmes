@@ -62,7 +62,10 @@
 
             {{-- Filmes Recentes --}}
             <section class="dashboard_section">
-                <h3 class="dashboard_section_title">👁️ Filmes Vistos Recentemente</h3>
+                
+                <div class="section-header">
+                    <h3 class="section-title">👁️ Filmes Vistos Recentemente</h3>
+                </div>
                 
                 <div class="dashboard_grid">
                     @foreach ($assistidosRecentemente as $filme)
@@ -74,7 +77,10 @@
 
             {{-- Filmes Maiores Notas --}}
             <section class="dashboard_section">
-                <h3 class="dashboard_section_title">🏆 Maiores Notas do Ano</h3>
+                
+                <div class="section-header">
+                    <h3 class="section-title">🏆 Maiores Notas do Ano</h3>
+                </div>
                 
                 <div class="dashboard_grid">
                     @foreach ($melhoresAno as $filme)
@@ -87,7 +93,10 @@
             
 
             <section class="dashboard_section">
-                <h3 class="dashboard_section_title">Em Alta na Semana</h3>
+                
+                <div class="section-header">
+                    <h3 class="section-title">Em Alta na Semana</h3>
+                </div>
                 
                 <div class="dashboard_grid">
                     @foreach ($topRated as $filme)
@@ -97,7 +106,10 @@
             </section>
 
             <section class="dashboard_section">
-                <h3 class="dashboard_section_title">Próximos Lançamentos</h3>
+                
+                <div class="section-header">
+                    <h3 class="section-title">Próximos Lançamentos</h3>
+                </div>
 
                     <div class="dashboard_grid">
                         @foreach ($upcoming as $filme)

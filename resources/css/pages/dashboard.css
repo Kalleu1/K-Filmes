@@ -106,6 +106,9 @@
 /* ===== SEÇÕES ===== */
 .dashboard_section {
   margin-bottom: clamp(0.5rem, 2vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .dashboard_section_title {
@@ -127,6 +130,23 @@
   width: 50%;
   height: 3px;
   background: var(--color-primary-hover);
+}
+
+/* ===== SECTION HEADER (novo padrão) ===== */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--color-primary);
+  margin: 0;
+  font-weight: 600;
+  flex: 1;
 }
 
 
@@ -220,6 +240,18 @@
 
   .dashboard_section {
     margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .section-header {
+    margin-bottom: 0.75rem;
   }
 
   .dashboard_section_title {
