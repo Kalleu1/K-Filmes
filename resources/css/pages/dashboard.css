@@ -169,6 +169,56 @@
   flex: 1;
 }
 
+/* ===== BLOCO ESPECIAL: DESCOBRIR ===== */
+.dashboard-highlight {
+  margin: 16px 0 24px;
+  padding: 20px 16px;
+  border-radius: 16px;
+  background: rgba(255, 215, 0, 0.04);
+  border: 1px solid rgba(255, 215, 0, 0.06);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 140px;
+}
+
+.highlight-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.highlight-title {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+.highlight-action {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.12);
+  color: var(--color-text-main);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.highlight-action:hover {
+  background: rgba(255, 215, 0, 0.12);
+  border-color: rgba(255, 215, 0, 0.18);
+}
+
+.highlight-action:active {
+  transform: scale(0.96);
+}
+
 
 
 /* ===== GRID DE FILMES - MOBILE FIRST ===== */
@@ -272,6 +322,21 @@
 
   .section-header {
     margin-bottom: 0.75rem;
+  }
+
+  .dashboard-highlight {
+    margin: 16px 0 24px;
+    padding: 16px 12px;
+    min-height: 120px;
+  }
+
+  .highlight-title {
+    font-size: 1rem;
+  }
+
+  .highlight-action {
+    padding: 8px 14px;
+    font-size: 0.9rem;
   }
 
   .dashboard_section_title {

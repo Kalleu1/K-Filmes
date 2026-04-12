@@ -73,6 +73,18 @@
                 </div>
             </section>
 
+            {{-- Bloco Especial: Descobrir --}}
+            <section class="dashboard-highlight">
+                
+                <div class="highlight-content">
+                    <h3 class="highlight-title">Descobrir</h3>
+
+                    <button class="highlight-action">
+                        🎲 Sortear filme
+                    </button>
+                </div>
+
+            </section>
 
             {{-- Filmes Maiores Notas --}}
             <section class="dashboard_section">
