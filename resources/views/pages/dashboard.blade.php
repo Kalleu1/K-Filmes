@@ -51,8 +51,7 @@
 
                         <div class="hero-info">
                             <h2 class="hero-title">{{ $filme->nome }}</h2>
-                            <p class="hero-rating">⭐  {{ $filme->nota }}/10</p>
-                            <p class="hero-meta">{{ $filme->genero }} | {{ $filme->diretor }}</p>
+                            <p class="hero-rating">⭐ {{ $filme->nota }}/10</p>
                         </div>
                     </div>
                 @endforeach

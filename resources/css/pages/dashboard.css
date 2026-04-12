@@ -68,6 +68,21 @@
   z-index: 1;
 }
 
+.hero-slide.active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.35) 30%,
+    rgba(0, 0, 0, 0.05) 70%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
 .hero-poster {
   width: 100%;
   height: 100%;
@@ -85,6 +100,9 @@
   right: 20px;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .hero-info h2, 
@@ -94,13 +112,15 @@
 }
 
 .hero-info h2 {
-  font-size: clamp(1.2rem, 3vw, 2rem);
-  margin-bottom: 0.5rem;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  margin-bottom: 0.2rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .hero-info p {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  opacity: 0.9;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  opacity: 0.85;
 }
 
 /* ===== SEÇÕES ===== */
@@ -309,17 +329,20 @@
     background: linear-gradient(
       to top,
       rgba(0,0,0,0.95) 0%,
-      rgba(0,0,0,0.75) 40%,
+      rgba(0,0,0,0.8) 35%,
       rgba(0,0,0,0)
     );
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 
   .hero-title {
-    font-size: clamp(1.15rem, 4.2vw, 1.4rem);
+    font-size: clamp(1.25rem, 4.5vw, 1.5rem);
     font-weight: 700;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
     line-height: 1.25;
-    max-width: 20ch;
+    max-width: 22ch;
     padding-left: 0;
   }
 
@@ -329,12 +352,13 @@
     gap: 0.4rem;
     font-size: 0.9rem;
     padding: 0.35rem 0.7rem;
-    margin-top: 0.5rem;
+    margin-top: 0;
   
     border-radius: 999px;
     background: rgba(0, 0, 0, 0.45);
     border: 1px solid rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(8px);
+    width: fit-content;
   }
 
   .hero-meta {
