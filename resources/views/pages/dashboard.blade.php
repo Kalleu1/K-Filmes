@@ -63,7 +63,7 @@
             <section class="dashboard_section">
                 
                 <div class="section-header">
-                    <h3 class="section-title">👁️ Filmes Vistos Recentemente</h3>
+                    <h3 class="section-title">Recentes</h3>
                 </div>
                 
                 <div class="dashboard_grid">
@@ -86,35 +86,6 @@
                         <x-filmecard :filme="$filme" :campos="['poster']" />
                     @endforeach
                 </div>
-            </section>
-
-    
-            
-
-            <section class="dashboard_section">
-                
-                <div class="section-header">
-                    <h3 class="section-title">Em Alta na Semana</h3>
-                </div>
-                
-                <div class="dashboard_grid">
-                    @foreach ($topRated as $filme)
-                        <x-filmecard :filme="$filme" :campos="['poster']" />
-                    @endforeach
-                </div>
-            </section>
-
-            <section class="dashboard_section">
-                
-                <div class="section-header">
-                    <h3 class="section-title">Próximos Lançamentos</h3>
-                </div>
-
-                    <div class="dashboard_grid">
-                        @foreach ($upcoming as $filme)
-                            <x-filmecard :filme="$filme" :campos="['poster']" />
-                        @endforeach
-                    </div>
             </section>
         </div>
 
