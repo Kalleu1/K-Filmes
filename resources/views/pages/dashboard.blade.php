@@ -80,40 +80,43 @@
                 data-aleatorios-url="{{ route('filme-do-dia.aleatorios') }}"
             >
                 
-                <div class="discover-grid">
+                <div class="discover-container">
 
-                    {{-- Poster --}}
-                    <div class="discover-poster">
-                        <img id="filmePoster"
-                             src="{{ asset('images/placeholder-poster.png') }}"
-                             class="poster-img"
-                             alt="Poster do filme">
-                    </div>
+                    {{-- Poster Grande (Destaque Principal) --}}
+                    <img id="filmePoster"
+                         src="{{ asset('images/placeholder-poster.png') }}"
+                         class="discover-poster"
+                         alt="Poster do filme sorteado">
 
-                    {{-- Form com Filtros --}}
+                    {{-- Form com Botão Principal + Filtros --}}
                     <form id="filmeDoDiaForm" class="discover-form">
                         @csrf
 
-                        <input type="number" 
-                               name="ano" 
-                               placeholder="Ano (opcional)" 
-                               min="1900" 
-                               max="{{ date('Y') }}"
-                               class="discover-input">
-
-                        <input type="text" 
-                               name="diretor" 
-                               placeholder="Diretor (opcional)"
-                               class="discover-input">
-
-                        <input type="text" 
-                               name="genero" 
-                               placeholder="Gênero (opcional)"
-                               class="discover-input">
-
+                        {{-- Botão Principal --}}
                         <button type="submit" class="discover-button">
                             🎲 Sortear filme
                         </button>
+
+                        {{-- Filtros (Secundários) --}}
+                        <div class="discover-filters">
+                            <input type="number" 
+                                   name="ano" 
+                                   placeholder="Ano" 
+                                   min="1900" 
+                                   max="{{ date('Y') }}"
+                                   class="discover-filter-input">
+
+                            <input type="text" 
+                                   name="diretor" 
+                                   placeholder="Diretor"
+                                   class="discover-filter-input">
+
+                            <input type="text" 
+                                   name="genero" 
+                                   placeholder="Gênero"
+                                   class="discover-filter-input">
+                        </div>
+
                     </form>
 
                 </div>
