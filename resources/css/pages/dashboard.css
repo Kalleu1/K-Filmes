@@ -246,7 +246,7 @@
     background: none;
     border-radius: 12px;
     aspect-ratio: auto;
-    height: clamp(280px, 65vh, 650px);
+    height: clamp(390px, 65vh, 620px);
   }
 
   .dashboard-hero::after {
@@ -267,6 +267,11 @@
         rgba(0, 0, 0, 0.35) 0%,
         rgba(0, 0, 0, 0) 70%
       );
+  }
+
+  .dashboard-hero img{
+    margin-left: -6px;
+    margin-right: -6px;
   }
 
   .hero-info {
