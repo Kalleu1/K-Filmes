@@ -23,6 +23,14 @@ export default function initDashboard() {
         setInterval(nextSlide, 30000);
     }
 
-
-
+    // SORTEAR FILME BUTTON
+    const navSortear = document.getElementById('navSortear');
+    if (navSortear) {
+        navSortear.addEventListener('click', () => {
+            const filmeCard = document.querySelector('.filme-card');
+            if (filmeCard) {
+                filmeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    }
 }

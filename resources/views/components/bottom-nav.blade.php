@@ -19,6 +19,10 @@
         <span class="bottom-nav__label">Buscar</span>
     </a>
 
+    <a href="{{route('filmes.filme-do-dia')}}">  <button id="navSortear" class="bottom-nav__item bottom-nav__item--primary" title="Sortear filme" aria-label="Sortear filme aleatório">
+        <i class="fa-solid fa-dice bottom-nav__icon" aria-hidden="true"></i>
+    </button>  </a>
+
     <a href="{{ route('filmes.biblioteca') }}" class="bottom-nav__item {{ $isLibrary ? 'is-active' : '' }}" @if($isLibrary) aria-current="page" @endif>
         <i class="fa-solid fa-clapperboard bottom-nav__icon" aria-hidden="true"></i>
         <span class="bottom-nav__label">Biblioteca</span>
