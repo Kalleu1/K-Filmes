@@ -4,7 +4,7 @@
   min-height: 100vh;    
   display: grid;
   grid-template-columns: 1fr;
-  padding: 2rem 1rem;
+  padding: 1rem 0;
   gap: clamp(1rem, 3vw, 2rem);
   box-sizing: border-box; 
 }
@@ -156,10 +156,8 @@
 
 @media (max-width: 768px) {
   .dashboard {
-    width: 100%;
-    padding: 1rem 0 2rem;
     gap: 0;
-    padding: 5rem 0.5rem calc(var(--mobile-bottom-nav-safe, 80px) + 1rem);
+    padding: 1rem 0 calc(var(--mobile-bottom-nav-safe, 80px) + 1rem);
   }
 
   .dashboard_main,
@@ -241,8 +239,9 @@
   }
 
   .dashboard-hero {
-    width: 100%;
-    margin-left: 0;
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    margin-right: -16px;
     border: none;
     background: none;
     border-radius: 12px;
