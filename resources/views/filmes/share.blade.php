@@ -66,7 +66,7 @@
         </div>
 
         {{-- PREVIEW HTML --}}
-        <div id="share-preview" class="share-preview theme-noir" >
+        <div id="share-preview" class="share-preview theme-noir mode-default" >
             <img src="{{ $filme->poster }}" class="preview-poster" alt="Poster {{ $filme->nome }}">
 
             <div class="preview-title">{{ strtoupper($filme->nome) }}</div>

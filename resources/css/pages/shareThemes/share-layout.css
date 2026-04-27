@@ -43,6 +43,16 @@
     transition: transform .25s ease, opacity .25s ease;
 }
 
+/* Modo padrão */
+.share-preview.mode-default {
+    /* Estilos do modo padrão - mantém comportamento atual */
+}
+
+/* Modo poster (para futura extensão) */
+.share-preview.mode-poster {
+    /* Estilos específicos do modo poster será adicionado aqui */
+}
+
 .share-preview.is-transitioning {
     opacity: .4;
     transform: scale(.98);
