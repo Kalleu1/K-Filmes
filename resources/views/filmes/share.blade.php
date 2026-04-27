@@ -65,6 +65,16 @@
             </div>
         </div>
 
+        {{-- Seletor de modo de visualização --}}
+        <div class="preview-mode-toggle">
+            <button id="btn-mode-default" class="mode-btn active" title="Visualização padrão">
+                Padrão
+            </button>
+            <button id="btn-mode-poster" class="mode-btn" title="Visualização em modo poster">
+                Poster Max
+            </button>
+        </div>
+
         {{-- PREVIEW HTML --}}
         <div id="share-preview" class="share-preview theme-noir mode-default" >
             <img src="{{ $filme->poster }}" class="preview-poster" alt="Poster {{ $filme->nome }}">
@@ -109,6 +119,44 @@
         <p class="share-info">Resolução: 1080×1920px </p>
 
         <x-loading-overlay id="page-loading" text="Carregando..." />
+
+        {{-- Script de controle de modo --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const btnModeDefault = document.getElementById('btn-mode-default');
+                const btnModePoster = document.getElementById('btn-mode-poster');
+                const sharePreview = document.getElementById('share-preview');
+
+                if (!btnModeDefault || !btnModePoster || !sharePreview) {
+                    console.warn('Elementos de toggle de modo não encontrados');
+                    return;
+                }
+
+                // Função para alterar modo
+                function setMode(mode) {
+                    if (mode === 'default') {
+                        sharePreview.classList.remove('mode-poster');
+                        sharePreview.classList.add('mode-default');
+                        btnModeDefault.classList.add('active');
+                        btnModePoster.classList.remove('active');
+                    } else if (mode === 'poster') {
+                        sharePreview.classList.remove('mode-default');
+                        sharePreview.classList.add('mode-poster');
+                        btnModePoster.classList.add('active');
+                        btnModeDefault.classList.remove('active');
+                    }
+                }
+
+                // Event listeners
+                btnModeDefault.addEventListener('click', function() {
+                    setMode('default');
+                });
+
+                btnModePoster.addEventListener('click', function() {
+                    setMode('poster');
+                });
+            });
+        </script>
 
     </div>
 </div>

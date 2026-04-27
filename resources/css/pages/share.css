@@ -26,6 +26,42 @@
 .theme-btn.selected { outline: 3px solid #fff; }
 
 
+/* SELETOR DE MODO DE VISUALIZAÇÃO */
+.preview-mode-toggle {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.mode-btn {
+    padding: 10px 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.mode-btn.active {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.mode-btn.active:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
 /* POSTER PREVIEW */
 .preview-poster {
     width: 75%;
