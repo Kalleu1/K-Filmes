@@ -48,9 +48,51 @@
     /* Estilos do modo padrão - mantém comportamento atual */
 }
 
-/* Modo poster (para futura extensão) */
+/* Modo poster (full-screen imersivo) */
 .share-preview.mode-poster {
-    /* Estilos específicos do modo poster será adicionado aqui */
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+}
+
+/* Poster em modo full */
+.share-preview.mode-poster .preview-poster {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    margin: 0;
+}
+
+/* Título oculto em modo poster */
+.share-preview.mode-poster .preview-title {
+    display: none;
+}
+
+/* Nota sobreposta no poster */
+.share-preview.mode-poster .preview-rating {
+    position: absolute;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 16px;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+/* Rodapé mantido visível em modo poster */
+.share-preview.mode-poster .preview-footer {
+    position: relative;
+    z-index: 11;
+    bottom: auto;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
 }
 
 .share-preview.is-transitioning {
