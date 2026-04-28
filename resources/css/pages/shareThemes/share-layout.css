@@ -62,26 +62,24 @@
 .share-preview.mode-poster::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
+    inset: 0;
     background: linear-gradient(
         to top,
-        rgba(0, 0, 0, 0.95) 0%,
-        rgba(0, 0, 0, 0.4) 40%,
-        rgba(0, 0, 0, 0.1) 70%,
+        rgba(0, 0, 0, 0.98) 0%,
+        rgba(0, 0, 0, 0.7) 25%,
+        rgba(0, 0, 0, 0.3) 55%,
+        rgba(0, 0, 0, 0.05) 85%,
         transparent 100%
     );
     pointer-events: none;
-    z-index: 5;
+    z-index: 1;
 }
 
 /* Poster em modo full com refinamento cinematográfico */
 .share-preview.mode-poster .preview-poster {
     position: absolute;
-    width: 95%;
-    height: 95%;
+    width: 92%;
+    height: 88%;
     object-fit: cover;
     border-radius: 18px;
     margin: 0;
@@ -90,6 +88,7 @@
         0 0 40px rgba(0, 0, 0, 0.5),
         inset 0 0 20px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
+    z-index: 2;
 }
 
 /* Título oculto em modo poster */
@@ -105,10 +104,10 @@
     transform: translateX(-50%);
     font-size: 18px;
     font-weight: 700;
-    padding: 12px 20px;
+    padding: 14px 26px;
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(10px);
-    border-radius: 10px;
+    border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
         0 10px 40px rgba(0, 0, 0, 0.7),
@@ -127,16 +126,17 @@
 
 /* Rodapé refinado com integração visual */
 .share-preview.mode-poster .preview-footer {
-    position: relative;
-    z-index: 11;
-    bottom: auto;
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    right: 0;
     width: 100%;
     text-align: center;
-    padding-bottom: 20px;
     font-size: 13px;
     letter-spacing: 1px;
-    opacity: 0.85;
+    opacity: 0.95;
     transition: opacity 0.3s ease;
+    z-index: 10;
 }
 
 .share-preview.is-transitioning {
