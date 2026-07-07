@@ -347,4 +347,36 @@ public function getResponsiveBackdrop($movie): ?object
         'desktop_path' => $desktop_path,
     ];
 }
+
+public function getPopular(string $language = 'pt-BR')
+{
+    $key = "tmdb:popular:{$language}";
+    return $this->remember($key, 360, function () use ($language) {
+        return $this->get('movie/popular', [
+            'language' => $language,
+        ])['results'] ?? [];
+    });
+}
+
+public function getGenres(string $language = 'pt-BR')
+{
+    $key = "tmdb:genres:{$language}";
+    return $this->remember($key, 1440, function () use ($language) {
+        return $this->get('genre/movie/list', [
+            'language' => $language,
+        ])['genres'] ?? [];
+    });
+}
+
+public function getMoviesByGenre(int $genreId, string $language = 'pt-BR')
+{
+    $key = "tmdb:genre:movies:{$genreId}:{$language}";
+    return $this->remember($key, 720, function () use ($genreId, $language) {
+        return $this->get('discover/movie', [
+            'with_genres' => $genreId,
+            'language' => $language,
+            'sort_by' => 'popularity.desc',
+        ])['results'] ?? [];
+    });
+}
 }

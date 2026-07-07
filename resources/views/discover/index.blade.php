@@ -18,24 +18,65 @@
             <p class="discover-subtitle">Explore novas coleções e recomendações cinematográficas</p>
         </div>
 
-        <div class="discover-content-wrapper">
-            {{-- Coleção 1: Ficção Científica --}}
-            <x-discover.collection-header 
-                title="Ficção Científica" 
-                subtitle="Viagens espaciais, realidades alternativas e tecnologia futurista"
-                viewAllUrl="{{ route('discover.collection', 'ficcao-cientifica') }}"
-                icon="🚀"
-            />
-            <x-discover.collection-carousel :movies="$scifiMovies" />
+        {{-- Seção de Gêneros --}}
+        @if(!empty($genres))
+            <section class="discover-genres">
+                <h2 class="genres-title">📂 Navegar por Gênero</h2>
+                <div class="genres-list">
+                    @foreach($genres as $genre)
+                        <a href="{{ route('discover.collection', $genre['id']) }}" class="genre-pill">
+                            {{ $genre['name'] }}
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endif
 
-            {{-- Coleção 2: Clássicos do Cinema --}}
+        <div class="discover-content-wrapper">
+            {{-- 1. Em Alta --}}
             <x-discover.collection-header 
-                title="Clássicos do Cinema" 
-                subtitle="Obras-primas imperdíveis que moldaram a história do cinema"
-                viewAllUrl="{{ route('discover.collection', 'classicos') }}"
+                title="Em Alta" 
+                subtitle="Os títulos mais procurados e discutidos da semana"
+                viewAllUrl="{{ route('discover.collection', 'em-alta') }}"
+                icon="🔥"
+            />
+            <x-discover.collection-carousel :movies="$trendingMovies" />
+
+            {{-- 2. Populares --}}
+            <x-discover.collection-header 
+                title="Populares" 
+                subtitle="Os filmes mais assistidos pela comunidade"
+                viewAllUrl="{{ route('discover.collection', 'populares') }}"
+                icon="⭐"
+            />
+            <x-discover.collection-carousel :movies="$popularMovies" />
+
+            {{-- 3. Mais Votados --}}
+            <x-discover.collection-header 
+                title="Mais Votados" 
+                subtitle="Grandes sucessos de bilheteria e aclamados pela crítica"
+                viewAllUrl="{{ route('discover.collection', 'mais-votados') }}"
+                icon="🏆"
+            />
+            <x-discover.collection-carousel :movies="$topRatedMovies" />
+
+            {{-- 4. Em Cartaz --}}
+            <x-discover.collection-header 
+                title="Em Cartaz" 
+                subtitle="Filmes exibidos atualmente nos cinemas"
+                viewAllUrl="{{ route('discover.collection', 'em-cartaz') }}"
                 icon="🎬"
             />
-            <x-discover.collection-carousel :movies="$classicsMovies" />
+            <x-discover.collection-carousel :movies="$nowPlaying" />
+
+            {{-- 5. Próximos Lançamentos --}}
+            <x-discover.collection-header 
+                title="Próximos Lançamentos" 
+                subtitle="Estreias aguardadas que chegarão em breve"
+                viewAllUrl="{{ route('discover.collection', 'proximos-lancamentos') }}"
+                icon="📅"
+            />
+            <x-discover.collection-carousel :movies="$upcoming" />
         </div>
     </div>
 </div>

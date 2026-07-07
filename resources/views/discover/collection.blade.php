@@ -14,12 +14,22 @@
     <div class="discover-container">
         <div class="discover-header">
             <x-back-button context="icon" href="{{ route('discover.index') }}" />
-            <h1 class="discover-title">🎬 Coleção: {{ $id }}</h1>
-            <p class="discover-subtitle">Detalhes da coleção selecionada</p>
+            <h1 class="discover-title">🎬 {{ $title }}</h1>
+            <p class="discover-subtitle">Explore a seleção completa de filmes desta categoria</p>
         </div>
 
-        <div class="discover-content">
-            <p class="discover-placeholder-text">Esta coleção está sendo estruturada. Os filmes da coleção {{ $id }} serão exibidos aqui.</p>
+        <div class="discover-grid-wrapper">
+            <div class="discover-movies-grid">
+                @forelse($movies as $movie)
+                    <div class="discover-movie-item">
+                        <x-filmecard :filme="$movie" :campos="['poster']" />
+                    </div>
+                @empty
+                    <div class="discover-empty">
+                        <p>Nenhum filme disponível nesta coleção no momento.</p>
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
 </div>
