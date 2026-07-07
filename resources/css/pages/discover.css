@@ -81,3 +81,150 @@
     transform: scale(1.1) !important;
 }
 
+/* Collection Header Styling */
+.collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+    margin-top: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.collection-header-title {
+    font-family: 'Varela Round', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.collection-header-icon {
+    font-size: 1.5rem;
+}
+
+.collection-header-subtitle {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0.25rem 0 0 0;
+}
+
+.collection-view-all {
+    font-size: 0.875rem;
+    color: #e50914;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.collection-view-all:hover {
+    color: #ff333d;
+}
+
+/* Collection Carousel Styling */
+.collection-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+.collection-carousel {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 100%;
+    scrollbar-width: none; /* Firefox */
+}
+
+.collection-carousel::-webkit-scrollbar {
+    display: none; /* Safari/Chrome */
+}
+
+.carousel-track {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.carousel-item {
+    flex: 0 0 auto;
+    width: 150px;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.carousel-item:hover {
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(15, 15, 15, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.25s ease;
+    opacity: 0;
+}
+
+.collection-carousel-wrapper:hover .carousel-control {
+    opacity: 1;
+}
+
+.carousel-control:hover {
+    background: #e50914;
+    border-color: #e50914;
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+}
+
+.carousel-control.prev {
+    left: -20px;
+}
+
+.carousel-control.next {
+    right: -20px;
+}
+
+.carousel-empty {
+    width: 100%;
+    text-align: center;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .carousel-item {
+        width: 120px;
+    }
+    
+    .carousel-control {
+        display: none !important; /* Roll by touch on mobile */
+    }
+    
+    .collection-header-title {
+        font-size: 1.25rem;
+    }
+}
+
+

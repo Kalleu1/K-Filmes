@@ -18,8 +18,24 @@
             <p class="discover-subtitle">Explore novas coleções e recomendações cinematográficas</p>
         </div>
 
-        <div class="discover-content">
-            <p class="discover-placeholder-text">A funcionalidade de descoberta está sendo preparada. Em breve você poderá ver coleções e recomendações personalizadas.</p>
+        <div class="discover-content-wrapper">
+            {{-- Coleção 1: Ficção Científica --}}
+            <x-discover.collection-header 
+                title="Ficção Científica" 
+                subtitle="Viagens espaciais, realidades alternativas e tecnologia futurista"
+                viewAllUrl="{{ route('discover.collection', 'ficcao-cientifica') }}"
+                icon="🚀"
+            />
+            <x-discover.collection-carousel :movies="$scifiMovies" />
+
+            {{-- Coleção 2: Clássicos do Cinema --}}
+            <x-discover.collection-header 
+                title="Clássicos do Cinema" 
+                subtitle="Obras-primas imperdíveis que moldaram a história do cinema"
+                viewAllUrl="{{ route('discover.collection', 'classicos') }}"
+                icon="🎬"
+            />
+            <x-discover.collection-carousel :movies="$classicsMovies" />
         </div>
     </div>
 </div>
