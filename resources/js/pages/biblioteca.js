@@ -3,63 +3,112 @@ export default function InitBiblioteca() {
     if (!root) return;
 
     const filterBtns = Array.from(root.querySelectorAll('.filter-btn'));
+    
+    // Cria o overlay apenas para uso em mobile
     const overlayContainer = document.createElement('div');
     overlayContainer.classList.add('filters-overlay');
-    root.querySelector('.filters-minimal').appendChild(overlayContainer);
+    const filtersMinimal = root.querySelector('.filters-minimal');
+    if (filtersMinimal) {
+        filtersMinimal.appendChild(overlayContainer);
+    }
 
-    // Abre overlay com o conteúdo do filtro clicado
+    // Função para fechar todos os menus locais (desktop)
+    function closeAllLocalMenus() {
+        const localMenus = Array.from(root.querySelectorAll('.filter-menu'));
+        localMenus.forEach(m => m.classList.remove('active'));
+    }
+
+    // Abre overlay ou menu com o conteúdo do filtro clicado
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
 
+            const isMobile = window.innerWidth <= 768;
             const filterType = this.dataset.filter;
             const menu = root.querySelector(`.filter-menu[data-menu="${filterType}"]`);
             if (!menu) return;
 
-            const isActive = overlayContainer.classList.contains('active') && overlayContainer.dataset.activeFilter === filterType;
+            if (isMobile) {
+                // --- COMPORTAMENTO MOBILE (OVERLAY) ---
+                closeAllLocalMenus();
+                const isActive = overlayContainer.classList.contains('active') && overlayContainer.dataset.activeFilter === filterType;
 
-            // Fecha overlay se estiver aberto
-            overlayContainer.classList.remove('active');
-            overlayContainer.innerHTML = '';
-            filterBtns.forEach(b => b.classList.remove('active'));
-            filterBtns.forEach(b => b.setAttribute('aria-expanded', 'false'));
+                overlayContainer.classList.remove('active');
+                overlayContainer.innerHTML = '';
+                filterBtns.forEach(b => b.classList.remove('active'));
+                filterBtns.forEach(b => b.setAttribute('aria-expanded', 'false'));
 
-            if (!isActive) {
-                // Copia conteúdo do menu para o overlay
-                overlayContainer.innerHTML = menu.innerHTML;
-                overlayContainer.classList.add('active');
-                overlayContainer.dataset.activeFilter = filterType;
+                if (!isActive) {
+                    overlayContainer.innerHTML = menu.innerHTML;
+                    overlayContainer.classList.add('active');
+                    overlayContainer.dataset.activeFilter = filterType;
 
-                // Ajusta posição vertical
-                const rect = root.querySelector('.filters-minimal').getBoundingClientRect();
-                const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                overlayContainer.style.top = rect.bottom + scrollTop + -0 + 'px'; // 5px de espaçamento
-                overlayContainer.style.left = rect.left + rect.width / 2 + 'px';
-                overlayContainer.style.transform = 'translateX(-50%)';
+                    const rect = filtersMinimal.getBoundingClientRect();
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    overlayContainer.style.top = (rect.bottom + scrollTop) + 'px';
+                    overlayContainer.style.left = (rect.left + rect.width / 2) + 'px';
+                    overlayContainer.style.transform = 'translateX(-50%) translateY(0)';
 
-                // Marca botão ativo
-                this.classList.add('active');
-                this.setAttribute('aria-expanded', 'true');
+                    this.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
 
-                // Focus no primeiro input/button
-                const firstInput = overlayContainer.querySelector('input, select, textarea, button');
-                if (firstInput) firstInput.focus();
+                    const firstInput = overlayContainer.querySelector('input, select, textarea, button');
+                    if (firstInput) firstInput.focus();
+                }
+            } else {
+                // --- COMPORTAMENTO DESKTOP (LOCAL DROPDOWN) ---
+                overlayContainer.classList.remove('active');
+                overlayContainer.innerHTML = '';
+
+                const isAlreadyActive = menu.classList.contains('active');
+                
+                // Limpa outros botões e menus locais
+                filterBtns.forEach(b => {
+                    if (b !== this) {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                closeAllLocalMenus();
+
+                if (!isAlreadyActive) {
+                    menu.classList.add('active');
+                    this.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
+                    
+                    const firstInput = menu.querySelector('input, select, textarea, button');
+                    if (firstInput) firstInput.focus();
+                } else {
+                    this.classList.remove('active');
+                    this.setAttribute('aria-expanded', 'false');
+                }
             }
         });
     });
 
-    // Fecha overlay ao clicar fora
+    // Fecha tudo ao clicar fora
     document.addEventListener('click', () => {
+        // Mobile
         overlayContainer.classList.remove('active');
         overlayContainer.innerHTML = '';
+        
+        // Desktop
+        closeAllLocalMenus();
+        
         filterBtns.forEach(b => {
             b.classList.remove('active');
             b.setAttribute('aria-expanded', 'false');
         });
     });
 
-    // Não fecha ao clicar dentro do overlay
+    // Impede fechar ao clicar dentro do overlay mobile
     overlayContainer.addEventListener('click', e => e.stopPropagation());
+
+    // Impede fechar ao clicar dentro dos menus desktop locales
+    const localMenus = Array.from(root.querySelectorAll('.filter-menu'));
+    localMenus.forEach(m => {
+        m.addEventListener('click', e => e.stopPropagation());
+    });
 }
 
 

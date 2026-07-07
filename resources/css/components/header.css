@@ -55,3 +55,9 @@ header div.header-right svg:hover {
   }
 }
 
+@media (max-width: 768px) {
+  header {
+    padding: 0 16px;
+  }
+}
+
