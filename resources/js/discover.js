@@ -5,7 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Módulo Descobrir inicializado com sucesso!');
     
-    // Configurar carrosséis
+    // 1. Configurar carrosséis e setas
     const carousels = document.querySelectorAll('.collection-carousel-wrapper');
     carousels.forEach(wrapper => {
         const carousel = wrapper.querySelector('.collection-carousel');
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextBtn = wrapper.querySelector('.carousel-control.next');
         
         if (carousel && prevBtn && nextBtn) {
-            // Distância aproximada para deslizar ~3 cards
             const scrollAmount = 480; 
             
             prevBtn.addEventListener('click', () => {
@@ -24,16 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             });
             
-            // Gerenciar visibilidade das setas conforme posição do scroll
             const toggleButtons = () => {
                 const scrollLeft = carousel.scrollLeft;
                 const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
                 
-                // Exibe se houver scroll para a esquerda (> 5px de tolerância)
                 prevBtn.style.opacity = scrollLeft > 5 ? '1' : '0';
                 prevBtn.style.pointerEvents = scrollLeft > 5 ? 'auto' : 'none';
                 
-                // Exibe se houver scroll para a direita
                 nextBtn.style.opacity = scrollLeft < maxScrollLeft - 5 ? '1' : '0';
                 nextBtn.style.pointerEvents = scrollLeft < maxScrollLeft - 5 ? 'auto' : 'none';
             };
@@ -41,8 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
             carousel.addEventListener('scroll', toggleButtons);
             window.addEventListener('resize', toggleButtons);
             
-            // Executa no carregamento após breve atraso para renderização correta
             setTimeout(toggleButtons, 150);
+        }
+    });
+
+    // 2. Monitoramento de carregamento de imagens para fade-in suave (removendo shimmer)
+    const moviePosters = document.querySelectorAll('.discover-page .filme-poster');
+    moviePosters.forEach(img => {
+        // Se a imagem já estiver no cache e carregada
+        if (img.complete) {
+            img.classList.add('loaded');
+        } else {
+            // Caso contrário, adiciona o escutador de load
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+            });
+            // Em caso de erro, também exibe para não ficar eternamente em shimmer
+            img.addEventListener('error', () => {
+                img.classList.add('loaded');
+            });
         }
     });
 });

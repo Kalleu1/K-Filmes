@@ -323,4 +323,113 @@
     }
 }
 
+/* ==========================================
+   REFINE VISUALS & MICRO-INTERACTIONS
+   ========================================== */
+
+/* Efeito Glow e Elevamento nos Cards no Hover */
+.discover-page .filme-card {
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.3s ease !important;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.discover-page .filme-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: rgba(229, 9, 20, 0.4);
+    box-shadow: 0 12px 30px rgba(229, 9, 20, 0.25) !important;
+}
+
+/* Skeleton Shimmer para carregamento de posters */
+.discover-page .filme-card a {
+    display: block;
+    position: relative;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 2/3;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Fade-in suave de imagens ao carregar */
+.discover-page .filme-poster {
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.discover-page .filme-poster.loaded {
+    opacity: 1;
+}
+
+/* Animação Stagger para os elementos da página de Descoberta */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.discover-genres {
+    opacity: 0;
+    animation: fadeInUp 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.discover-content-wrapper > * {
+    opacity: 0;
+    animation: fadeInUp 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Atrasos stagger incrementais para entrada fluida em onda */
+.discover-content-wrapper > :nth-child(1) { animation-delay: 0.08s; }
+.discover-content-wrapper > :nth-child(2) { animation-delay: 0.14s; }
+.discover-content-wrapper > :nth-child(3) { animation-delay: 0.20s; }
+.discover-content-wrapper > :nth-child(4) { animation-delay: 0.26s; }
+.discover-content-wrapper > :nth-child(5) { animation-delay: 0.32s; }
+.discover-content-wrapper > :nth-child(6) { animation-delay: 0.38s; }
+.discover-content-wrapper > :nth-child(7) { animation-delay: 0.44s; }
+.discover-content-wrapper > :nth-child(8) { animation-delay: 0.50s; }
+.discover-content-wrapper > :nth-child(9) { animation-delay: 0.56s; }
+.discover-content-wrapper > :nth-child(10) { animation-delay: 0.62s; }
+
+/* Refinamento das Setas / Controles do Carrossel */
+.collection-carousel-wrapper:hover .carousel-control.prev {
+    left: -10px !important;
+}
+
+.collection-carousel-wrapper:hover .carousel-control.next {
+    right: -10px !important;
+}
+
+.carousel-control {
+    will-change: transform, opacity, left, right;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.carousel-control:hover {
+    transform: translateY(-50%) scale(1.15) !important;
+}
+
+/* Refinamento do Ver Todos */
+.collection-view-all i {
+    transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.collection-view-all:hover i {
+    transform: translateX(5px);
+}
+
+
 
