@@ -97,9 +97,9 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('dashboard') }}" class="nav-link">
-                                <div class="nav-icon">⚙️</div>
-                                <span class="nav-text">Configurações(Em andamento)</span>
+                            <a href="{{ route('discover.index') }}" class="nav-link {{ request()->routeIs('discover.*') ? 'nav-link--active' : '' }}" @if(request()->routeIs('discover.*')) aria-current="page" @endif>
+                                <div class="nav-icon">✨</div>
+                                <span class="nav-text">Descobrir</span>
                                 <div class="nav-glow"></div>
                             </a>
                         </li>

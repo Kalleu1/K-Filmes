@@ -65,3 +65,19 @@
         padding: 1.5rem;
     }
 }
+
+/* Destacar o item do menu lateral ativo na página de Descoberta */
+.dashboard_sidebar .nav-link--active {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-left: 3px solid #e50914 !important;
+    padding-left: calc(1rem - 3px) !important;
+}
+
+.dashboard_sidebar .nav-link--active .nav-glow {
+    opacity: 1 !important;
+}
+
+.dashboard_sidebar .nav-link--active .nav-icon {
+    transform: scale(1.1) !important;
+}
+

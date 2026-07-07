@@ -5,7 +5,7 @@
         || request()->routeIs('filmes.buscarBiblioteca')
         || request()->routeIs('filmes.assistidos')
         || request()->routeIs('filmes.naoAssistidos');
-    $isSettings = request()->routeIs('dashboard') && request('tab') === 'config';
+    $isDiscover = request()->routeIs('discover.*');
 @endphp
 
 <nav class="bottom-nav" aria-label="Navegacao principal mobile">
@@ -28,8 +28,8 @@
         <span class="bottom-nav__label">Biblioteca</span>
     </a>
 
-    <a href="{{ route('dashboard', ['tab' => 'config']) }}" class="bottom-nav__item {{ $isSettings ? 'is-active' : '' }}" @if($isSettings) aria-current="page" @endif>
-        <i class="fa-solid fa-gear bottom-nav__icon" aria-hidden="true"></i>
-        <span class="bottom-nav__label">Config</span>
+    <a href="{{ route('discover.index') }}" class="bottom-nav__item {{ $isDiscover ? 'is-active' : '' }}" @if($isDiscover) aria-current="page" @endif>
+        <i class="fa-solid fa-compass bottom-nav__icon" aria-hidden="true"></i>
+        <span class="bottom-nav__label">Descobrir</span>
     </a>
 </nav>
