@@ -1,0 +1,67 @@
+/* Discover Page Styling - Custom CSS (No Tailwind) */
+
+.discover-page {
+    min-height: 100vh;
+    padding: 2rem 1rem 6rem; /* extra bottom padding for bottom nav mobile */
+    background: transparent;
+    color: #ffffff;
+}
+
+.discover-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.discover-header {
+    margin-bottom: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.discover-title {
+    font-family: 'Varela Round', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #e50914; /* cinema red */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: 0.5rem;
+}
+
+.discover-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.discover-content {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2.5rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.discover-placeholder-text {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Mobile responsive optimization (Mobile First) */
+@media (max-width: 767px) {
+    .discover-page {
+        padding: 1.5rem 1rem 7rem;
+    }
+    
+    .discover-title {
+        font-size: 1.75rem;
+    }
+    
+    .discover-content {
+        padding: 1.5rem;
+    }
+}

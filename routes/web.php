@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DiscoverController;
 use App\Http\Controllers\FilmeController;
 use App\Http\Controllers\FilmeDoDiaController;
 use App\Http\Controllers\ShareController;
@@ -86,6 +87,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/filme-do-dia/sortear', [FilmeDoDiaController::class, 'sortear'])
         ->name('filme-do-dia.sortear');
+
+    /*
+    | Descobrir
+    */
+    Route::get('/descobrir', [DiscoverController::class, 'index'])
+        ->name('discover.index');
+
+    Route::get('/descobrir/colecao/{id}', [DiscoverController::class, 'collection'])
+        ->name('discover.collection');
 
 
     Route::resource('filmes', FilmeController::class)->except(['create', 'store']);

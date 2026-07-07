@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('filmes', function (Blueprint $table) {
             $table->id(); // chave primária
+            $table->foreignId('user_id')->nullable(); // ID do usuário
             $table->string('nome'); // Nome do filme
             $table->text('descricao')->nullable(); // Descrição do filme
             $table->string('plataforma')->nullable(); // Ex: Netflix, Prime, etc
@@ -22,7 +23,6 @@ return new class extends Migration
             $table->decimal('nota', 3, 1)->nullable(); // Nota (ex: 8.5)
             $table->text('comentarios')->nullable(); // Comentários adicionais
             $table->string('poster')->nullable(); // Caminho da imagem/poster
-            $table->string('poster_banner')->nullable();
             $table->timestamps(); // created_at e updated_at
         });
     }

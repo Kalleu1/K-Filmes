@@ -7,6 +7,7 @@
         <meta name="theme-color" content="#0f0f0f">
         @vite('resources/css/app.css')
         @vite(['resources/js/app.js'])
+        @stack('styles')
         <title>{{ config('app.name', 'K-Filmes') }}</title>
 
         <!-- Fonts -->
@@ -37,5 +38,6 @@
 
         @include('components.toast')
         
+        @stack('scripts')
     </body>
 </html>
