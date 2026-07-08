@@ -379,4 +379,54 @@ public function getMoviesByGenre(int $genreId, string $language = 'pt-BR')
         ])['results'] ?? [];
     });
 }
+
+public function getPaginatedCollection(string $collection, int $page = 1, $extraId = null, string $language = 'pt-BR')
+{
+    $key = "tmdb:collection:{$collection}:{$page}:{$extraId}:{$language}";
+    return $this->remember($key, 60, function () use ($collection, $page, $extraId, $language) {
+        $endpoint = '';
+        $params = [
+            'language' => $language,
+            'page' => $page,
+        ];
+        
+        switch ($collection) {
+            case 'em-alta':
+                $endpoint = 'trending/movie/week';
+                break;
+            case 'populares':
+                $endpoint = 'movie/popular';
+                break;
+            case 'mais-votados':
+                $endpoint = 'movie/top_rated';
+                break;
+            case 'em-cartaz':
+                $endpoint = 'movie/now_playing';
+                $params['region'] = 'BR';
+                break;
+            case 'proximos-lancamentos':
+                $endpoint = 'movie/upcoming';
+                $params['region'] = 'BR';
+                break;
+            case 'genero':
+                $endpoint = 'discover/movie';
+                $params['with_genres'] = $extraId;
+                $params['sort_by'] = 'popularity.desc';
+                break;
+            default:
+                return [
+                    'results' => [],
+                    'total_pages' => 1,
+                    'page' => $page
+                ];
+        }
+        
+        $response = $this->get($endpoint, $params);
+        return [
+            'results' => $response['results'] ?? [],
+            'total_pages' => $response['total_pages'] ?? 1,
+            'page' => $response['page'] ?? 1,
+        ];
+    });
+}
 }

@@ -10,7 +10,7 @@
 @endpush
 
 @section('content')
-<div class="discover-page discover-collection-page">
+<div class="discover-page discover-collection-page" data-collection-id="{{ $id }}" data-current-page="{{ $page }}" data-total-pages="{{ $totalPages }}">
     <div class="discover-container">
         <div class="collection-page-header">
             <x-back-button context="icon" href="{{ route('discover.index') }}" />

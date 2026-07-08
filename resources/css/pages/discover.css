@@ -497,3 +497,33 @@
         gap: 1rem;
     }
 }
+
+/* Spinner de Carregamento Progressivo (Dourado/Deep Blue) */
+.discover-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.discover-loader .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(255, 255, 255, 0.05);
+    border-top: 3px solid var(--color-primary); /* Destaque dourado */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.discover-loader.loading .spinner {
+    opacity: 1;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

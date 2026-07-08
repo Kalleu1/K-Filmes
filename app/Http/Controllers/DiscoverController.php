@@ -36,54 +36,53 @@ class DiscoverController extends Controller
     }
 
     /**
-     * Exibe a visualização completa de uma coleção/gênero específico do TMDB.
+     * Exibe a visualização completa de uma coleção/gênero específico do TMDB com paginação progressiva.
      *
      * @param string|int $id
+     * @param Request $request
      * @param TMDBService $tmdb
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
      */
-    public function collection($id, TMDBService $tmdb)
+    public function collection($id, Request $request, TMDBService $tmdb)
     {
-        $title = 'Coleção';
-        $rawMovies = [];
+        $page = (int) $request->input('page', 1);
+        $isGenre = is_numeric($id);
 
-        switch ($id) {
-            case 'em-alta':
-                $title = 'Em Alta';
-                $rawMovies = $tmdb->getTrending();
-                break;
-            case 'populares':
-                $title = 'Populares';
-                $rawMovies = $tmdb->getPopular();
-                break;
-            case 'mais-votados':
-                $title = 'Mais Votados';
-                $rawMovies = $tmdb->getTopRated();
-                break;
-            case 'em-cartaz':
-                $title = 'Em Cartaz';
-                $rawMovies = $tmdb->getNowPlaying();
-                break;
-            case 'proximos-lancamentos':
-                $title = 'Próximos Lançamentos';
-                $rawMovies = $tmdb->getUpcoming();
-                break;
-            default:
-                // Se for um ID numérico de gênero
-                if (is_numeric($id)) {
-                    $genres = collect($tmdb->getGenres());
-                    $genre = $genres->firstWhere('id', (int) $id);
-                    $title = $genre['name'] ?? 'Gênero';
-                    $rawMovies = $tmdb->getMoviesByGenre((int) $id);
-                } else {
-                    $title = ucfirst(str_replace('-', ' ', $id));
-                    $rawMovies = [];
-                }
-                break;
+        $collectionKey = $isGenre ? 'genero' : $id;
+        $extraId = $isGenre ? (int) $id : null;
+
+        // Buscar filmes usando o método paginado
+        $paginatedData = $tmdb->getPaginatedCollection($collectionKey, $page, $extraId);
+        $movies = $tmdb->normalizeMovies($paginatedData['results']);
+        $totalPages = (int) $paginatedData['total_pages'];
+
+        // Determinar o título do cabeçalho
+        $title = 'Coleção';
+        if ($isGenre) {
+            $genres = collect($tmdb->getGenres());
+            $genre = $genres->firstWhere('id', (int) $id);
+            $title = $genre['name'] ?? 'Gênero';
+        } else {
+            $titles = [
+                'em-alta' => 'Em Alta',
+                'populares' => 'Populares',
+                'mais-votados' => 'Mais Votados',
+                'em-cartaz' => 'Em Cartaz',
+                'proximos-lancamentos' => 'Próximos Lançamentos',
+            ];
+            $title = $titles[$id] ?? ucfirst(str_replace('-', ' ', $id));
         }
 
-        $movies = $tmdb->normalizeMovies($rawMovies);
+        // Se for uma requisição AJAX, retornar apenas os itens do grid em formato JSON
+        if ($request->ajax()) {
+            $html = view('discover.partials.movie-grid-items', compact('movies'))->render();
+            return response()->json([
+                'html' => $html,
+                'page' => $page,
+                'total_pages' => $totalPages,
+            ]);
+        }
 
-        return view('discover.collection', compact('id', 'title', 'movies'));
+        return view('discover.collection', compact('id', 'title', 'movies', 'page', 'totalPages'));
     }
 }
