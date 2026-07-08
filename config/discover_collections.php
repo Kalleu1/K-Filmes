@@ -43,13 +43,16 @@ return [
             'params' => [],
         ],
 
-        'mais-votados' => [
-            'slug' => 'mais-votados',
-            'title' => 'Mais Votados',
-            'subtitle' => 'Grandes sucessos de bilheteria e aclamados pela crítica',
-            'type' => 'top_rated',
-            'icon' => '🏆',
-            'params' => [],
+        'os-melhores-filmes' => [
+            'slug' => 'os-melhores-filmes',
+            'title' => 'Os Melhores Filmes',
+            'subtitle' => 'As maiores obras do cinema, ordenadas pela avaliação da comunidade',
+            'type' => 'discover',
+            'icon' => '🥇',
+            'params' => [
+                'sort_by' => 'vote_average.desc',
+                'vote_count.gte' => 5000,
+            ],
         ],
 
         'em-cartaz' => [
@@ -71,17 +74,19 @@ return [
         ],
 
         'adrenalina-maxima' => [
-    'slug' => 'adrenalina-maxima',
-    'title' => 'Adrenalina Máxima',
-    'subtitle' => 'Explosões, perseguições e cenas de ação do começo ao fim',
-    'type' => 'discover',
-    'icon' => '💥',
-    'params' => [
-        'with_genres' => '28,12',
-        'sort_by' => 'popularity.desc',
-        'vote_count.gte' => 500,
+            'slug' => 'adrenalina-maxima',
+            'title' => 'Adrenalina Máxima',
+            'subtitle' => 'Explosões, perseguições e cenas de ação do começo ao fim',
+            'type' => 'discover',
+            'icon' => '💥',
+            'params' => [
+                'with_genres' => '28,12',
+                'sort_by' => 'popularity.desc',
+                'vote_count.gte' => 500,
     ],
         ],
+
+
 
         
 
