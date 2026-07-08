@@ -93,7 +93,7 @@
                                 <i class="fa-solid fa-trash"></i>
                             </button>
 
-                            <x-back-button context="icon" href="{{ route('filmes.biblioteca') }}"/>
+                            <x-back-button context="icon" />
                             <x-back-to-dashboard context="icon"/>
                         </div>
                         

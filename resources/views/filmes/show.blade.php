@@ -58,7 +58,7 @@
 
                     <div class="hero-actions">
 
-                        <x-back-button context="icon" href="{{ route('filmes.biblioteca') }}"/>
+                        <x-back-button context="icon" />
                         <x-back-to-dashboard context="icon"/>
                         
                         <button class="btn-icon" data-action="open-edit-modal">

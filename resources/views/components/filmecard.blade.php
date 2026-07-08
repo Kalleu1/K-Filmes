@@ -1,4 +1,14 @@
-<div class="filme-card"> {{-- Poster --}}
+@php
+    $movieId = '';
+    if (isset($filme)) {
+        if (is_object($filme)) {
+            $movieId = $filme->tmdb_id ?? $filme->id ?? '';
+        } elseif (is_array($filme)) {
+            $movieId = $filme['tmdb_id'] ?? $filme['id'] ?? '';
+        }
+    }
+@endphp
+<div class="filme-card" data-movie-id="{{ $movieId }}"> {{-- Poster --}}
 
     @if(in_array('poster', $campos))
         <a href="{{ 

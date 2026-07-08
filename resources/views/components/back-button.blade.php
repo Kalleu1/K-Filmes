@@ -3,6 +3,7 @@
     'href' => url()->previous(),
 ])
 <a href="{{ $href }}"
+   onclick="if(window.history.length > 1) { window.history.back(); return false; }"
    @class([
         'back-button',
 
