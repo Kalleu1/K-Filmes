@@ -380,38 +380,48 @@ public function getMoviesByGenre(int $genreId, string $language = 'pt-BR')
     });
 }
 
-public function getPaginatedCollection(string $collection, int $page = 1, $extraId = null, string $language = 'pt-BR')
+public function getPaginatedCollection(array $config, int $page = 1, string $language = 'pt-BR')
 {
-    $key = "tmdb:collection:{$collection}:{$page}:{$extraId}:{$language}";
-    return $this->remember($key, 60, function () use ($collection, $page, $extraId, $language) {
+    $type = $config['type'] ?? '';
+    $slug = $config['slug'] ?? 'default';
+    $params = $config['params'] ?? [];
+    
+    $key = "tmdb:collection:{$slug}:{$page}:{$language}";
+    
+    return $this->remember($key, 60, function () use ($type, $params, $page, $language) {
         $endpoint = '';
-        $params = [
+        $query = [
             'language' => $language,
             'page' => $page,
         ];
         
-        switch ($collection) {
-            case 'em-alta':
-                $endpoint = 'trending/movie/week';
+        switch ($type) {
+            case 'trending':
+                $timeWindow = $params['time_window'] ?? 'week';
+                $endpoint = "trending/movie/{$timeWindow}";
                 break;
-            case 'populares':
+            case 'popular':
                 $endpoint = 'movie/popular';
                 break;
-            case 'mais-votados':
+            case 'top_rated':
                 $endpoint = 'movie/top_rated';
                 break;
-            case 'em-cartaz':
+            case 'now_playing':
                 $endpoint = 'movie/now_playing';
-                $params['region'] = 'BR';
+                $query['region'] = 'BR';
                 break;
-            case 'proximos-lancamentos':
+            case 'upcoming':
                 $endpoint = 'movie/upcoming';
-                $params['region'] = 'BR';
+                $query['region'] = 'BR';
                 break;
-            case 'genero':
+            case 'genre':
                 $endpoint = 'discover/movie';
-                $params['with_genres'] = $extraId;
-                $params['sort_by'] = 'popularity.desc';
+                $query['with_genres'] = $params['genre_id'] ?? null;
+                $query['sort_by'] = 'popularity.desc';
+                break;
+            case 'discover':
+                $endpoint = 'discover/movie';
+                $query = array_merge($query, $params);
                 break;
             default:
                 return [
@@ -421,7 +431,7 @@ public function getPaginatedCollection(string $collection, int $page = 1, $extra
                 ];
         }
         
-        $response = $this->get($endpoint, $params);
+        $response = $this->get($endpoint, $query);
         return [
             'results' => $response['results'] ?? [],
             'total_pages' => $response['total_pages'] ?? 1,

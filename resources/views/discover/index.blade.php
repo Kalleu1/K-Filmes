@@ -33,60 +33,17 @@
         @endif
 
         <div class="discover-content-wrapper">
-            {{-- 1. Em Alta --}}
-            <div class="discover-section">
-                <x-discover.collection-header 
-                    title="Em Alta" 
-                    subtitle="Os títulos mais procurados e discutidos da semana"
-                    viewAllUrl="{{ route('discover.collection', 'em-alta') }}"
-                    icon="🔥"
-                />
-                <x-discover.collection-carousel :movies="$trendingMovies" />
-            </div>
-
-            {{-- 2. Populares --}}
-            <div class="discover-section">
-                <x-discover.collection-header 
-                    title="Populares" 
-                    subtitle="Os filmes mais assistidos pela comunidade"
-                    viewAllUrl="{{ route('discover.collection', 'populares') }}"
-                    icon="⭐"
-                />
-                <x-discover.collection-carousel :movies="$popularMovies" />
-            </div>
-
-            {{-- 3. Mais Votados --}}
-            <div class="discover-section">
-                <x-discover.collection-header 
-                    title="Mais Votados" 
-                    subtitle="Grandes sucessos de bilheteria e aclamados pela crítica"
-                    viewAllUrl="{{ route('discover.collection', 'mais-votados') }}"
-                    icon="🏆"
-                />
-                <x-discover.collection-carousel :movies="$topRatedMovies" />
-            </div>
-
-            {{-- 4. Em Cartaz --}}
-            <div class="discover-section">
-                <x-discover.collection-header 
-                    title="Em Cartaz" 
-                    subtitle="Filmes exibidos atualmente nos cinemas"
-                    viewAllUrl="{{ route('discover.collection', 'em-cartaz') }}"
-                    icon="🎬"
-                />
-                <x-discover.collection-carousel :movies="$nowPlaying" />
-            </div>
-
-            {{-- 5. Próximos Lançamentos --}}
-            <div class="discover-section">
-                <x-discover.collection-header 
-                    title="Próximos Lançamentos" 
-                    subtitle="Estreias aguardadas que chegarão em breve"
-                    viewAllUrl="{{ route('discover.collection', 'proximos-lancamentos') }}"
-                    icon="📅"
-                />
-                <x-discover.collection-carousel :movies="$upcoming" />
-            </div>
+            @foreach($collections as $collection)
+                <div class="discover-section">
+                    <x-discover.collection-header 
+                        title="{{ $collection['title'] }}" 
+                        subtitle="{{ $collection['subtitle'] ?? '' }}"
+                        viewAllUrl="{{ route('discover.collection', $collection['slug']) }}"
+                        icon="{{ $collection['icon'] ?? '🎬' }}"
+                    />
+                    <x-discover.collection-carousel :movies="$collection['movies']" />
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
