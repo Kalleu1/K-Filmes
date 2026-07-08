@@ -70,163 +70,75 @@ return [
             'params' => [],
         ],
 
-        // --- 2. Gêneros do Cinema ---
-        'acao' => [
-            'slug' => 'acao',
-            'title' => 'Ação',
-            'subtitle' => 'Adrenalina pura, perseguições e combates eletrizantes',
-            'type' => 'genre',
-            'icon' => '⚔️',
+        'adrenalina-maxima' => [
+    'slug' => 'adrenalina-maxima',
+    'title' => 'Adrenalina Máxima',
+    'subtitle' => 'Explosões, perseguições e cenas de ação do começo ao fim',
+    'type' => 'discover',
+    'icon' => '💥',
+    'params' => [
+        'with_genres' => '28,12',
+        'sort_by' => 'popularity.desc',
+        'vote_count.gte' => 500,
+    ],
+        ],
+
+        
+
+        'prepare-os-lencos' => [
+            'slug' => 'prepare-os-lencos',
+            'title' => 'Prepare os Lenços',
+            'subtitle' => 'Emoção, superação e histórias que tocam o coração',
+            'type' => 'discover',
+            'icon' => '😭',
             'params' => [
-                'genre_id' => 28,
+                'with_genres' => '18,10749',
+                'vote_average.gte' => 7.0,
+                'vote_count.gte' => 500,
             ],
         ],
 
-        'comedia' => [
-            'slug' => 'comedia',
-            'title' => 'Comédia',
-            'subtitle' => 'Dose diária de bom humor, risadas e diversão',
-            'type' => 'genre',
+        'para-assistir-a-noite' => [
+            'slug' => 'para-assistir-a-noite',
+            'title' => 'Para Assistir à Noite',
+            'subtitle' => 'Suspense, mistério e terror para uma sessão inesquecível',
+            'type' => 'discover',
+            'icon' => '🌙',
+            'params' => [
+                'with_genres' => '27,53,9648',
+                'sort_by' => 'popularity.desc',
+            ],
+        ],
+
+        'humor-garantido' => [
+            'slug' => 'humor-garantido',
+            'title' => 'Humor Garantido',
+            'subtitle' => 'Comédias para relaxar e dar boas risadas',
+            'type' => 'discover',
             'icon' => '😂',
             'params' => [
-                'genre_id' => 35,
-            ],
-        ],
-
-        'terror' => [
-            'slug' => 'terror',
-            'title' => 'Terror',
-            'subtitle' => 'Sustos, tensão psicológica e mistérios sombrios',
-            'type' => 'genre',
-            'icon' => '👻',
-            'params' => [
-                'genre_id' => 27,
-            ],
-        ],
-
-        'ficcao-cientifica' => [
-            'slug' => 'ficcao-cientifica',
-            'title' => 'Ficção Científica',
-            'subtitle' => 'Viagens espaciais, futuros distópicos e tecnologia avançada',
-            'type' => 'genre',
-            'icon' => '🚀',
-            'params' => [
-                'genre_id' => 878,
-            ],
-        ],
-
-        'romance' => [
-            'slug' => 'romance',
-            'title' => 'Romance',
-            'subtitle' => 'Histórias de amor, encontros marcantes e emoção',
-            'type' => 'genre',
-            'icon' => '❤️',
-            'params' => [
-                'genre_id' => 10749,
-            ],
-        ],
-
-        'drama' => [
-            'slug' => 'drama',
-            'title' => 'Drama',
-            'subtitle' => 'Narrativas profundas sobre a complexidade humana',
-            'type' => 'genre',
-            'icon' => '🎭',
-            'params' => [
-                'genre_id' => 18,
-            ],
-        ],
-
-        'misterio' => [
-            'slug' => 'misterio',
-            'title' => 'Mistério',
-            'subtitle' => 'Casos intrigantes e segredos que exigem decifração',
-            'type' => 'genre',
-            'icon' => '🕵️',
-            'params' => [
-                'genre_id' => 9648,
-            ],
-        ],
-
-        'animacao' => [
-            'slug' => 'animacao',
-            'title' => 'Animação',
-            'subtitle' => 'Arte visual marcante e fantasia para todas as idades',
-            'type' => 'genre',
-            'icon' => '🎨',
-            'params' => [
-                'genre_id' => 16,
-            ],
-        ],
-
-        // --- 3. Filtros Especiais e Descobertas ---
-        'classicos' => [
-            'slug' => 'classicos',
-            'title' => 'Clássicos do Cinema',
-            'subtitle' => 'Obras-primas influentes lançadas até 1980',
-            'type' => 'discover',
-            'icon' => '💎',
-            'params' => [
-                'primary_release_date.lte' => '1980-01-01',
+                'with_genres' => '35',
+                'sort_by' => 'popularity.desc',
                 'vote_count.gte' => 500,
-                'sort_by' => 'vote_average.desc',
             ],
         ],
 
-        'anos-90' => [
-            'slug' => 'anos-90',
-            'title' => 'Clássicos dos Anos 90',
-            'subtitle' => 'A era de ouro das locadoras de VHS e Blockbuster',
+        'para-ver-em-familia' => [
+            'slug' => 'para-ver-em-familia',
+            'title' => 'Para Ver em Família',
+            'subtitle' => 'Filmes para reunir todos no sofá',
             'type' => 'discover',
-            'icon' => '📼',
+            'icon' => '👨‍👩‍👧',
             'params' => [
-                'primary_release_date.gte' => '1990-01-01',
-                'primary_release_date.lte' => '1999-12-31',
+                'with_genres' => '10751,16',
                 'sort_by' => 'popularity.desc',
-            ],
-        ],
-
-        'cinema-internacional' => [
-            'slug' => 'cinema-internacional',
-            'title' => 'Cinema Internacional',
-            'subtitle' => 'A riqueza cultural de grandes produções fora do eixo de Hollywood',
-            'type' => 'discover',
-            'icon' => '🌎',
-            'params' => [
-                'without_original_language' => 'en',
-                'sort_by' => 'popularity.desc',
-                'vote_count.gte' => 200,
-            ],
-        ],
-
-        'curtidos-pela-critica' => [
-            'slug' => 'curtidos-pela-critica',
-            'title' => 'Curtidos pela Crítica',
-            'subtitle' => 'Filmes aclamados com média de avaliação superior a 8.0',
-            'type' => 'discover',
-            'icon' => '🏆',
-            'params' => [
-                'vote_average.gte' => 8.0,
-                'vote_count.gte' => 1000,
-                'sort_by' => 'vote_average.desc',
-            ],
-        ],
-
-        'blockbusters' => [
-            'slug' => 'blockbusters',
-            'title' => 'Blockbusters',
-            'subtitle' => 'Os maiores recordistas de bilheteria e arrecadação do cinema',
-            'type' => 'discover',
-            'icon' => '💥',
-            'params' => [
-                'sort_by' => 'revenue.desc',
             ],
         ],
 
         'joias-escondidas' => [
             'slug' => 'joias-escondidas',
             'title' => 'Joias Escondidas',
-            'subtitle' => 'Filmes altamente aclamados mas pouco conhecidos do público geral',
+            'subtitle' => 'Filmes excelentes que merecem muito mais reconhecimento',
             'type' => 'discover',
             'icon' => '💎',
             'params' => [
@@ -236,5 +148,60 @@ return [
                 'sort_by' => 'vote_average.desc',
             ],
         ],
+
+        'curtidos-pela-critica' => [
+            'slug' => 'curtidos-pela-critica',
+            'title' => 'Curtidos pela Crítica',
+            'subtitle' => 'Produções aclamadas por críticos e pelo público',
+            'type' => 'discover',
+            'icon' => '🏆',
+            'params' => [
+                'vote_average.gte' => 8,
+                'vote_count.gte' => 3000,
+                'sort_by' => 'vote_average.desc',
+            ],
+        ],
+
+        'classicos-atemporais' => [
+            'slug' => 'classicos-atemporais',
+            'title' => 'Clássicos Atemporais',
+            'subtitle' => 'Obras que marcaram gerações e continuam inesquecíveis',
+            'type' => 'discover',
+            'icon' => '🎞️',
+            'params' => [
+                'primary_release_date.lte' => '1985-12-31',
+                'vote_average.gte' => 7,
+                'vote_count.gte' => 1000,
+                'sort_by' => 'vote_average.desc',
+            ],
+        ],
+
+        'nostalgia-anos-90' => [
+            'slug' => 'nostalgia-anos-90',
+            'title' => 'Nostalgia Anos 90',
+            'subtitle' => 'Os sucessos que marcaram uma geração',
+            'type' => 'discover',
+            'icon' => '📼',
+            'params' => [
+                'primary_release_date.gte' => '1990-01-01',
+                'primary_release_date.lte' => '1999-12-31',
+                'vote_count.gte' => 500,
+                'sort_by' => 'popularity.desc',
+            ],
+        ],
+
+        'cinema-pelo-mundo' => [
+            'slug' => 'cinema-pelo-mundo',
+            'title' => 'Cinema pelo Mundo',
+            'subtitle' => 'Descubra grandes histórias produzidas fora de Hollywood',
+            'type' => 'discover',
+            'icon' => '🌍',
+            'params' => [
+                'without_original_language' => 'en',
+                'vote_count.gte' => 300,
+                'sort_by' => 'popularity.desc',
+            ],
+        ],
+        
     ],
 ];
