@@ -19,7 +19,7 @@
     </div>
     @if($viewAllUrl)
         <a href="{{ $viewAllUrl }}" class="collection-view-all">
-            Ver Todos <i class="fa-solid fa-chevron-right"></i>
+            Explorar <i class="fa-solid fa-arrow-right-long"></i>
         </a>
     @endif
 </div>

@@ -12,10 +12,12 @@
 @section('content')
 <div class="discover-page discover-collection-page">
     <div class="discover-container">
-        <div class="discover-header">
+        <div class="collection-page-header">
             <x-back-button context="icon" href="{{ route('discover.index') }}" />
-            <h1 class="discover-title">🎬 {{ $title }}</h1>
-            <p class="discover-subtitle">Explore a seleção completa de filmes desta categoria</p>
+            <div class="collection-page-details">
+                <h1 class="collection-page-title">{{ $title }}</h1>
+                <p class="collection-page-subtitle">Explore a seleção completa de filmes desta categoria</p>
+            </div>
         </div>
 
         <div class="discover-grid-wrapper">

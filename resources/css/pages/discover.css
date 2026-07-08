@@ -2,9 +2,9 @@
 
 .discover-page {
     min-height: 100vh;
-    padding: 2rem 1rem 6rem; /* extra bottom padding for bottom nav mobile */
+    padding: 3rem 1.5rem 8rem; /* ample bottom padding for mobile bottom nav, comfortable spacing */
     background: transparent;
-    color: #ffffff;
+    color: var(--color-text-main);
 }
 
 .discover-container {
@@ -13,240 +13,54 @@
 }
 
 .discover-header {
-    margin-bottom: 2rem;
+    margin-bottom: 3.5rem;
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
 }
 
 .discover-title {
     font-family: 'Varela Round', sans-serif;
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    color: #e50914; /* cinema red */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    margin-top: 0.5rem;
+    color: #ffffff; /* keep title neutral, gold used only for tiny highlights */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .discover-subtitle {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-}
-
-.discover-content {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 2.5rem;
-    text-align: center;
-    backdrop-filter: blur(10px);
-}
-
-.discover-placeholder-text {
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.6;
+    color: var(--color-text-secondary);
+    opacity: 0.8;
     margin: 0;
 }
 
-/* Mobile responsive optimization (Mobile First) */
-@media (max-width: 767px) {
-    .discover-page {
-        padding: 1.5rem 1rem 7rem;
-    }
-    
-    .discover-title {
-        font-size: 1.75rem;
-    }
-    
-    .discover-content {
-        padding: 1.5rem;
-    }
-}
-
-/* Destacar o item do menu lateral ativo na página de Descoberta */
-.dashboard_sidebar .nav-link--active {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-left: 3px solid #e50914 !important;
-    padding-left: calc(1rem - 3px) !important;
-}
-
-.dashboard_sidebar .nav-link--active .nav-glow {
-    opacity: 1 !important;
-}
-
-.dashboard_sidebar .nav-link--active .nav-icon {
-    transform: scale(1.1) !important;
-}
-
-/* Collection Header Styling */
-.collection-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 1rem;
-    margin-top: 2.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.collection-header-title {
-    font-family: 'Varela Round', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.collection-header-icon {
-    font-size: 1.5rem;
-}
-
-.collection-header-subtitle {
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0.25rem 0 0 0;
-}
-
-.collection-view-all {
-    font-size: 0.875rem;
-    color: #e50914;
-    text-decoration: none;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: color 0.2s ease;
-}
-
-.collection-view-all:hover {
-    color: #ff333d;
-}
-
-/* Collection Carousel Styling */
-.collection-carousel-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    width: 100%;
-}
-
-.collection-carousel {
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    width: 100%;
-    scrollbar-width: none; /* Firefox */
-}
-
-.collection-carousel::-webkit-scrollbar {
-    display: none; /* Safari/Chrome */
-}
-
-.carousel-track {
-    display: flex;
-    gap: 1rem;
-    padding: 0.5rem 0;
-}
-
-.carousel-item {
-    flex: 0 0 auto;
-    width: 150px;
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.carousel-item:hover {
-    transform: scale(1.05);
-    z-index: 2;
-}
-
-.carousel-control {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(15, 15, 15, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.25s ease;
-    opacity: 0;
-}
-
-.collection-carousel-wrapper:hover .carousel-control {
-    opacity: 1;
-}
-
-.carousel-control:hover {
-    background: #e50914;
-    border-color: #e50914;
-    box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
-}
-
-.carousel-control.prev {
-    left: -20px;
-}
-
-.carousel-control.next {
-    right: -20px;
-}
-
-.carousel-empty {
-    width: 100%;
-    text-align: center;
-    padding: 2.5rem;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 12px;
-    border: 1px dashed rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.4);
-}
-
-/* Responsive adjustments */
-@media (max-width: 767px) {
-    .carousel-item {
-        width: 120px;
-    }
-    
-    .carousel-control {
-        display: none !important; /* Roll by touch on mobile */
-    }
-    
-    .collection-header-title {
-        font-size: 1.25rem;
-    }
-}
-
-/* Discover Genres Section */
+/* Discover Genres Section (Filters) */
 .discover-genres {
-    margin-bottom: 2.5rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    margin-bottom: 4rem;
+    background: var(--bg-section);
+    border: 1px solid var(--bg-divider);
     border-radius: 16px;
-    padding: 1.5rem;
+    padding: 1.75rem;
     backdrop-filter: blur(10px);
 }
 
 .genres-title {
     font-family: 'Varela Round', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 600;
     color: #ffffff;
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    letter-spacing: 0.03em;
+    opacity: 0.9;
 }
 
 .genres-list {
@@ -256,78 +70,153 @@
 }
 
 .genre-pill {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.85);
-    padding: 0.5rem 1.1rem;
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: var(--color-text-secondary);
+    padding: 0.55rem 1.25rem;
+    border-radius: 30px;
     font-size: 0.85rem;
     text-decoration: none;
-    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-weight: 500;
+    letter-spacing: 0.02em;
 }
 
 .genre-pill:hover {
-    background: #e50914;
-    border-color: #e50914;
+    background: rgba(255, 215, 0, 0.08); /* subtle gold tint */
+    border-color: var(--color-primary); /* gold border highlight */
     color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.15);
 }
 
-/* Discover Grid Layout */
-.discover-grid-wrapper {
-    margin-top: 2rem;
-    margin-bottom: 4rem;
+/* Discover Sections (Alternating Depth) */
+.discover-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.discover-movies-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1.5rem;
+.discover-section {
+    padding: 2.5rem;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    border: 1px solid transparent;
 }
 
-.discover-movie-item {
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+/* Alternate background to create depth */
+.discover-section:nth-child(odd) {
+    background: var(--bg-section);
+    border: 1px solid var(--bg-divider);
 }
 
-.discover-movie-item:hover {
-    transform: scale(1.05);
-    z-index: 2;
+.discover-section:nth-child(even) {
+    background: var(--bg-section-soft);
+    border: 1px solid rgba(255, 255, 255, 0.02);
 }
 
-.discover-empty {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 4rem 2rem;
+/* Collection Header Styling */
+.collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem; /* spacious gap between header and carousel */
+}
+
+.collection-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.collection-header-title {
+    font-family: 'Varela Round', sans-serif;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.collection-header-icon {
+    font-size: 1.5rem;
+}
+
+.collection-header-subtitle {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    opacity: 0.7;
+    margin: 0;
+    line-height: 1.4;
+    max-width: 600px;
+}
+
+.collection-view-all {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    opacity: 0.8;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.02);
-    border: 1px dashed rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    color: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Mobile responsive adjustments */
-@media (max-width: 767px) {
-    .discover-movies-grid {
-        grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-        gap: 1rem;
-    }
-    
-    .discover-genres {
-        padding: 1rem;
-    }
-    
-    .genre-pill {
-        padding: 0.4rem 0.9rem;
-        font-size: 0.8rem;
-    }
+.collection-view-all:hover {
+    color: var(--color-primary); /* gold on hover */
+    opacity: 1;
+    border-color: rgba(255, 215, 0, 0.2);
+    background: rgba(255, 215, 0, 0.04);
 }
 
-/* ==========================================
-   REFINE VISUALS & MICRO-INTERACTIONS
-   ========================================== */
+.collection-view-all i {
+    font-size: 0.8rem;
+    transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
-/* Efeito Glow e Elevamento nos Cards no Hover */
+.collection-view-all:hover i {
+    transform: translateX(4px);
+}
+
+/* Collection Carousel Styling */
+.collection-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.collection-carousel {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 100%;
+    scrollbar-width: none;
+}
+
+.collection-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 1.25rem; /* comfortable card gap */
+    padding: 0.5rem 0;
+}
+
+.carousel-item {
+    flex: 0 0 auto;
+    width: 150px;
+}
+
+/* Card overrides for Discover */
 .discover-page .filme-card {
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.3s ease !important;
     position: relative;
@@ -338,18 +227,18 @@
 }
 
 .discover-page .filme-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    border-color: rgba(229, 9, 20, 0.4);
-    box-shadow: 0 12px 30px rgba(229, 9, 20, 0.25) !important;
+    transform: translateY(-6px) scale(1.025);
+    border-color: rgba(255, 215, 0, 0.25); /* Gold outline detail on hover */
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.12) !important; /* Elegant gold drop shadow */
 }
 
-/* Skeleton Shimmer para carregamento de posters */
+/* Shimmer placeholder loading state */
 .discover-page .filme-card a {
     display: block;
     position: relative;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.02) 75%);
     background-size: 200% 100%;
-    animation: shimmer 1.6s infinite;
+    animation: shimmer 1.8s infinite;
     border-radius: 10px;
     overflow: hidden;
     aspect-ratio: 2/3;
@@ -360,21 +249,96 @@
     100% { background-position: -200% 0; }
 }
 
-/* Fade-in suave de imagens ao carregar */
 .discover-page .filme-poster {
     opacity: 0;
-    transition: opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .discover-page .filme-poster.loaded {
     opacity: 1;
 }
 
-/* Animação Stagger para os elementos da página de Descoberta */
+/* Carousel controls (Setas) */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(12, 12, 14, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    will-change: transform, opacity, left, right;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.collection-carousel-wrapper:hover .carousel-control {
+    opacity: 1;
+}
+
+.carousel-control:hover {
+    background: rgba(12, 12, 14, 0.98);
+    border-color: var(--color-primary); /* Gold border on hover */
+    color: var(--color-primary); /* Gold icon on hover */
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+    transform: translateY(-50%) scale(1.1) !important;
+}
+
+.carousel-control.prev {
+    left: -20px;
+}
+
+.carousel-control.next {
+    right: -20px;
+}
+
+.collection-carousel-wrapper:hover .carousel-control.prev {
+    left: -10px !important;
+}
+
+.collection-carousel-wrapper:hover .carousel-control.next {
+    right: -10px !important;
+}
+
+.carousel-empty {
+    width: 100%;
+    text-align: center;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 12px;
+    border: 1px dashed var(--bg-divider);
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Sidebar Active Link Style Override (Gold theme) */
+.dashboard_sidebar .nav-link--active {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-left: 3px solid var(--color-primary) !important; /* Gold active highlight */
+    padding-left: calc(1rem - 3px) !important;
+}
+
+.dashboard_sidebar .nav-link--active .nav-glow {
+    opacity: 1 !important;
+    background: linear-gradient(135deg, transparent, rgba(255, 215, 0, 0.05)) !important;
+}
+
+.dashboard_sidebar .nav-link--active .nav-icon {
+    transform: scale(1.05) !important;
+    color: var(--color-primary) !important;
+}
+
+/* Entry animations (Stagger) */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(24px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -384,52 +348,152 @@
 
 .discover-genres {
     opacity: 0;
-    animation: fadeInUp 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-.discover-content-wrapper > * {
+.discover-section {
     opacity: 0;
-    animation: fadeInUp 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-/* Atrasos stagger incrementais para entrada fluida em onda */
-.discover-content-wrapper > :nth-child(1) { animation-delay: 0.08s; }
-.discover-content-wrapper > :nth-child(2) { animation-delay: 0.14s; }
-.discover-content-wrapper > :nth-child(3) { animation-delay: 0.20s; }
-.discover-content-wrapper > :nth-child(4) { animation-delay: 0.26s; }
-.discover-content-wrapper > :nth-child(5) { animation-delay: 0.32s; }
-.discover-content-wrapper > :nth-child(6) { animation-delay: 0.38s; }
-.discover-content-wrapper > :nth-child(7) { animation-delay: 0.44s; }
-.discover-content-wrapper > :nth-child(8) { animation-delay: 0.50s; }
-.discover-content-wrapper > :nth-child(9) { animation-delay: 0.56s; }
-.discover-content-wrapper > :nth-child(10) { animation-delay: 0.62s; }
+.discover-content-wrapper > :nth-child(1) { animation-delay: 0.1s; }
+.discover-content-wrapper > :nth-child(2) { animation-delay: 0.18s; }
+.discover-content-wrapper > :nth-child(3) { animation-delay: 0.26s; }
+.discover-content-wrapper > :nth-child(4) { animation-delay: 0.34s; }
+.discover-content-wrapper > :nth-child(5) { animation-delay: 0.42s; }
 
-/* Refinamento das Setas / Controles do Carrossel */
-.collection-carousel-wrapper:hover .carousel-control.prev {
-    left: -10px !important;
+/* ==========================================
+   COLLECTION PAGE REFINEMENT
+   ========================================== */
+
+.collection-page-header {
+    background: var(--bg-section);
+    border: 1px solid var(--bg-divider);
+    border-radius: 16px;
+    padding: 2.25rem;
+    margin-bottom: 3.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-.collection-carousel-wrapper:hover .carousel-control.next {
-    right: -10px !important;
+.collection-page-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.carousel-control {
-    will-change: transform, opacity, left, right;
-    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+.collection-page-title {
+    font-family: 'Varela Round', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -0.01em;
 }
 
-.carousel-control:hover {
-    transform: translateY(-50%) scale(1.15) !important;
+.collection-page-subtitle {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.5;
 }
 
-/* Refinamento do Ver Todos */
-.collection-view-all i {
-    transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+.discover-grid-wrapper {
+    margin-bottom: 5rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.15s forwards;
 }
 
-.collection-view-all:hover i {
-    transform: translateX(5px);
+.discover-movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.75rem;
 }
 
+.discover-movie-item {
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
+.discover-movie-item:hover {
+    transform: translateY(-4px) scale(1.02);
+}
 
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .discover-page {
+        padding: 1.5rem 1rem 7.5rem;
+    }
+
+    .discover-title {
+        font-size: 2rem;
+    }
+
+    .discover-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .discover-genres {
+        padding: 1.25rem;
+        margin-bottom: 3rem;
+    }
+
+    .genre-pill {
+        padding: 0.45rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .discover-section {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .discover-section:nth-child(even) {
+        margin: 0.5rem -0.5rem;
+    }
+
+    .collection-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .collection-header-title {
+        font-size: 1.35rem;
+    }
+
+    .collection-view-all {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .carousel-item {
+        width: 115px;
+    }
+
+    .carousel-control {
+        display: none !important;
+    }
+
+    .collection-page-header {
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .collection-page-title {
+        font-size: 1.75rem;
+    }
+
+    .collection-page-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .discover-movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 1rem;
+    }
+}
