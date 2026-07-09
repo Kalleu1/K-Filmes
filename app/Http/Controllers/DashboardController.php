@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
-    public function index(TMDBService $tmdb){
+    public function index(TMDBService $tmdb, \App\Services\FilmeBibliotecaService $bibliotecaService){
 
     
 
@@ -81,13 +81,7 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        
-        
-        //API SEÇÃO DASHBOARD (com cache das listas normalizadas)
-        $emCartaz = Cache::remember('dashboard:tmdb:now_playing:pt-BR', 30 * 60, fn() => $tmdb->normalizeMovies($tmdb->getNowPlaying()));
-        $trending = Cache::remember('dashboard:tmdb:trending:week:pt-BR', 60 * 60, fn() => $tmdb->normalizeMovies($tmdb->getTrending()));
-        $topRated = Cache::remember('dashboard:tmdb:top_rated:pt-BR', 360 * 60, fn() => $tmdb->normalizeMovies($tmdb->getTopRated()));
-        $upcoming = Cache::remember('dashboard:tmdb:upcoming:pt-BR', 720 * 60, fn() => $tmdb->normalizeMovies($tmdb->getUpcoming()));
+        $stats = $bibliotecaService->getDashboardStats(auth()->id());
 
         return view('pages.dashboard',compact(
             'recentes',
@@ -101,11 +95,7 @@ class DashboardController extends Controller
             'totalAssistidos',
             'mediaNotas',
             'totalFavoritos',
-            'emCartaz',
-            'trending',
-            'topRated',
-            'upcoming',
-            
+            'stats'
         ));
     }
 

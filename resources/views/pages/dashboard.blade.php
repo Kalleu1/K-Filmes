@@ -87,23 +87,55 @@
             
 
             <section class="dashboard_section">
-                <h3 class="dashboard_section_title">Em Alta na Semana</h3>
+                <h3 class="dashboard_section_title">📊 Minhas Estatísticas</h3>
                 
-                <div class="dashboard_grid">
-                    @foreach ($topRated as $filme)
-                        <x-filmecard :filme="$filme" :campos="['poster']" />
-                    @endforeach
-                </div>
-            </section>
-
-            <section class="dashboard_section">
-                <h3 class="dashboard_section_title">Próximos Lançamentos</h3>
-
-                    <div class="dashboard_grid">
-                        @foreach ($upcoming as $filme)
-                            <x-filmecard :filme="$filme" :campos="['poster']" />
-                        @endforeach
+                <div class="dashboard_stats_grid">
+                    <div class="stat-card stat-card--dashboard stat-primary">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <span class="stat-value">{{ $stats['watched'] }}</span>
+                                <span class="stat-label">Filmes assistidos</span>
+                            </div>
+                            <div class="stat-icon">🎬</div>
+                        </div>
                     </div>
+
+                    <div class="stat-card stat-card--dashboard stat-warning">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <span class="stat-value">{{ number_format($stats['average_rating'], 1) }}</span>
+                                <span class="stat-label">Média das suas avaliações</span>
+                            </div>
+                            <div class="stat-icon">⭐</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card--dashboard stat-secondary">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <span class="stat-value">{{ $stats['favorite_genre'] }}</span>
+                                <span class="stat-label">Gênero favorito</span>
+                            </div>
+                            <div class="stat-icon">❤️</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-card--dashboard stat-success">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <span class="stat-value" title="{{ $stats['last_movie']['title'] }}">{{ $stats['last_movie']['title'] }}</span>
+                                <span class="stat-label">
+                                    @if($stats['last_movie']['title'] !== 'Nenhum')
+                                        Assistido em {{ $stats['last_movie']['date'] }}
+                                    @else
+                                        Nenhum filme assistido
+                                    @endif
+                                </span>
+                            </div>
+                            <div class="stat-icon">📅</div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
 

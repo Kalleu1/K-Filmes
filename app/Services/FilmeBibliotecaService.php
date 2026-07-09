@@ -102,4 +102,65 @@ class FilmeBibliotecaService
             ->paginate(20)
             ->withQueryString();
     }
+
+    public function getDashboardStats(int $userId): array
+    {
+        return [
+            'watched' => $this->getWatchedCount($userId),
+            'average_rating' => $this->getAverageRating($userId),
+            'favorite_genre' => $this->getFavoriteGenre($userId),
+            'last_movie' => $this->getLastWatchedMovie($userId),
+        ];
+    }
+
+    public function getWatchedCount(int $userId): int
+    {
+        return Filme::where('user_id', $userId)
+            ->where('assistido', true)
+            ->count();
+    }
+
+    public function getAverageRating(int $userId): float
+    {
+        $avg = Filme::where('user_id', $userId)
+            ->where('assistido', true)
+            ->whereNotNull('nota')
+            ->avg('nota');
+
+        return $avg ? round((float) $avg, 1) : 0.0;
+    }
+
+    public function getFavoriteGenre(int $userId): string
+    {
+        $allGenres = Filme::where('user_id', $userId)
+            ->whereNotNull('genero')
+            ->where('genero', '!=', '')
+            ->pluck('genero');
+
+        $genreCounts = [];
+        foreach ($allGenres as $genreStr) {
+            $genres = array_map('trim', explode(',', $genreStr));
+            foreach ($genres as $g) {
+                if ($g === '') continue;
+                $genreCounts[$g] = ($genreCounts[$g] ?? 0) + 1;
+            }
+        }
+
+        arsort($genreCounts);
+        return !empty($genreCounts) ? (string) key($genreCounts) : 'Nenhum';
+    }
+
+    public function getLastWatchedMovie(int $userId): array
+    {
+        $movie = Filme::where('user_id', $userId)
+            ->where('assistido', true)
+            ->whereNotNull('data_assistida')
+            ->orderBy('data_assistida', 'desc')
+            ->first();
+
+        return [
+            'title' => $movie ? $movie->nome : 'Nenhum',
+            'date' => $movie ? date('d/m/Y', strtotime($movie->data_assistida)) : '-',
+        ];
+    }
 }
