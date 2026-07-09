@@ -32,6 +32,18 @@ class FilmeBibliotecaService
             $query->where('ano_lancamento', $request->ano_lancamento);
         }
 
+        if ($request->filled('nota')) {
+            if ($request->nota === 'none') {
+                $query->whereNull('nota');
+            } else {
+                $query->where('nota', '>=', (float) $request->nota);
+            }
+        }
+
+        if ($request->filled('plataforma')) {
+            $query->where('plataforma', $request->plataforma);
+        }
+
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function ($sub) use ($q) {
@@ -41,8 +53,36 @@ class FilmeBibliotecaService
             });
         }
 
+        $sort = $request->input('ordenacao', 'recentes');
+        switch ($sort) {
+            case 'antigos':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'nota_max':
+                $query->orderByRaw('nota IS NULL, nota DESC');
+                break;
+            case 'nota_min':
+                $query->orderByRaw('nota IS NULL, nota ASC');
+                break;
+            case 'nome_az':
+                $query->orderBy('nome', 'asc');
+                break;
+            case 'nome_za':
+                $query->orderBy('nome', 'desc');
+                break;
+            case 'ano':
+                $query->orderByRaw('ano_lancamento IS NULL, ano_lancamento DESC');
+                break;
+            case 'data_assistido':
+                $query->orderByRaw('data_assistida IS NULL, data_assistida DESC');
+                break;
+            case 'recentes':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
         return $query
-            ->orderBy('created_at', 'desc')
             ->paginate(20)
             ->withQueryString();
     }

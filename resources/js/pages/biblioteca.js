@@ -3,111 +3,59 @@ export default function InitBiblioteca() {
     if (!root) return;
 
     const filterBtns = Array.from(root.querySelectorAll('.filter-btn'));
-    
-    // Cria o overlay apenas para uso em mobile
-    const overlayContainer = document.createElement('div');
-    overlayContainer.classList.add('filters-overlay');
-    const filtersMinimal = root.querySelector('.filters-minimal');
-    if (filtersMinimal) {
-        filtersMinimal.appendChild(overlayContainer);
-    }
+    const form = root.querySelector('.library-search-bar');
 
-    // Função para fechar todos os menus locais (desktop)
-    function closeAllLocalMenus() {
-        const localMenus = Array.from(root.querySelectorAll('.filter-menu'));
-        localMenus.forEach(m => m.classList.remove('active'));
-    }
-
-    // Abre overlay ou menu com o conteúdo do filtro clicado
+    // Toggle dropdowns
     filterBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', (e) => {
             e.stopPropagation();
-
-            const isMobile = window.innerWidth <= 768;
-            const filterType = this.dataset.filter;
+            const filterType = btn.dataset.filter;
             const menu = root.querySelector(`.filter-menu[data-menu="${filterType}"]`);
             if (!menu) return;
 
-            if (isMobile) {
-                // --- COMPORTAMENTO MOBILE (OVERLAY) ---
-                closeAllLocalMenus();
-                const isActive = overlayContainer.classList.contains('active') && overlayContainer.dataset.activeFilter === filterType;
+            const isAlreadyActive = menu.classList.contains('active');
+            
+            // Close all other menus
+            root.querySelectorAll('.filter-menu').forEach(m => {
+                if (m !== menu) m.classList.remove('active');
+            });
+            filterBtns.forEach(b => {
+                if (b !== btn) b.classList.remove('active');
+            });
 
-                overlayContainer.classList.remove('active');
-                overlayContainer.innerHTML = '';
-                filterBtns.forEach(b => b.classList.remove('active'));
-                filterBtns.forEach(b => b.setAttribute('aria-expanded', 'false'));
-
-                if (!isActive) {
-                    overlayContainer.innerHTML = menu.innerHTML;
-                    overlayContainer.classList.add('active');
-                    overlayContainer.dataset.activeFilter = filterType;
-
-                    const rect = filtersMinimal.getBoundingClientRect();
-                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                    overlayContainer.style.top = (rect.bottom + scrollTop) + 'px';
-                    overlayContainer.style.left = (rect.left + rect.width / 2) + 'px';
-                    overlayContainer.style.transform = 'translateX(-50%) translateY(0)';
-
-                    this.classList.add('active');
-                    this.setAttribute('aria-expanded', 'true');
-
-                    const firstInput = overlayContainer.querySelector('input, select, textarea, button');
-                    if (firstInput) firstInput.focus();
-                }
+            if (!isAlreadyActive) {
+                menu.classList.add('active');
+                btn.classList.add('active');
             } else {
-                // --- COMPORTAMENTO DESKTOP (LOCAL DROPDOWN) ---
-                overlayContainer.classList.remove('active');
-                overlayContainer.innerHTML = '';
-
-                const isAlreadyActive = menu.classList.contains('active');
-                
-                // Limpa outros botões e menus locais
-                filterBtns.forEach(b => {
-                    if (b !== this) {
-                        b.classList.remove('active');
-                        b.setAttribute('aria-expanded', 'false');
-                    }
-                });
-                closeAllLocalMenus();
-
-                if (!isAlreadyActive) {
-                    menu.classList.add('active');
-                    this.classList.add('active');
-                    this.setAttribute('aria-expanded', 'true');
-                    
-                    const firstInput = menu.querySelector('input, select, textarea, button');
-                    if (firstInput) firstInput.focus();
-                } else {
-                    this.classList.remove('active');
-                    this.setAttribute('aria-expanded', 'false');
-                }
+                menu.classList.remove('active');
+                btn.classList.remove('active');
             }
         });
     });
 
-    // Fecha tudo ao clicar fora
+    // Close menus on click outside
     document.addEventListener('click', () => {
-        // Mobile
-        overlayContainer.classList.remove('active');
-        overlayContainer.innerHTML = '';
-        
-        // Desktop
-        closeAllLocalMenus();
-        
-        filterBtns.forEach(b => {
-            b.classList.remove('active');
-            b.setAttribute('aria-expanded', 'false');
-        });
+        root.querySelectorAll('.filter-menu').forEach(m => m.classList.remove('active'));
+        filterBtns.forEach(b => b.classList.remove('active'));
     });
 
-    // Impede fechar ao clicar dentro do overlay mobile
-    overlayContainer.addEventListener('click', e => e.stopPropagation());
+    // Handle option selection
+    const optionBtns = Array.from(root.querySelectorAll('.filter-select-option'));
+    optionBtns.forEach(opt => {
+        opt.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const filterName = opt.dataset.filterName;
+            const filterValue = opt.dataset.value;
 
-    // Impede fechar ao clicar dentro dos menus desktop locales
-    const localMenus = Array.from(root.querySelectorAll('.filter-menu'));
-    localMenus.forEach(m => {
-        m.addEventListener('click', e => e.stopPropagation());
+            // Find matching hidden input
+            const hiddenInput = form.querySelector(`input[name="${filterName}"]`);
+            if (hiddenInput) {
+                hiddenInput.value = filterValue;
+            }
+
+            // Submit form
+            form.submit();
+        });
     });
 }
 

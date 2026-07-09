@@ -158,18 +158,30 @@ class FilmeController extends Controller
 
     public function biblioteca(Request $request, FilmeBibliotecaService $filmeBibliotecaService)
     {
-        $filmes = $filmeBibliotecaService->paginateBiblioteca($request, Auth::id());
+        $userId = Auth::id();
+        $filmes = $filmeBibliotecaService->paginateBiblioteca($request, $userId);
 
-        return view('filmes.biblioteca', compact('filmes'));
+        $plataformas = Filme::where('user_id', $userId)
+            ->whereNotNull('plataforma')
+            ->where('plataforma', '!=', '')
+            ->distinct()
+            ->orderBy('plataforma', 'asc')
+            ->pluck('plataforma')
+            ->toArray();
+
+        $anos = Filme::where('user_id', $userId)
+            ->whereNotNull('ano_lancamento')
+            ->distinct()
+            ->orderBy('ano_lancamento', 'desc')
+            ->pluck('ano_lancamento')
+            ->toArray();
+
+        return view('filmes.biblioteca', compact('filmes', 'plataformas', 'anos'));
     }
 
-    public function buscarBiblioteca(Request $request, FilmeBibliotecaService $filmeBibliotecaService)
+    public function buscarBiblioteca(Request $request)
     {
-        $query = $request->input('q');
-
-        $filmes = $filmeBibliotecaService->searchBiblioteca($query, Auth::id());
-
-        return view('filmes.biblioteca', compact('filmes', 'query'));
+        return redirect()->route('filmes.biblioteca', $request->query());
     }
 
         public function toggleFavorito(Request $request, $id)
