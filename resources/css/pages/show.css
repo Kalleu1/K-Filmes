@@ -1287,6 +1287,7 @@ font-size: 1.2rem;
   .modal-content {
     width: 95%;
     margin: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
   
   .modal-header, .modal-body {

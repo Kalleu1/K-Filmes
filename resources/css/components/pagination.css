@@ -45,3 +45,19 @@
 .k-pagination .page-btn {
     will-change: transform, box-shadow;
 }
+
+@media (max-width: 768px) {
+  .k-pagination {
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 1rem;
+      margin: 32px 0 16px;
+  }
+  
+  .k-pagination .page-btn,
+  .k-pagination .page-number {
+      min-width: 36px;
+      height: 36px;
+      font-size: 0.9rem;
+  }
+}

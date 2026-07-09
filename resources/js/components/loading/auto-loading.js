@@ -1,4 +1,4 @@
-import { showLoading } from './loading-overlay';
+import { showLoading, hideLoading } from './loading-overlay';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loadingId = 'page-loading';
@@ -15,5 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', () => {
             showLoading(loadingId);
         });
+    });
+
+    // Certifica-se de esconder o loading ao carregar/retornar à página (evita travamento ao voltar no histórico)
+    window.addEventListener('pageshow', () => {
+        hideLoading(loadingId);
     });
 });

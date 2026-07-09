@@ -570,6 +570,7 @@
   .tmdb-modal-content {
     width: 95%;
     margin: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 
   .tmdb-modal-header,
