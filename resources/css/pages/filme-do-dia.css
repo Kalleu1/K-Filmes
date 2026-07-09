@@ -7,6 +7,7 @@
   text-align: center;
   padding: 3rem 1rem;
   color: #fff;
+  position: relative;
 }
 
 .poster-container {
@@ -58,32 +59,145 @@
   gap: 0.5rem;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   margin-top: 1rem;
 }
 
 .filters input {
-  background: rgba(255,255,255,0.1);
-  border: solid 1px var(--color-border);
-  padding: 0.6rem 0.8rem;
-  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.2rem;
+  border-radius: 25px;
   color: var(--color-text-main);
   width: 130px;
   text-align: center;
   outline: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
 }
 
 .filters input::placeholder {
   color: rgba(255,255,255,0.6);
 }
 
-.filters input:focus{
-  border: solid 1px var(--color-primary);
+.filters input:focus {
+  border: 1px solid var(--color-primary);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 15px rgba(212, 160, 23, 0.2);
 }
 
-.filters input:hover{
-  border: solid 0.5px var(--color-primary-hover);
+.filters input:hover {
+  border: 1px solid var(--color-primary-hover);
   transform: scale(1.05);
-  transition: 0.3s;
+}
+
+/* ===== DROPDOWNS DE FILTRO CUSTOMIZADOS ===== */
+.filter-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(212, 160, 23, 0.2);
+}
+
+.filter-arrow {
+  transition: transform 0.3s ease;
+}
+
+.filter-btn.active .filter-arrow {
+  transform: rotate(180deg);
+}
+
+.filter-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  opacity: 0;
+  visibility: hidden;
+  background: rgba(20, 20, 25, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  min-width: 180px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.filter-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.filter-options-list {
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filter-options-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-options-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filter-options-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.filter-select-option {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.filter-select-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-main);
+}
+
+.filter-select-option.active {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .fonte {
