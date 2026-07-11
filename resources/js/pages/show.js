@@ -10,7 +10,9 @@ export default function initPersonalMovie() {
     bindGlobalModalClose(ui);
     bindCloseButtons(ui);
     bindPosterSelector(ui);
+    bindBackdropSelector(ui);
 }
+
 
 
 
@@ -32,10 +34,12 @@ function getUIElements() {
         openEditBtn: document.querySelector('[data-action="open-edit-modal"]'),
         openDeleteBtn: document.querySelector('[data-action="open-delete-modal"]'),
         openPosterSelectorBtn: document.querySelector('[data-action="open-poster-selector"]'),
+        openBackdropSelectorBtn: document.querySelector('[data-action="open-backdrop-selector"]'),
         shareBtn: document.querySelector('[data-action="share-movie"]'),
         ratingInput,
         ratingDisplay
     };
+
 
 }
 
@@ -130,34 +134,86 @@ function bindPosterSelector(ui) {
         if (!tmdbId || !filmeId) return;
 
 
-        const selector = new window.PosterSelector();
-        selector.open(tmdbId, currentPoster, (selectedPosterPath) => {
-            fetch(`/filmes/${filmeId}/update-poster`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    poster_path: selectedPosterPath
+        const selector = new window.ArtworkSelector();
+        selector.open({
+            tmdbId: tmdbId,
+            type: 'poster',
+            current: currentPoster,
+            onConfirm: (selectedPosterPath) => {
+                fetch(`/filmes/${filmeId}/update-poster`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        poster_path: selectedPosterPath
+                    })
                 })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.new_url) {
-                    const img = document.querySelector('.hero-poster');
-                    if (img) {
-                        img.src = data.new_url;
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.new_url) {
+                        const img = document.querySelector('.hero-poster');
+                        if (img) {
+                            img.src = data.new_url;
+                        }
+                        ui.openPosterSelectorBtn.dataset.currentPoster = selectedPosterPath;
+                        window.location.reload();
                     }
-                    ui.openPosterSelectorBtn.dataset.currentPoster = selectedPosterPath;
-                    window.location.reload();
-                }
-            })
-            .catch(err => {
-                console.error('Erro ao atualizar o pôster:', err);
-                alert('Erro ao salvar o pôster.');
-            });
+                })
+                .catch(err => {
+                    console.error('Erro ao atualizar o pôster:', err);
+                    alert('Erro ao salvar o pôster.');
+                });
+            }
+        });
+    });
+}
+
+function bindBackdropSelector(ui) {
+    if (!ui.openBackdropSelectorBtn) return;
+
+    ui.openBackdropSelectorBtn.addEventListener('click', () => {
+        const tmdbId = ui.openBackdropSelectorBtn.dataset.tmdbId;
+        const currentBackdrop = ui.openBackdropSelectorBtn.dataset.currentBackdrop;
+        const filmeId = ui.openBackdropSelectorBtn.dataset.filmeId;
+
+        if (!tmdbId || !filmeId) return;
+
+        const selector = new window.ArtworkSelector();
+        selector.open({
+            tmdbId: tmdbId,
+            type: 'backdrop',
+            current: currentBackdrop,
+            onConfirm: (selectedBackdropPath) => {
+                fetch(`/filmes/${filmeId}/update-backdrop`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        backdrop_path: selectedBackdropPath
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.new_url) {
+                        const heroSec = document.querySelector('.movie-hero');
+                        if (heroSec) {
+                            heroSec.style.backgroundImage = `url('${data.new_url}')`;
+                        }
+                        ui.openBackdropSelectorBtn.dataset.currentBackdrop = selectedBackdropPath;
+                        window.location.reload();
+                    }
+                })
+                .catch(err => {
+                    console.error('Erro ao atualizar o backdrop:', err);
+                    alert('Erro ao salvar o backdrop.');
+                });
+            }
         });
     });
 }

@@ -381,6 +381,17 @@ class FilmeController extends Controller
         ]);
     }
 
+    public function getBackdrops($tmdb_id)
+    {
+        $backdrops = $this->tmdb->getMovieBackdrops((int) $tmdb_id);
+
+        return response()->json([
+            'success' => true,
+            'backdrops' => $backdrops,
+        ]);
+    }
+
+
     public function updatePoster(Request $request, $id)
     {
         $filme = $this->findUserFilmeOrFail($id);
@@ -401,7 +412,28 @@ class FilmeController extends Controller
         ]);
     }
 
+    public function updateBackdrop(Request $request, $id)
+    {
+        $filme = $this->findUserFilmeOrFail($id);
+
+        $request->validate([
+            'backdrop_path' => 'required|string',
+        ]);
+
+        $backdropPath = $request->input('backdrop_path');
+        $fullUrl = $this->tmdb->getImageUrl($backdropPath, 'w1280');
+
+        $filme->poster_banner = $fullUrl;
+        $filme->save();
+
+        return response()->json([
+            'success' => true,
+            'new_url' => $fullUrl,
+        ]);
+    }
+
     private function userFilmesQuery()
+
 
 
     {

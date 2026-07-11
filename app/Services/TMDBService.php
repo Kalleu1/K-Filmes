@@ -181,6 +181,26 @@ public function getMoviePosters(int $tmdbId)
     });
 }
 
+public function getMovieBackdrops(int $tmdbId)
+{
+    $key = "tmdb:movie:{$tmdbId}:backdrops";
+    return $this->remember($key, 10080, function () use ($tmdbId) {
+        $response = $this->get("movie/{$tmdbId}/images");
+        if (!$response || empty($response['backdrops'])) {
+            return [];
+        }
+
+        return collect($response['backdrops'])->map(function ($item) {
+            return [
+                'file_path'   => $item['file_path'],
+                'preview_url' => $this->getImageUrl($item['file_path'], 'w780'),
+                'language'    => $item['iso_639_1'] ?? null,
+            ];
+        })->values()->toArray();
+    });
+}
+
+
 
 
 

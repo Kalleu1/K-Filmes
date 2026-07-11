@@ -1,13 +1,14 @@
 /**
- * PosterSelector - Componente reutilizável para escolha de pôsteres oficiais do TMDB.
+ * ArtworkSelector - Componente reutilizável para escolha de pôsteres e backdrops oficiais do TMDB.
  */
-export default class PosterSelector {
+export default class ArtworkSelector {
     constructor() {
         this.tmdbId = null;
-        this.currentPoster = null;
+        this.currentArtwork = null;
         this.onConfirm = null;
-        this.posters = [];
+        this.artworks = [];
         this.currentIndex = 0;
+        this.type = 'poster'; // 'poster' ou 'backdrop'
 
         this.init();
     }
@@ -105,52 +106,77 @@ export default class PosterSelector {
         });
     }
 
-    async open(tmdbId, currentPoster = null, onConfirm = null) {
+    async open(tmdbIdOrOpts, currentArtwork = null, onConfirm = null, type = 'poster') {
+        let tmdbId = tmdbIdOrOpts;
+        this.type = type;
+        this.currentArtwork = currentArtwork;
+        this.onConfirm = onConfirm;
+
+        // Suporte para passagem de parâmetros via Objeto (ex: ArtworkSelector.open({ tmdbId, type: 'backdrop', onConfirm }))
+        if (typeof tmdbIdOrOpts === 'object' && tmdbIdOrOpts !== null) {
+            tmdbId = tmdbIdOrOpts.tmdbId;
+            this.type = tmdbIdOrOpts.type || 'poster';
+            this.currentArtwork = tmdbIdOrOpts.current || tmdbIdOrOpts.currentPoster || null;
+            this.onConfirm = tmdbIdOrOpts.onConfirm;
+        }
+
         if (!tmdbId) {
             console.error('O TMDB ID é obrigatório para abrir o seletor.');
             return;
         }
 
         this.tmdbId = tmdbId;
-        this.currentPoster = currentPoster;
-        this.onConfirm = onConfirm;
-        this.posters = [];
+        this.artworks = [];
         this.currentIndex = 0;
 
         this.showGlobalLoader();
 
         try {
-            await this.loadPosters();
+            await this.loadArtworks();
 
-            if (this.posters.length === 0) {
+            if (this.artworks.length === 0) {
                 this.hideGlobalLoader();
-                alert('Nenhum pôster alternativo disponível para este filme.');
+                const artName = this.type === 'backdrop' ? 'backdrop' : 'pôster';
+                alert(`Nenhum ${artName} alternativo disponível para este filme.`);
                 return;
             }
 
-            // Selecionar o pôster atual se informado
-            if (this.currentPoster) {
-                const idx = this.posters.findIndex(p => p.poster_path === this.currentPoster);
+            // Selecionar o item atual se informado
+            if (this.currentArtwork) {
+                const idx = this.artworks.findIndex(item => {
+                    const path = item.file_path || item.poster_path;
+                    return path === this.currentArtwork;
+                });
                 if (idx !== -1) {
                     this.currentIndex = idx;
                 }
             }
 
-            // Pré-carrega o pôster da posição atual antes de exibir o modal
-            const initialPosterUrl = this.posters[this.currentIndex].preview_url;
-            await this.preloadImage(initialPosterUrl);
+            // Pré-carrega o item da posição atual antes de exibir o modal
+            const initialArtworkUrl = this.artworks[this.currentIndex].preview_url;
+            await this.preloadImage(initialArtworkUrl);
 
             this.updateUI();
             this.hideGlobalLoader();
+
+            // Configurar modal conforme o tipo
+            this.modal.classList.remove('artwork-type-poster', 'artwork-type-backdrop');
+            this.modal.classList.add(`artwork-type-${this.type}`);
+
+            // Atualizar o título do modal
+            const titleEl = this.modal.querySelector('.poster-selector-title');
+            if (titleEl) {
+                titleEl.textContent = this.type === 'backdrop' ? 'Escolha um backdrop' : 'Escolha um pôster';
+            }
 
             // Abrir modal
             this.modal.classList.add('active');
             this.modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         } catch (error) {
-            console.error('Erro ao buscar/pré-carregar pôsteres:', error);
+            console.error('Erro ao buscar/pré-carregar artes:', error);
             this.hideGlobalLoader();
-            alert('Não foi possível carregar os pôsteres.');
+            alert('Não foi possível carregar as imagens.');
         }
     }
 
@@ -160,8 +186,9 @@ export default class PosterSelector {
         document.body.style.overflow = '';
     }
 
-    async loadPosters() {
-        const response = await fetch(`/tmdb/movie/${this.tmdbId}/posters`, {
+    async loadArtworks() {
+        const endpoint = this.type === 'backdrop' ? 'backdrops' : 'posters';
+        const response = await fetch(`/tmdb/movie/${this.tmdbId}/${endpoint}`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
@@ -173,10 +200,11 @@ export default class PosterSelector {
         }
 
         const data = await response.json();
-        if (data.success && Array.isArray(data.posters)) {
-            this.posters = data.posters;
+        const list = data[endpoint];
+        if (data.success && Array.isArray(list)) {
+            this.artworks = list;
         } else {
-            this.posters = [];
+            this.artworks = [];
         }
     }
 
@@ -190,23 +218,30 @@ export default class PosterSelector {
     }
 
     updateUI() {
-        if (this.posters.length === 0) {
-            this.modal.querySelector('.poster-selector-carousel-container').classList.add('hidden');
-            this.modal.querySelector('.poster-selector-empty').classList.remove('hidden');
+        const emptyEl = this.modal.querySelector('.poster-selector-empty');
+        const carouselEl = this.modal.querySelector('.poster-selector-carousel-container');
+
+        if (this.artworks.length === 0) {
+            carouselEl.classList.add('hidden');
+            emptyEl.classList.remove('hidden');
+            if (emptyEl) {
+                const artName = this.type === 'backdrop' ? 'backdrop' : 'pôster';
+                emptyEl.textContent = `Nenhum ${artName} alternativo disponível para este filme.`;
+            }
             this.counter.classList.add('hidden');
             return;
         }
 
-        this.modal.querySelector('.poster-selector-carousel-container').classList.remove('hidden');
-        this.modal.querySelector('.poster-selector-empty').classList.add('hidden');
+        carouselEl.classList.remove('hidden');
+        emptyEl.classList.add('hidden');
 
-        const current = this.posters[this.currentIndex];
+        const current = this.artworks[this.currentIndex];
         this.posterImg.src = current.preview_url;
 
-        this.counter.textContent = `${this.currentIndex + 1} / ${this.posters.length}`;
+        this.counter.textContent = `${this.currentIndex + 1} / ${this.artworks.length}`;
 
-        // Se houver apenas 1 pôster, oculta as setas e o contador
-        if (this.posters.length <= 1) {
+        // Se houver apenas 1 item, oculta as setas e o contador
+        if (this.artworks.length <= 1) {
             this.prevBtn.classList.add('hidden');
             this.nextBtn.classList.add('hidden');
             this.counter.classList.add('hidden');
@@ -218,26 +253,27 @@ export default class PosterSelector {
     }
 
     next() {
-        if (this.posters.length <= 1) return;
-        this.currentIndex = (this.currentIndex + 1) % this.posters.length;
+        if (this.artworks.length <= 1) return;
+        this.currentIndex = (this.currentIndex + 1) % this.artworks.length;
         this.updateUI();
     }
 
     previous() {
-        if (this.posters.length <= 1) return;
-        this.currentIndex = (this.currentIndex - 1 + this.posters.length) % this.posters.length;
+        if (this.artworks.length <= 1) return;
+        this.currentIndex = (this.currentIndex - 1 + this.artworks.length) % this.artworks.length;
         this.updateUI();
     }
 
-    getSelectedPoster() {
-        if (this.posters.length === 0) return null;
-        return this.posters[this.currentIndex];
+    getSelectedArtwork() {
+        if (this.artworks.length === 0) return null;
+        return this.artworks[this.currentIndex];
     }
 
     save() {
-        const selected = this.getSelectedPoster();
+        const selected = this.getSelectedArtwork();
         if (selected && this.onConfirm) {
-            this.onConfirm(selected.poster_path);
+            const path = selected.file_path || selected.poster_path;
+            this.onConfirm(path);
         }
         this.close();
     }
@@ -251,11 +287,18 @@ export default class PosterSelector {
             loader.innerHTML = `
                 <div class="poster-selector-global-loader-content">
                     <div class="spinner"></div>
-                    <p>Buscando pôsteres...</p>
+                    <p>Buscando imagens...</p>
                 </div>
             `;
             document.body.appendChild(loader);
         }
+        
+        // Atualiza texto do loader caso seja backdrop
+        const textEl = loader.querySelector('p');
+        if (textEl) {
+            textEl.textContent = 'Buscando imagens...';
+        }
+        
         loader.classList.add('active');
     }
 

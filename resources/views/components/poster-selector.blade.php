@@ -7,17 +7,19 @@
         
         <div class="poster-selector-body">
             <div class="poster-selector-carousel-container">
+
+                <button type="button" class="poster-selector-arrow prev" aria-label="Anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
                 <div class="poster-selector-poster-frame">
                     <img src="" alt="Poster" class="poster-selector-poster-image">
                     
-                    <button type="button" class="poster-selector-arrow prev" aria-label="Anterior">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    
-                    <button type="button" class="poster-selector-arrow next" aria-label="Próximo">
+                </div>
+
+                <button type="button" class="poster-selector-arrow next" aria-label="Próximo">
                         <i class="fa-solid fa-chevron-right"></i>
                     </button>
-                </div>
             </div>
             
             <div class="poster-selector-empty hidden">

@@ -9,7 +9,8 @@
 
         {{-- HERO — O FILME --}}
         <section class="movie-hero"
-            style="background-image: url('{{ $backdropUrl ?? ($filme->poster_banner ? asset('storage/posters_banners/' . $filme->poster_banner) : '') }}');">
+            style="background-image: url('{{ $filme->poster_banner ? $filme->poster_banner_url : ($backdropUrl ?? '') }}');">
+
 
         
             <div class="movie-hero-overlay"></div>
@@ -79,6 +80,17 @@
                         <button class="btn-icon" data-action="open-edit-modal">
                             <i class="fa-solid fa-pen"></i>
                         </button>
+
+                        @if($filme->tmdb_id)
+                            <button class="btn-icon" 
+                                    data-action="open-backdrop-selector"
+                                    data-filme-id="{{ $filme->id }}"
+                                    data-tmdb-id="{{ $filme->tmdb_id }}"
+                                    data-current-backdrop="{{ $filme->poster_banner ? '/' . basename($filme->poster_banner) : '' }}"
+                                    title="Alterar imagem de fundo">
+                                <i class="fa-solid fa-image"></i>
+                            </button>
+                        @endif
 
                         <button class="btn-icon" data-action="open-delete-modal">
                             <i class="fa-solid fa-trash"></i>

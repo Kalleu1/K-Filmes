@@ -67,6 +67,18 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/filmes/{id}/update-poster', [FilmeController::class, 'updatePoster'])
         ->name('filmes.updatePoster');
 
+    Route::patch('/filmes/{id}/update-backdrop', [FilmeController::class, 'updateBackdrop'])
+        ->name('filmes.updateBackdrop');
+
+
+    Route::get('/tmdb/movie/{tmdb_id}/backdrops', [FilmeController::class, 'getBackdrops'])
+        ->name('filmes.tmdb.backdrops');
+
+    Route::get('/test-backdrop-selector', function () {
+        return view('test-backdrop-selector');
+    })->name('filmes.test-backdrop-selector');
+
+
 
     Route::get('/test-poster-selector', function () {
         return view('test-poster-selector');

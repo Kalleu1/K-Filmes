@@ -333,3 +333,37 @@
         font-size: 1.25rem;
     }
 }
+
+/* ==========================================
+   BACKDROP STYLING (16:9 Aspect Ratio)
+   ========================================== */
+
+.poster-selector-modal.artwork-type-backdrop .poster-selector-content {
+    max-width: 800px;
+}
+
+.poster-selector-modal.artwork-type-backdrop .poster-selector-poster-frame {
+    aspect-ratio: 16 / 9;
+}
+
+.poster-selector-modal.artwork-type-backdrop .poster-selector-poster-image {
+    object-fit: contain;
+    background: #000000;
+}
+
+@media (min-width: 1024px) {
+    .poster-selector-modal.artwork-type-backdrop .poster-selector-poster-frame {
+        width: 70vw;
+        max-width: 720px;
+        height: auto;
+    }
+}
+
+@media (max-width: 1023px) {
+    .poster-selector-modal.artwork-type-backdrop .poster-selector-poster-frame {
+        width: 80vw;
+        max-width: 500px;
+        height: auto;
+    }
+}
+

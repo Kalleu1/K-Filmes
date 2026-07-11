@@ -7,9 +7,11 @@ import initToast from './components/toastComp/init_Toast';
 import initDashboard from './pages/dashboard';
 import './components/loading/auto-loading';
 import { initMobileNavigation } from './ui/navigation';
-import PosterSelector from './components/poster-selector';
+import ArtworkSelector from './components/poster-selector';
 
-window.PosterSelector = PosterSelector;
+window.ArtworkSelector = ArtworkSelector;
+window.PosterSelector = ArtworkSelector; // Backward-compatible alias
+
 
 
 
