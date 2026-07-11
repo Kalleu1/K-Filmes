@@ -165,19 +165,40 @@ public function getMoviePosters(int $tmdbId)
             return [];
         }
 
-        return collect($response['posters'])
-            ->filter(function ($item) {
-                return ($item['iso_639_1'] === 'pt' || $item['iso_639_1'] === 'br');
-            })
-            ->map(function ($item) {
-                return [
-                    'poster_path' => $item['file_path'],
-                    'preview_url' => $this->getImageUrl($item['file_path'], 'w500'),
-                    'language'    => $item['iso_639_1'] ?? null,
-                ];
-            })
-            ->values()
-            ->toArray();
+        $posters = collect($response['posters'])->map(function ($item) {
+            return [
+                'poster_path'  => $item['file_path'],
+                'preview_url'  => $this->getImageUrl($item['file_path'], 'w500'),
+                'language'     => $item['iso_639_1'] ?? null,
+                'vote_average' => $item['vote_average'] ?? 0,
+                'vote_count'   => $item['vote_count'] ?? 0,
+            ];
+        });
+
+        return $posters->sort(function ($a, $b) {
+            $langPriority = function ($lang) {
+                if ($lang === 'pt' || $lang === 'br') return 1;
+                if ($lang === null) return 2;
+                if ($lang === 'en') return 3;
+                return 4;
+            };
+
+            $pA = $langPriority($a['language']);
+            $pB = $langPriority($b['language']);
+
+            if ($pA !== $pB) {
+                return $pA <=> $pB;
+            }
+
+            if ($b['vote_average'] != $a['vote_average']) {
+                return $b['vote_average'] <=> $a['vote_average'];
+            }
+
+            return $b['vote_count'] <=> $a['vote_count'];
+        })
+        ->slice(0, 20)
+        ->values()
+        ->toArray();
     });
 }
 
@@ -190,13 +211,40 @@ public function getMovieBackdrops(int $tmdbId)
             return [];
         }
 
-        return collect($response['backdrops'])->map(function ($item) {
+        $backdrops = collect($response['backdrops'])->map(function ($item) {
             return [
-                'file_path'   => $item['file_path'],
-                'preview_url' => $this->getImageUrl($item['file_path'], 'w780'),
-                'language'    => $item['iso_639_1'] ?? null,
+                'file_path'    => $item['file_path'],
+                'preview_url'  => $this->getImageUrl($item['file_path'], 'w780'),
+                'language'     => $item['iso_639_1'] ?? null,
+                'vote_average' => $item['vote_average'] ?? 0,
+                'vote_count'   => $item['vote_count'] ?? 0,
             ];
-        })->values()->toArray();
+        });
+
+        return $backdrops->sort(function ($a, $b) {
+            $langPriority = function ($lang) {
+                if ($lang === null) return 1;
+                if ($lang === 'pt' || $lang === 'br') return 2;
+                if ($lang === 'en') return 3;
+                return 4;
+            };
+
+            $pA = $langPriority($a['language']);
+            $pB = $langPriority($b['language']);
+
+            if ($pA !== $pB) {
+                return $pA <=> $pB;
+            }
+
+            if ($b['vote_average'] != $a['vote_average']) {
+                return $b['vote_average'] <=> $a['vote_average'];
+            }
+
+            return $b['vote_count'] <=> $a['vote_count'];
+        })
+        ->slice(0, 20)
+        ->values()
+        ->toArray();
     });
 }
 

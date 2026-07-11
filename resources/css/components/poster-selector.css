@@ -141,7 +141,14 @@
     display: block;
     user-select: none;
     -webkit-user-drag: none;
+    transition: opacity 0.18s ease-in-out;
+    opacity: 1;
 }
+
+.poster-selector-poster-image.fade-out {
+    opacity: 0;
+}
+
 
 /* Navigation arrows overlayed directly on the poster */
 .poster-selector-arrow {
@@ -366,4 +373,12 @@
         height: auto;
     }
 }
+
+.poster-selector-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
 

@@ -9,6 +9,7 @@ export default class ArtworkSelector {
         this.artworks = [];
         this.currentIndex = 0;
         this.type = 'poster'; // 'poster' ou 'backdrop'
+        this.isTransitioning = false;
 
         this.init();
     }
@@ -31,15 +32,15 @@ export default class ArtworkSelector {
                     </div>
                     <div class="poster-selector-body">
                         <div class="poster-selector-carousel-container">
+                            <button type="button" class="poster-selector-arrow prev" aria-label="Anterior">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
                             <div class="poster-selector-poster-frame">
                                 <img src="" alt="Poster" class="poster-selector-poster-image">
-                                <button type="button" class="poster-selector-arrow prev" aria-label="Anterior">
-                                    <i class="fa-solid fa-chevron-left"></i>
-                                </button>
-                                <button type="button" class="poster-selector-arrow next" aria-label="Próximo">
-                                    <i class="fa-solid fa-chevron-right"></i>
-                                </button>
                             </div>
+                            <button type="button" class="poster-selector-arrow next" aria-label="Próximo">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
                         </div>
                         <div class="poster-selector-empty hidden">
                             Nenhum pôster alternativo disponível para este filme.
@@ -128,6 +129,12 @@ export default class ArtworkSelector {
         this.tmdbId = tmdbId;
         this.artworks = [];
         this.currentIndex = 0;
+        this.isTransitioning = false;
+
+        // Trava o botão de salvar enquanto carrega a primeira imagem
+        if (this.saveBtn) {
+            this.saveBtn.disabled = true;
+        }
 
         this.showGlobalLoader();
 
@@ -154,10 +161,19 @@ export default class ArtworkSelector {
 
             // Pré-carrega o item da posição atual antes de exibir o modal
             const initialArtworkUrl = this.artworks[this.currentIndex].preview_url;
-            await this.preloadImage(initialArtworkUrl);
+            try {
+                await this.preloadImage(initialArtworkUrl);
+            } catch (e) {
+                // Ignora falhas de imagens individuais para fluidez do fluxo
+            }
 
             this.updateUI();
             this.hideGlobalLoader();
+
+            // Libera o botão salvar agora que a imagem atual carregou
+            if (this.saveBtn) {
+                this.saveBtn.disabled = false;
+            }
 
             // Configurar modal conforme o tipo
             this.modal.classList.remove('artwork-type-poster', 'artwork-type-backdrop');
@@ -173,6 +189,9 @@ export default class ArtworkSelector {
             this.modal.classList.add('active');
             this.modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
+
+            // Iniciar pré-carregamento das imagens adjacentes em background
+            this.preloadAdjacent();
         } catch (error) {
             console.error('Erro ao buscar/pré-carregar artes:', error);
             this.hideGlobalLoader();
@@ -238,7 +257,7 @@ export default class ArtworkSelector {
         const current = this.artworks[this.currentIndex];
         this.posterImg.src = current.preview_url;
 
-        this.counter.textContent = `${this.currentIndex + 1} / ${this.artworks.length}`;
+        this.updateCounter();
 
         // Se houver apenas 1 item, oculta as setas e o contador
         if (this.artworks.length <= 1) {
@@ -252,16 +271,90 @@ export default class ArtworkSelector {
         }
     }
 
+    updateCounter() {
+        if (this.counter) {
+            this.counter.textContent = `${this.currentIndex + 1} / ${this.artworks.length}`;
+        }
+    }
+
     next() {
-        if (this.artworks.length <= 1) return;
-        this.currentIndex = (this.currentIndex + 1) % this.artworks.length;
-        this.updateUI();
+        if (this.artworks.length <= 1 || this.isTransitioning) return;
+        const nextIndex = (this.currentIndex + 1) % this.artworks.length;
+        this.navigateTo(nextIndex);
     }
 
     previous() {
-        if (this.artworks.length <= 1) return;
-        this.currentIndex = (this.currentIndex - 1 + this.artworks.length) % this.artworks.length;
-        this.updateUI();
+        if (this.artworks.length <= 1 || this.isTransitioning) return;
+        const prevIndex = (this.currentIndex - 1 + this.artworks.length) % this.artworks.length;
+        this.navigateTo(prevIndex);
+    }
+
+    async navigateTo(newIndex) {
+        if (this.isTransitioning) return;
+        this.isTransitioning = true;
+        this.currentIndex = newIndex;
+
+        // Desabilita o botão salvar temporariamente durante a transição
+        if (this.saveBtn) {
+            this.saveBtn.disabled = true;
+        }
+
+        // Efeito de Fade Out da imagem
+        this.posterImg.classList.add('fade-out');
+
+        // Espera a animação de fade out (180ms)
+        await new Promise(resolve => setTimeout(resolve, 180));
+
+        const current = this.artworks[this.currentIndex];
+        this.posterImg.src = current.preview_url;
+
+        // Aguarda carregar a nova imagem antes de exibi-la para evitar flicker branco
+        try {
+            await this.preloadImage(current.preview_url);
+        } catch (e) {
+            // Ignora falhas individuais silenciosamente
+        }
+
+        // Habilita o botão salvar
+        if (this.saveBtn) {
+            this.saveBtn.disabled = false;
+        }
+
+        // Efeito de Fade In
+        this.posterImg.classList.remove('fade-out');
+        this.updateCounter();
+
+        // Espera a animação de fade in concluir (180ms)
+        await new Promise(resolve => setTimeout(resolve, 180));
+        this.isTransitioning = false;
+
+        // Inicia o pré-carregamento do novo range adjacente em background
+        this.preloadAdjacent();
+    }
+
+    preloadAdjacent() {
+        if (this.artworks.length === 0) return;
+
+        const indicesToPreload = [];
+        const len = this.artworks.length;
+
+        // Janela de pré-carregamento: +1, +2, -1, -2 (circular)
+        const offsets = [1, 2, -1, -2];
+        offsets.forEach(offset => {
+            const index = (this.currentIndex + offset + len) % len;
+            if (!indicesToPreload.includes(index) && index !== this.currentIndex) {
+                indicesToPreload.push(index);
+            }
+        });
+
+        // Executa o pré-carregamento no browser em background
+        indicesToPreload.forEach(idx => {
+            const url = this.artworks[idx].preview_url;
+            if (url) {
+                const img = new Image();
+                img.src = url;
+            }
+        });
     }
 
     getSelectedArtwork() {
@@ -293,7 +386,6 @@ export default class ArtworkSelector {
             document.body.appendChild(loader);
         }
         
-        // Atualiza texto do loader caso seja backdrop
         const textEl = loader.querySelector('p');
         if (textEl) {
             textEl.textContent = 'Buscando imagens...';
