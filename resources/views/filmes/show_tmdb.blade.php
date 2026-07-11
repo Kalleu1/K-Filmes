@@ -15,11 +15,25 @@
             <div class="movieTmdb-content">
                 {{-- Poster e informações principais --}}
                 <div class="tmdb-movie-hero">
-                    <div class="tmdb-movie-poster-container">
-                        <img src="{{ $posterUrl ?? asset('img/poster-placeholder.png') }}" 
+                    <div class="tmdb-movie-poster-container" style="position: relative;">
+                        <img src="{{ ($filme && $filme->poster) ? $filme->poster_url : ($posterUrl ?? asset('img/poster-placeholder.png')) }}" 
                             alt="Poster de {{ $tmdbData['title'] ?? 'Sem título' }}" 
                             class="tmdb-movie-poster">
+
+                        @if($filme && $filme->tmdb_id)
+                            <button
+                                class="edit-poster-btn"
+                                data-action="open-poster-selector"
+                                data-filme-id="{{ $filme->id }}"
+                                data-tmdb-id="{{ $filme->tmdb_id }}"
+                                data-current-poster="{{ $filme->poster ? '/' . basename($filme->poster) : '' }}"
+                                aria-label="Alterar pôster"
+                            >
+                                <i class="fa-solid fa-camera"></i>
+                            </button>
+                        @endif
                     </div>
+
 
                     <div class="tmdb-movie-info">
                         <h1 class="tmdb-movie-title">{{ $tmdbData['title'] ?? 'Sem título' }}</h1>
@@ -281,5 +295,7 @@
             </div>
         </div>
     </div>
+
+    <x-poster-selector />
 
 @endsection

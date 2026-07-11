@@ -218,6 +218,7 @@ background:
 /* ============================= */
 
 .hero-poster-wrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
@@ -225,15 +226,10 @@ background:
     animation: fadeUp 0.8s ease-out forwards;
 }
 
-
-
-
 .hero-poster-wrapper:hover .hero-poster {
   transform: translateY(-4px);
   box-shadow: 0 40px 90px rgba(0,0,0,.65);
 }
-
-
 
 .hero-poster {
     width: 100%;
@@ -244,6 +240,53 @@ background:
 
     transition: transform .4s ease, box-shadow .4s ease;
 }
+
+/* Edit poster button overlay */
+.edit-poster-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(12, 12, 14, 0.8);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    color: #ffffff;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.edit-poster-btn i {
+    font-size: 1.35rem;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.hero-poster-wrapper:hover .edit-poster-btn {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+.edit-poster-btn:hover {
+    background: rgba(12, 12, 14, 0.95);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.edit-poster-btn:hover i {
+    color: var(--color-primary);
+}
+
 
 /* Badges */
 

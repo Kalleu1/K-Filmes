@@ -371,7 +371,39 @@ class FilmeController extends Controller
         ]);
     }
 
+    public function getPosters($tmdb_id)
+    {
+        $posters = $this->tmdb->getMoviePosters((int) $tmdb_id);
+
+        return response()->json([
+            'success' => true,
+            'posters' => $posters,
+        ]);
+    }
+
+    public function updatePoster(Request $request, $id)
+    {
+        $filme = $this->findUserFilmeOrFail($id);
+
+        $request->validate([
+            'poster_path' => 'required|string',
+        ]);
+
+        $posterPath = $request->input('poster_path');
+        $fullUrl = $this->tmdb->getImageUrl($posterPath, 'w500');
+
+        $filme->poster = $fullUrl;
+        $filme->save();
+
+        return response()->json([
+            'success' => true,
+            'new_url' => $fullUrl,
+        ]);
+    }
+
     private function userFilmesQuery()
+
+
     {
         return Filme::where('user_id', Auth::id());
     }

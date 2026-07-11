@@ -9,7 +9,9 @@ export default function initPersonalMovie() {
     bindRating(ui);
     bindGlobalModalClose(ui);
     bindCloseButtons(ui);
+    bindPosterSelector(ui);
 }
+
 
 
 /* =========================
@@ -29,10 +31,12 @@ function getUIElements() {
         deleteModal,
         openEditBtn: document.querySelector('[data-action="open-edit-modal"]'),
         openDeleteBtn: document.querySelector('[data-action="open-delete-modal"]'),
+        openPosterSelectorBtn: document.querySelector('[data-action="open-poster-selector"]'),
         shareBtn: document.querySelector('[data-action="share-movie"]'),
         ratingInput,
         ratingDisplay
     };
+
 }
 
 
@@ -112,6 +116,49 @@ function bindRating(ui) {
         // formatar com uma casa decimal
         const v = parseFloat(ui.ratingInput.value);
         ui.ratingDisplay.textContent = Number.isNaN(v) ? ui.ratingInput.value : v.toFixed(1);
+    });
+}
+
+function bindPosterSelector(ui) {
+    if (!ui.openPosterSelectorBtn) return;
+
+    ui.openPosterSelectorBtn.addEventListener('click', () => {
+        const tmdbId = ui.openPosterSelectorBtn.dataset.tmdbId;
+        const currentPoster = ui.openPosterSelectorBtn.dataset.currentPoster;
+        const filmeId = ui.openPosterSelectorBtn.dataset.filmeId;
+
+        if (!tmdbId || !filmeId) return;
+
+
+        const selector = new window.PosterSelector();
+        selector.open(tmdbId, currentPoster, (selectedPosterPath) => {
+            fetch(`/filmes/${filmeId}/update-poster`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    poster_path: selectedPosterPath
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.new_url) {
+                    const img = document.querySelector('.hero-poster');
+                    if (img) {
+                        img.src = data.new_url;
+                    }
+                    ui.openPosterSelectorBtn.dataset.currentPoster = selectedPosterPath;
+                    window.location.reload();
+                }
+            })
+            .catch(err => {
+                console.error('Erro ao atualizar o pôster:', err);
+                alert('Erro ao salvar o pôster.');
+            });
+        });
     });
 }
 

@@ -156,6 +156,33 @@ public function getMovie(int $id, string $language = 'pt-BR')
     });
 }
 
+public function getMoviePosters(int $tmdbId)
+{
+    $key = "tmdb:movie:{$tmdbId}:posters";
+    return $this->remember($key, 10080, function () use ($tmdbId) {
+        $response = $this->get("movie/{$tmdbId}/images");
+        if (!$response || empty($response['posters'])) {
+            return [];
+        }
+
+        return collect($response['posters'])
+            ->filter(function ($item) {
+                return ($item['iso_639_1'] === 'pt' || $item['iso_639_1'] === 'br');
+            })
+            ->map(function ($item) {
+                return [
+                    'poster_path' => $item['file_path'],
+                    'preview_url' => $this->getImageUrl($item['file_path'], 'w500'),
+                    'language'    => $item['iso_639_1'] ?? null,
+                ];
+            })
+            ->values()
+            ->toArray();
+    });
+}
+
+
+
 
 
 

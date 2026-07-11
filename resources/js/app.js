@@ -7,6 +7,10 @@ import initToast from './components/toastComp/init_Toast';
 import initDashboard from './pages/dashboard';
 import './components/loading/auto-loading';
 import { initMobileNavigation } from './ui/navigation';
+import PosterSelector from './components/poster-selector';
+
+window.PosterSelector = PosterSelector;
+
 
 
 document.addEventListener('DOMContentLoaded', () => {

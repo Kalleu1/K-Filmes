@@ -61,6 +61,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/filmes/buscar', [FilmeController::class, 'buscarTmdb'])
         ->name('filmes.buscarTmdb');
 
+    Route::get('/tmdb/movie/{tmdb_id}/posters', [FilmeController::class, 'getPosters'])
+        ->name('filmes.tmdb.posters');
+
+    Route::patch('/filmes/{id}/update-poster', [FilmeController::class, 'updatePoster'])
+        ->name('filmes.updatePoster');
+
+
+    Route::get('/test-poster-selector', function () {
+        return view('test-poster-selector');
+    })->name('filmes.test-poster-selector');
+
+
     /*
     | Compartilhamento (Share)
     */

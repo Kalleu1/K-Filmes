@@ -22,7 +22,7 @@
                         
 
                         <img
-                            src="{{ $posterUrl ?? ($filme->poster ? asset('storage/posters/' . $filme->poster) : asset('img/poster-placeholder.png')) }}"
+                            src="{{ $filme->poster ? $filme->poster_url : ($posterUrl ?? asset('img/poster-placeholder.png')) }}"
                             alt="Poster de {{ $filme->nome }}"
                             class="hero-poster">
 
@@ -40,6 +40,21 @@
                         >
                             <i class="fa-solid fa-heart"></i>
                         </button>
+
+                        @if($filme->tmdb_id)
+                            <button
+                                class="edit-poster-btn"
+                                data-action="open-poster-selector"
+                                data-filme-id="{{ $filme->id }}"
+                                data-tmdb-id="{{ $filme->tmdb_id }}"
+                                data-current-poster="{{ $filme->poster ? '/' . basename($filme->poster) : '' }}"
+                                aria-label="Alterar pôster"
+                            >
+                                <i class="fa-solid fa-camera"></i>
+                            </button>
+                        @endif
+
+
 
                     
                         
@@ -314,5 +329,6 @@
     </div>
 </div>
 
+<x-poster-selector />
 
 @endsection

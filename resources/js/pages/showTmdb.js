@@ -9,7 +9,9 @@ export default function initMovieDetails() {
     bindDeleteModal(ui);
     bindCloseButtons(ui);
     bindRating(ui);
+    bindPosterSelector(ui);
 }
+
 
 function getUIElements() {
     const watchedModal = document.getElementById('watchedModal');
@@ -21,8 +23,10 @@ function getUIElements() {
 
         openWatchedBtn: document.querySelector('[data-action="open-watched-modal"]'),
         openDeleteBtn: document.querySelector('[data-action="open-delete-modal"]'),
+        openPosterSelectorBtn: document.querySelector('[data-action="open-poster-selector"]'),
 
         closeBtns: document.querySelectorAll('[data-action="close-modal"]'),
+
 
         // buscar o input/label de nota dentro do modal (evita colisão com outro modal)
         ratingInput: watchedModal ? watchedModal.querySelector('#nota') : document.getElementById('nota'),
@@ -92,5 +96,47 @@ function bindRating(ui) {
 
     ui.ratingInput.addEventListener('input', () => {
         ui.ratingDisplay.textContent = ui.ratingInput.value;
+    });
+}
+
+function bindPosterSelector(ui) {
+    if (!ui.openPosterSelectorBtn) return;
+
+    ui.openPosterSelectorBtn.addEventListener('click', () => {
+        const tmdbId = ui.openPosterSelectorBtn.dataset.tmdbId;
+        const currentPoster = ui.openPosterSelectorBtn.dataset.currentPoster;
+        const filmeId = ui.openPosterSelectorBtn.dataset.filmeId;
+
+        if (!tmdbId || !filmeId) return;
+
+        const selector = new window.PosterSelector();
+        selector.open(tmdbId, currentPoster, (selectedPosterPath) => {
+            fetch(`/filmes/${filmeId}/update-poster`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    poster_path: selectedPosterPath
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.new_url) {
+                    const img = document.querySelector('.tmdb-movie-poster');
+                    if (img) {
+                        img.src = data.new_url;
+                    }
+                    ui.openPosterSelectorBtn.dataset.currentPoster = selectedPosterPath;
+                    window.location.reload();
+                }
+            })
+            .catch(err => {
+                console.error('Erro ao atualizar o pôster:', err);
+                alert('Erro ao salvar o pôster.');
+            });
+        });
     });
 }
