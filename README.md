@@ -17,10 +17,10 @@ Para testar a aplicação, utilize o usuário:
 
 ```
 Usuário:
-teste@kfilmes.com
+demo@kfilmes.com'
 
 Senha:
-12345678
+kfilmes123
 ```
 
 > O usuário de demonstração possui dados preparados para explorar as funcionalidades da plataforma.
