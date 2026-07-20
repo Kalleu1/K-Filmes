@@ -129,12 +129,50 @@ A integração com o TMDB é realizada através de uma camada de serviço dedica
 
 # 📷 Screenshots
 
-Adicionar imagens da aplicação:
+## 📸 Capturas da aplicação
 
-- Dashboard
-- Página Descobrir
-- Detalhes do filme
-- Versão mobile
+A interface do K-Filmes foi desenvolvida com foco em uma experiência cinematográfica, responsiva e intuitiva, adaptando a navegação para desktop e dispositivos móveis.
+
+---
+
+### 🏠 Dashboard
+
+Tela principal da aplicação, apresentando filmes em destaque, recomendações e conteúdos dinâmicos integrados com a API do TMDB.
+
+<img width="1874" height="808" alt="Dashboard" src="https://github.com/user-attachments/assets/06fde062-12c7-4cf5-ac2b-5b12f8adb24c" />
+
+---
+
+### 📱 Dashboard Mobile
+
+Versão responsiva do dashboard, adaptada para telas menores mantendo a experiência de navegação e apresentação dos filmes.
+
+<img width="346" height="775" alt="Dashboard Mobile" src="https://github.com/user-attachments/assets/29cf033b-9f57-426f-8fa0-8c8bc3ef9b7a" />
+
+---
+
+### 🎞️ Biblioteca
+
+Área destinada à organização dos filmes do usuário, permitindo visualizar e gerenciar sua coleção pessoal.
+
+<img width="1434" height="851" alt="Biblioteca" src="https://github.com/user-attachments/assets/03eec5ba-916f-4f92-a253-cb9f87638912" />
+
+---
+
+### 🎬 Detalhes do filme
+
+Página com informações completas da obra, incluindo dados obtidos através da API TMDB, como sinopse, avaliação, gênero e informações adicionais.
+
+<img width="1888" height="906" alt="Detalhes do filme" src="https://github.com/user-attachments/assets/dd828bc9-2331-49f9-a0cb-8a107400505a" />
+
+---
+
+### 🎲 Sorteio de filme
+
+Funcionalidade para auxiliar o usuário na escolha de um filme, gerando uma sugestão aleatória baseada no catálogo disponível.
+
+<img width="676" height="731" alt="Sorteio de filme" src="https://github.com/user-attachments/assets/9d01663b-89ff-4f7a-aeae-3f0fd86e9a4a" />
+
 
 ---
 
