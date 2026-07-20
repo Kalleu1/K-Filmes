@@ -1,61 +1,179 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎬 K-Filmes
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-Framework-red?style=for-the-badge&logo=laravel">
+  <img src="https://img.shields.io/badge/PHP-8.x-blue?style=for-the-badge&logo=php">
+  <img src="https://img.shields.io/badge/MySQL-Database-orange?style=for-the-badge&logo=mysql">
+  <img src="https://img.shields.io/badge/TMDB-API-green?style=for-the-badge">
 </p>
 
-## About Laravel
+## 🌐 Demonstração
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+O K-Filmes está disponível online em produção:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+🔗 **Acesse:** 195.201.226.244
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Para testar a aplicação, utilize o usuário:
 
-## Learning Laravel
+```
+Usuário:
+teste@kfilmes.com
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Senha:
+12345678
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+> O usuário de demonstração possui dados preparados para explorar as funcionalidades da plataforma.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+# 📌 Sobre o projeto
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+O **K-Filmes** é uma plataforma web para descoberta, organização e acompanhamento de filmes.
 
-### Premium Partners
+A aplicação foi desenvolvida utilizando **Laravel**, com integração à API do **TMDB (The Movie Database)** para obter informações dinâmicas sobre filmes, incluindo posters, backdrops, avaliações, gêneros e detalhes das obras.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+O projeto busca proporcionar uma experiência semelhante às grandes plataformas de streaming, com foco em uma interface cinematográfica, responsiva e otimizada para diferentes dispositivos.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# ✨ Funcionalidades
 
-## Code of Conduct
+## 🎥 Descoberta de filmes
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Catálogo dinâmico utilizando a API TMDB.
+- Categorias como:
+  - Populares
+  - Em alta
+  - Mais votados
+  - Por gênero
+- Página de detalhes dos filmes.
+- Carrosséis cinematográficos.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 👤 Usuários
 
-## License
+- Sistema de autenticação.
+- Ambiente personalizado por usuário.
+- Organização individual de filmes.
+- Dados isolados utilizando autenticação Laravel.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🎨 Interface
+
+- Design inspirado em plataformas de streaming.
+- Tema escuro.
+- Hero section dinâmica.
+- Layout responsivo.
+- Experiência otimizada para mobile e desktop.
+- Animações e transições para melhorar a navegação.
+
+---
+
+# 🛠️ Tecnologias utilizadas
+
+## Backend
+
+- PHP
+- Laravel
+- Laravel Breeze
+- MySQL
+- Eloquent ORM
+
+## Frontend
+
+- Blade Templates
+- HTML5
+- CSS3
+- JavaScript
+- Vite
+
+## Integrações
+
+- TMDB API
+
+## Infraestrutura
+
+- Deploy em VPS Linux
+- Hospedagem Hetzner Cloud
+- Nginx
+- SSL
+
+---
+
+# 🏗️ Arquitetura
+
+O projeto utiliza a arquitetura MVC padrão do Laravel:
+
+```
+app/
+ ├── Models/
+ ├── Services/
+ │    └── TMDBService.php
+ ├── Http/
+ │    └── Controllers/
+
+resources/
+ ├── views/
+ │    └── Blade Templates
+ ├── css/
+ │    └── Estilos separados por página
+ └── js/
+```
+
+A integração com o TMDB é realizada através de uma camada de serviço dedicada, mantendo a separação de responsabilidades.
+
+---
+
+# 📷 Screenshots
+
+Adicionar imagens da aplicação:
+
+- Dashboard
+- Página Descobrir
+- Detalhes do filme
+- Versão mobile
+
+---
+
+# 🎯 Objetivos do projeto
+
+O desenvolvimento do K-Filmes teve como objetivos:
+
+- Aplicar desenvolvimento Full Stack com Laravel.
+- Trabalhar integração com APIs REST.
+- Desenvolver uma aplicação escalável.
+- Aplicar conceitos de UX/UI.
+- Criar uma experiência semelhante a serviços reais de streaming.
+
+---
+
+# 🔮 Próximos passos
+
+- [ ] Aplicativo mobile.
+- [ ] Sistema de recomendações personalizado.
+- [ ] Avaliação e comentários.
+- [ ] Listas públicas de usuários.
+- [ ] Melhorias de cache e performance.
+
+---
+
+# 👨‍💻 Desenvolvedor
+
+**Kalleu Borges Queiroz**
+
+Estudante de Sistemas de Informação | Desenvolvedor Back-end
+
+GitHub:
+https://github.com/Kalleu1
+
+LinkedIn:
+https://www.linkedin.com/in/kalleu-queiroz-8643a7210/
+
+---
+
+# 📄 Licença
+
+Projeto desenvolvido para fins acadêmicos e de portfólio.
