@@ -11,7 +11,7 @@
 
 O K-Filmes está disponível online em produção:
 
-🔗 **Acesse:** 195.201.226.244
+🔗 **Acesse:** https://kfilmes.online
 
 Para testar a aplicação, utilize o usuário:
 
