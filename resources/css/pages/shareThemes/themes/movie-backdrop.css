@@ -1,0 +1,9 @@
+/* Tema Banner do Filme */
+.theme-movie-backdrop {
+    background: #0d0e12;
+}
+
+.theme-movie-backdrop .preview-bg-wrapper {
+    opacity: 1;
+    visibility: visible;
+}

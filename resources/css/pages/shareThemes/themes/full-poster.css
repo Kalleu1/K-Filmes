@@ -1,0 +1,39 @@
+/* Tema Pôster Full-Screen (Full Poster HD sem blur) */
+.theme-full-poster {
+    background: #000000;
+}
+
+.theme-full-poster .preview-bg-wrapper {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.theme-full-poster .preview-bg-image.preview-bg-poster {
+    filter: brightness(0.82) contrast(1.05) !important;
+    transform: scale(1.0) !important;
+}
+
+.theme-full-poster .preview-bg-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.85) 100%) !important;
+}
+
+/* Ocultar poster card central */
+.theme-full-poster .preview-poster-card {
+    display: none !important;
+}
+
+/* Reposicionar título e nota na parte inferior */
+.theme-full-poster .preview-content {
+    justify-content: flex-end !important;
+    padding-bottom: 50px !important;
+}
+
+.theme-full-poster .preview-info {
+    margin-top: 0 !important;
+}
+
+.theme-full-poster .preview-title {
+    font-size: clamp(1.45rem, 5.5vw, 1.9rem) !important;
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.8) !important;
+}

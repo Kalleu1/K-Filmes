@@ -43,30 +43,65 @@ class Filme extends Model
     // Buscar Banner 
     public function getPosterBannerUrlAttribute()
     {
-    if (!$this->poster_banner) return null;
+        if (empty($this->poster_banner)) {
+            return null;
+        }
 
-    // Se for URL completa (começa com http), retorna diretamente
-    if (Str::startsWith($this->poster_banner, 'http')) {
-        return $this->poster_banner;
+        $val = trim($this->poster_banner);
+
+        if (Str::startsWith($val, ['http://', 'https://', '//'])) {
+            return $val;
+        }
+
+        if (Str::startsWith($val, '/storage/')) {
+            return asset(ltrim($val, '/'));
+        }
+
+        if (Str::startsWith($val, 'storage/')) {
+            return asset($val);
+        }
+
+        if (Str::startsWith($val, 'posters_banners/')) {
+            return asset('storage/' . $val);
+        }
+
+        if (Str::startsWith($val, '/')) {
+            return 'https://image.tmdb.org/t/p/w1280' . $val;
+        }
+
+        return asset('storage/posters_banners/' . ltrim($val, '/'));
     }
-
-    // Senão assume que é arquivo local
-    return asset('storage/posters_banners/' . $this->poster_banner);
-    }
-
 
     // Buscar Poster
     public function getPosterUrlAttribute()
     {
-    if (!$this->poster) return null;
+        if (empty($this->poster)) {
+            return null;
+        }
 
-    // Se for URL completa (começa com http), retorna diretamente
-    if (Str::startsWith($this->poster, 'http')) {
-        return $this->poster;
-    }
+        $val = trim($this->poster);
 
-    // Senão assume que é arquivo local
-    return asset('storage/posters/' . $this->poster);
+        if (Str::startsWith($val, ['http://', 'https://', '//'])) {
+            return $val;
+        }
+
+        if (Str::startsWith($val, '/storage/')) {
+            return asset(ltrim($val, '/'));
+        }
+
+        if (Str::startsWith($val, 'storage/')) {
+            return asset($val);
+        }
+
+        if (Str::startsWith($val, 'posters/')) {
+            return asset('storage/' . $val);
+        }
+
+        if (Str::startsWith($val, '/')) {
+            return 'https://image.tmdb.org/t/p/w500' . $val;
+        }
+
+        return asset('storage/posters/' . ltrim($val, '/'));
     }
 
     

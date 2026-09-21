@@ -14,7 +14,7 @@ export default function initShare() {
     const btnTwitter   = document.getElementById('btn-twitter');
     const shareButtons = [btnInstagram, btnWhatsapp, btnTwitter];
 
-    let selectedTheme = 'noir';
+    let selectedTheme = 'movie-backdrop';
     let generatedImageUrl = null;
 
     const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
@@ -67,6 +67,8 @@ export default function initShare() {
 
     document.querySelectorAll(".theme-btn").forEach(btn => {
         btn.addEventListener("click", () => {
+            if (btn.classList.contains('theme-btn-edit-backdrop') || btn.classList.contains('theme-btn-edit-poster')) return;
+
             document.querySelectorAll(".theme-btn")
                 .forEach(b => b.classList.remove("selected"));
 
@@ -77,6 +79,113 @@ export default function initShare() {
             themeInput.value = selectedTheme;
         });
     });
+
+    // Seletor temporário de backdrop para o compartilhamento
+    const editBackdropBtn = document.querySelector('[data-action="open-share-backdrop-selector"]');
+    if (editBackdropBtn) {
+        editBackdropBtn.addEventListener('click', () => {
+            const tmdbId = editBackdropBtn.dataset.tmdbId;
+            if (!tmdbId) return;
+
+            if (typeof window.ArtworkSelector === 'function') {
+                const selector = new window.ArtworkSelector();
+                selector.open({
+                    tmdbId: tmdbId,
+                    type: 'backdrop',
+                    current: '',
+                    onConfirm: (selectedPath) => {
+                        if (!selectedPath) return;
+
+                        const fullUrl = selectedPath.startsWith('http')
+                            ? selectedPath
+                            : `https://image.tmdb.org/t/p/w1280${selectedPath.startsWith('/') ? '' : '/'}${selectedPath}`;
+
+                        // 1. Atualizar imagem de fundo no preview
+                        const bgImg = preview.querySelector('.preview-bg-image.preview-bg-backdrop, .preview-bg-image');
+                        if (bgImg) {
+                            bgImg.src = fullUrl;
+                        }
+
+                        // 2. Atualizar miniaturas dos botões de backdrop
+                        const backdropBtns = document.querySelectorAll('.theme-btn-backdrop');
+                        backdropBtns.forEach(btn => {
+                            btn.style.backgroundImage = `url('${fullUrl}')`;
+                        });
+
+                        const activeBackdropBtn = document.querySelector('.theme-btn-backdrop');
+                        if (activeBackdropBtn) {
+                            activeBackdropBtn.click();
+                        }
+
+                        // 3. Atualizar campo oculto custom_backdrop_url no formulário
+                        const customBackdropInput = document.getElementById('share-custom-backdrop-input');
+                        if (customBackdropInput) {
+                            customBackdropInput.value = fullUrl;
+                        }
+
+                        showToast({
+                            type: 'success',
+                            message: 'Fundo do story alterado para este compartilhamento!',
+                            timeout: 3000
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // Seletor temporário de pôster para o compartilhamento (inclui pôsteres sem título)
+    const editPosterBtn = document.querySelector('[data-action="open-share-poster-selector"]');
+    if (editPosterBtn) {
+        editPosterBtn.addEventListener('click', () => {
+            const tmdbId = editPosterBtn.dataset.tmdbId;
+            if (!tmdbId) return;
+
+            if (typeof window.ArtworkSelector === 'function') {
+                const selector = new window.ArtworkSelector();
+                selector.open({
+                    tmdbId: tmdbId,
+                    type: 'poster',
+                    current: '',
+                    onConfirm: (selectedPath) => {
+                        if (!selectedPath) return;
+
+                        const fullUrl = selectedPath.startsWith('http')
+                            ? selectedPath
+                            : `https://image.tmdb.org/t/p/w500${selectedPath.startsWith('/') ? '' : '/'}${selectedPath}`;
+
+                        // 1. Atualizar imagem do poster no card do preview e no fundo full-poster
+                        const posterImg = preview.querySelector('.preview-poster-img');
+                        if (posterImg) {
+                            posterImg.src = fullUrl;
+                        }
+
+                        const bgPosterImg = preview.querySelector('.preview-bg-poster');
+                        if (bgPosterImg) {
+                            bgPosterImg.src = fullUrl;
+                        }
+
+                        const fullPosterBtns = document.querySelectorAll('.theme-btn-full-poster');
+                        fullPosterBtns.forEach(btn => {
+                            btn.style.backgroundImage = `url('${fullUrl}')`;
+                        });
+
+                        // 2. Atualizar campo oculto custom_poster_url no formulário
+                        const customPosterInput = document.getElementById('share-custom-poster-input');
+                        if (customPosterInput) {
+                            customPosterInput.value = fullUrl;
+                        }
+
+                        showToast({
+                            type: 'success',
+                            message: 'Pôster do story alterado para este compartilhamento!',
+                            timeout: 3000
+                        });
+                    }
+                });
+            }
+        });
+    }
 
     form.addEventListener('submit', async function(e){
         e.preventDefault();
