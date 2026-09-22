@@ -158,7 +158,7 @@ public function getMovie(int $id, string $language = 'pt-BR')
 
 public function getMoviePosters(int $tmdbId)
 {
-    $key = "tmdb:movie:{$tmdbId}:posters";
+    $key = "tmdb:v3:movie:{$tmdbId}:posters";
     return $this->remember($key, 10080, function () use ($tmdbId) {
         $response = $this->get("movie/{$tmdbId}/images");
         if (!$response || empty($response['posters'])) {
@@ -177,53 +177,7 @@ public function getMoviePosters(int $tmdbId)
 
         return $posters->sort(function ($a, $b) {
             $langPriority = function ($lang) {
-                if ($lang === 'pt' || $lang === 'br') return 1;
-                if ($lang === null) return 2;
-                if ($lang === 'en') return 3;
-                return 4;
-            };
-
-            $pA = $langPriority($a['language']);
-            $pB = $langPriority($b['language']);
-
-            if ($pA !== $pB) {
-                return $pA <=> $pB;
-            }
-
-            if ($b['vote_average'] != $a['vote_average']) {
-                return $b['vote_average'] <=> $a['vote_average'];
-            }
-
-            return $b['vote_count'] <=> $a['vote_count'];
-        })
-        ->slice(0, 20)
-        ->values()
-        ->toArray();
-    });
-}
-
-public function getMovieBackdrops(int $tmdbId)
-{
-    $key = "tmdb:movie:{$tmdbId}:backdrops";
-    return $this->remember($key, 10080, function () use ($tmdbId) {
-        $response = $this->get("movie/{$tmdbId}/images");
-        if (!$response || empty($response['backdrops'])) {
-            return [];
-        }
-
-        $backdrops = collect($response['backdrops'])->map(function ($item) {
-            return [
-                'file_path'    => $item['file_path'],
-                'preview_url'  => $this->getImageUrl($item['file_path'], 'w780'),
-                'language'     => $item['iso_639_1'] ?? null,
-                'vote_average' => $item['vote_average'] ?? 0,
-                'vote_count'   => $item['vote_count'] ?? 0,
-            ];
-        });
-
-        return $backdrops->sort(function ($a, $b) {
-            $langPriority = function ($lang) {
-                if ($lang === null) return 1;
+                if ($lang === null) return 1; // Pôsteres sem título primeiro
                 if ($lang === 'pt' || $lang === 'br') return 2;
                 if ($lang === 'en') return 3;
                 return 4;
@@ -242,7 +196,53 @@ public function getMovieBackdrops(int $tmdbId)
 
             return $b['vote_count'] <=> $a['vote_count'];
         })
-        ->slice(0, 20)
+        ->slice(0, 45)
+        ->values()
+        ->toArray();
+    });
+}
+
+public function getMovieBackdrops(int $tmdbId)
+{
+    $key = "tmdb:v3:movie:{$tmdbId}:backdrops";
+    return $this->remember($key, 10080, function () use ($tmdbId) {
+        $response = $this->get("movie/{$tmdbId}/images");
+        if (!$response || empty($response['backdrops'])) {
+            return [];
+        }
+
+        $backdrops = collect($response['backdrops'])->map(function ($item) {
+            return [
+                'file_path'    => $item['file_path'],
+                'preview_url'  => $this->getImageUrl($item['file_path'], 'w780'),
+                'language'     => $item['iso_639_1'] ?? null,
+                'vote_average' => $item['vote_average'] ?? 0,
+                'vote_count'   => $item['vote_count'] ?? 0,
+            ];
+        });
+
+        return $backdrops->sort(function ($a, $b) {
+            $langPriority = function ($lang) {
+                if ($lang === null) return 1; // Backdrops sem título primeiro
+                if ($lang === 'pt' || $lang === 'br') return 2;
+                if ($lang === 'en') return 3;
+                return 4;
+            };
+
+            $pA = $langPriority($a['language']);
+            $pB = $langPriority($b['language']);
+
+            if ($pA !== $pB) {
+                return $pA <=> $pB;
+            }
+
+            if ($b['vote_average'] != $a['vote_average']) {
+                return $b['vote_average'] <=> $a['vote_average'];
+            }
+
+            return $b['vote_count'] <=> $a['vote_count'];
+        })
+        ->slice(0, 45)
         ->values()
         ->toArray();
     });

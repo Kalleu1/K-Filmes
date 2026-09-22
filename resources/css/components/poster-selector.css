@@ -327,8 +327,25 @@
 }
 
 @media (max-width: 767px) {
+    .poster-selector-modal {
+        padding: 12px 10px calc(24px + env(safe-area-inset-bottom, 20px));
+        align-items: flex-end;
+    }
+
     .poster-selector-content {
-        padding: 1.5rem 1.25rem;
+        padding: 1.25rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 20px));
+        max-height: 86vh;
+        overflow-y: auto;
+        margin-bottom: calc(12px + env(safe-area-inset-bottom, 16px));
+    }
+
+    .poster-selector-poster-frame {
+        max-height: 48vh;
+    }
+
+    .poster-selector-footer {
+        padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 12px));
+        margin-bottom: 0.5rem;
     }
     
     .poster-selector-arrow {
