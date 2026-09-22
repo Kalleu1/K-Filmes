@@ -105,17 +105,18 @@
                     <img src="{{ $posterUrl ?? ($filme->poster_url ?? $filme->poster) }}" class="preview-poster-img" alt="Poster {{ $filme->nome }}">
                 </div>
 
-                {{-- Informações do Filme (Título e Nota Numérica) --}}
+                {{-- Informações do Filme (Estilo MUBI / Letterboxd na mesma linha) --}}
                 <div class="preview-info">
-                    <h2 class="preview-title">{{ $filme->nome }}</h2>
-
-                    @if($filme->nota)
-                    <div class="preview-rating-badge">
-                        <span class="star-icon">★</span>
-                        <span class="rating-value">{{ number_format($filme->nota, 1, ',', '.') }}</span>
-                        <span class="rating-max">/ 10</span>
+                    <div class="preview-inline-meta">
+                        <h2 class="preview-title">{{ $filme->nome }}</h2>
+                        @if($filme->nota)
+                        <span class="meta-separator">•</span>
+                        <div class="preview-rating-badge">
+                            <span class="star-icon">★</span>
+                            <span class="rating-value">{{ number_format($filme->nota, 1, ',', '.') }}</span>
+                        </div>
+                        @endif
                     </div>
-                    @endif
                 </div>
             </div>
         </div>

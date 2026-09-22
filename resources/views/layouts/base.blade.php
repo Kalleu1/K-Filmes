@@ -11,7 +11,7 @@
         <title>{{ config('app.name', 'K-Filmes') }}</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         {{-- Icones --}}
         <link

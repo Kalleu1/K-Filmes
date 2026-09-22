@@ -124,57 +124,67 @@
     display: block;
 }
 
-/* INFORMACÕES DO FILME (LIMPO) */
+/* INFORMAÇÕES DO FILME (SEM CAIXA / TRANSPARENTE / MAIOR & FORMAL) */
 .preview-info {
     text-align: center;
     width: 100%;
-    padding-inline: 12px;
+    padding-inline: 16px;
+}
+
+.preview-inline-meta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    max-width: 95%;
+    margin: 0 auto;
 }
 
 .preview-title {
-    font-size: clamp(1.35rem, 5vw, 1.65rem);
-    font-weight: 800;
-    color: #ffffff;
-    text-shadow: 0 3px 14px rgba(0, 0, 0, 0.95);
-    margin: 0 0 12px 0;
-    letter-spacing: -0.4px;
-    line-height: 1.2;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(1.4rem, 5.2vw, 1.7rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.82);
+    margin: 0;
+    letter-spacing: -0.2px;
+    line-height: 1.25;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.9);
 }
 
-/* BADGE DE NOTA NUMÉRICA */
+.meta-separator {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    line-height: 1;
+}
+
 .preview-rating-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    padding: 8px 20px;
-    border-radius: 999px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    gap: 5px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
 }
 
 .preview-rating-badge .star-icon {
     color: #ffc107;
-    font-size: 18px;
-    line-height: 1;
+    font-size: 16px;
+    opacity: 0.85;
 }
 
 .preview-rating-badge .rating-value {
-    color: #ffffff;
-    font-weight: 800;
-    font-size: 20px;
-    letter-spacing: -0.2px;
-    font-family: system-ui, -apple-system, sans-serif;
-    line-height: 1;
-}
-
-.preview-rating-badge .rating-max {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.82);
     font-weight: 600;
-    font-size: 13px;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 1.35rem;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.9);
 }
