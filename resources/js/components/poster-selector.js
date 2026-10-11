@@ -69,42 +69,55 @@ export default class ArtworkSelector {
     }
 
     bindEvents() {
-        this.prevBtn.addEventListener('click', (e) => {
+        this.prevBtn.onclick = (e) => {
             e.stopPropagation();
             this.previous();
-        });
-        
-        this.nextBtn.addEventListener('click', (e) => {
+        };
+
+        this.nextBtn.onclick = (e) => {
             e.stopPropagation();
             this.next();
-        });
+        };
 
-        this.saveBtn.addEventListener('click', () => this.save());
-        this.cancelBtn.addEventListener('click', () => this.close());
-        
+        this.saveBtn.onclick = (e) => {
+            e.stopPropagation();
+            this.save();
+        };
+
+        this.cancelBtn.onclick = (e) => {
+            e.stopPropagation();
+            this.close();
+        };
+
         if (this.closeBtn) {
-            this.closeBtn.addEventListener('click', () => this.close());
+            this.closeBtn.onclick = (e) => {
+                e.stopPropagation();
+                this.close();
+            };
         }
 
         // Fechar ao clicar no overlay escuro
-        this.modal.addEventListener('click', (e) => {
+        this.modal.onclick = (e) => {
             if (e.target === this.modal) {
                 this.close();
             }
-        });
+        };
 
         // Eventos de teclado (Esc para fechar, Setas para navegar)
-        document.addEventListener('keydown', (e) => {
-            if (!this.modal.classList.contains('active')) return;
+        if (!window._posterSelectorKeydownBound) {
+            window._posterSelectorKeydownBound = true;
+            document.addEventListener('keydown', (e) => {
+                if (!this.modal || !this.modal.classList.contains('active')) return;
 
-            if (e.key === 'Escape') {
-                this.close();
-            } else if (e.key === 'ArrowLeft') {
-                this.previous();
-            } else if (e.key === 'ArrowRight') {
-                this.next();
-            }
-        });
+                if (e.key === 'Escape') {
+                    this.close();
+                } else if (e.key === 'ArrowLeft') {
+                    this.previous();
+                } else if (e.key === 'ArrowRight') {
+                    this.next();
+                }
+            });
+        }
     }
 
     async open(tmdbIdOrOpts, currentArtwork = null, onConfirm = null, type = 'poster') {
@@ -120,6 +133,9 @@ export default class ArtworkSelector {
             this.currentArtwork = tmdbIdOrOpts.current || tmdbIdOrOpts.currentPoster || null;
             this.onConfirm = tmdbIdOrOpts.onConfirm;
         }
+
+        // Garante que os eventos do modal pertencem a esta instância ativa
+        this.bindEvents();
 
         if (!tmdbId) {
             console.error('O TMDB ID é obrigatório para abrir o seletor.');
@@ -399,7 +415,9 @@ export default class ArtworkSelector {
         const selected = this.getSelectedArtwork();
         if (selected && this.onConfirm) {
             const path = selected.file_path || selected.poster_path;
-            this.onConfirm(path);
+            const callback = this.onConfirm;
+            this.onConfirm = null;
+            callback(path);
         }
         this.close();
     }
