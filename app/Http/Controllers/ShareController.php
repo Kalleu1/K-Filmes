@@ -72,6 +72,22 @@ class ShareController extends Controller
         $backdropUrl = $this->resolveBackdropUrl($filme, $request->input('custom_backdrop_url'));
         $posterUrl = $this->resolvePosterUrl($filme, $request->input('custom_poster_url'));
 
+        // Coordenadas livres do Canvas Drag & Drop + Ajustes de Fundo
+        $posterX = (float) $request->input('poster_x', 50);
+        $posterY = (float) $request->input('poster_y', 40);
+        $posterScale = (float) $request->input('poster_scale', 1.0);
+        $titleX = (float) $request->input('title_x', 50);
+        $titleY = (float) $request->input('title_y', 85);
+
+        $bgBlur = (float) $request->input('bg_blur', 6);
+        $bgBrightness = (float) $request->input('bg_brightness', 0.68);
+        $titleScale = (float) $request->input('title_scale', 1.0);
+        $ratingScale = (float) $request->input('rating_scale', 1.0);
+        $bgType = $request->input('bg_type', 'backdrop');
+        $showTitle = filter_var($request->input('show_title', true), FILTER_VALIDATE_BOOLEAN);
+        $showRating = filter_var($request->input('show_rating', true), FILTER_VALIDATE_BOOLEAN);
+        $ratingStyle = $request->input('rating_style', 'number');
+
         // LISTA DE CSS FIXOS + TEMA DINAMICO
         $cssFiles = [
             resource_path('css/pages/share.css'),
@@ -90,7 +106,12 @@ class ShareController extends Controller
         }
 
         // Renderiza a view Blade
-        $html = view('filmes.share-render', compact('filme', 'theme', 'backdropUrl', 'posterUrl'))->render();
+        $html = view('filmes.share-render', compact(
+            'filme', 'theme', 'backdropUrl', 'posterUrl',
+            'posterX', 'posterY', 'posterScale', 'titleX', 'titleY',
+            'bgBlur', 'bgBrightness', 'titleScale', 'ratingScale',
+            'bgType', 'showTitle', 'showRating', 'ratingStyle'
+        ))->render();
 
         // Injeta o CSS
         $htmlWithCss = str_replace('</head>', "<style>{$cssContent}</style></head>", $html);
@@ -132,6 +153,26 @@ class ShareController extends Controller
         $backdropUrl = $this->resolveBackdropUrl($filme, $request->input('custom_backdrop_url'));
         $posterUrl = $this->resolvePosterUrl($filme, $request->input('custom_poster_url'));
 
-        return view('filmes.share-render', compact('filme', 'theme', 'backdropUrl', 'posterUrl'));
+        $posterX = (float) $request->input('poster_x', 50);
+        $posterY = (float) $request->input('poster_y', 40);
+        $posterScale = (float) $request->input('poster_scale', 1.0);
+        $titleX = (float) $request->input('title_x', 50);
+        $titleY = (float) $request->input('title_y', 85);
+
+        $bgBlur = (float) $request->input('bg_blur', 6);
+        $bgBrightness = (float) $request->input('bg_brightness', 0.68);
+        $titleScale = (float) $request->input('title_scale', 1.0);
+        $ratingScale = (float) $request->input('rating_scale', 1.0);
+        $bgType = $request->input('bg_type', 'backdrop');
+        $showTitle = filter_var($request->input('show_title', true), FILTER_VALIDATE_BOOLEAN);
+        $showRating = filter_var($request->input('show_rating', true), FILTER_VALIDATE_BOOLEAN);
+        $ratingStyle = $request->input('rating_style', 'number');
+
+        return view('filmes.share-render', compact(
+            'filme', 'theme', 'backdropUrl', 'posterUrl',
+            'posterX', 'posterY', 'posterScale', 'titleX', 'titleY',
+            'bgBlur', 'bgBrightness', 'titleScale', 'ratingScale',
+            'bgType', 'showTitle', 'showRating', 'ratingStyle'
+        ));
     }
 }

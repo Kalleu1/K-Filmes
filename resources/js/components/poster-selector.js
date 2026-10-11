@@ -177,12 +177,18 @@ export default class ArtworkSelector {
 
             // Configurar modal conforme o tipo
             this.modal.classList.remove('artwork-type-poster', 'artwork-type-backdrop');
-            this.modal.classList.add(`artwork-type-${this.type}`);
+            if (this.type !== 'all') {
+                this.modal.classList.add(`artwork-type-${this.type}`);
+            }
 
             // Atualizar o título do modal
             const titleEl = this.modal.querySelector('.poster-selector-title');
             if (titleEl) {
-                titleEl.textContent = this.type === 'backdrop' ? 'Escolha um backdrop' : 'Escolha um pôster';
+                if (this.type === 'all') {
+                    titleEl.textContent = 'Escolha uma imagem de fundo (Backdrops ou Pôsteres)';
+                } else {
+                    titleEl.textContent = this.type === 'backdrop' ? 'Escolha um backdrop' : 'Escolha um pôster';
+                }
             }
 
             // Abrir modal
@@ -206,6 +212,26 @@ export default class ArtworkSelector {
     }
 
     async loadArtworks() {
+        if (this.type === 'all') {
+            const [bRes, pRes] = await Promise.all([
+                fetch(`/tmdb/movie/${this.tmdbId}/backdrops`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                }).catch(() => null),
+                fetch(`/tmdb/movie/${this.tmdbId}/posters`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                }).catch(() => null)
+            ]);
+
+            const bData = bRes && bRes.ok ? await bRes.json() : {};
+            const pData = pRes && pRes.ok ? await pRes.json() : {};
+
+            const bList = (bData.success && Array.isArray(bData.backdrops)) ? bData.backdrops : [];
+            const pList = (pData.success && Array.isArray(pData.posters)) ? pData.posters : [];
+
+            this.artworks = [...bList, ...pList];
+            return;
+        }
+
         const endpoint = this.type === 'backdrop' ? 'backdrops' : 'posters';
         const response = await fetch(`/tmdb/movie/${this.tmdbId}/${endpoint}`, {
             headers: {
@@ -256,6 +282,13 @@ export default class ArtworkSelector {
 
         const current = this.artworks[this.currentIndex];
         this.posterImg.src = current.preview_url;
+
+        // Se o tipo for 'all', ajusta a proporção do frame conforme o aspecto da imagem atual
+        if (this.type === 'all') {
+            const isPoster = current.height && current.width ? (current.height > current.width) : true;
+            this.modal.classList.remove('artwork-type-poster', 'artwork-type-backdrop');
+            this.modal.classList.add(isPoster ? 'artwork-type-poster' : 'artwork-type-backdrop');
+        }
 
         this.updateCounter();
 

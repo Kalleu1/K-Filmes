@@ -1,0 +1,19 @@
+/* Tema Personalizado (Drag & Drop Canvas) */
+.theme-custom-canvas {
+    background: #000000;
+}
+
+.theme-custom-canvas .preview-bg-wrapper {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.theme-custom-canvas .preview-bg-image.preview-bg-backdrop {
+    transform: scale(1.08) !important;
+}
+
+.theme-custom-canvas .preview-bg-overlay {
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.5) 100%),
+                linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.68) 100%) !important;
+}
