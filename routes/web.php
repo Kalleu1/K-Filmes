@@ -5,6 +5,7 @@ use App\Http\Controllers\DiscoverController;
 use App\Http\Controllers\FilmeController;
 use App\Http\Controllers\FilmeDoDiaController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\ColecaoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,11 @@ Route::middleware(['auth'])->group(function () {
     */
     Route::get('/biblioteca', [FilmeController::class, 'biblioteca'])
         ->name('filmes.biblioteca');
+
+    Route::resource('colecoes', ColecaoController::class)->except(['show']);
+    Route::get('/colecoes/{id}', [ColecaoController::class, 'show'])->name('colecoes.show');
+    Route::post('/colecoes/{id}/filmes', [ColecaoController::class, 'addMovie'])->name('colecoes.filmes.store');
+    Route::delete('/colecoes/{id}/filmes/{filmeId}', [ColecaoController::class, 'removeMovie'])->name('colecoes.filmes.destroy');
 
     Route::get('/biblioteca/buscar', [FilmeController::class, 'buscarBiblioteca'])
         ->name('filmes.buscarBiblioteca');

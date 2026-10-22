@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Filme extends Model
 {
@@ -37,6 +38,13 @@ class Filme extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function colecoes(): BelongsToMany
+    {
+        return $this->belongsToMany(Colecao::class, 'colecao_filme')
+            ->withPivot('position')
+            ->withTimestamps();
     }
 
 
@@ -118,6 +126,5 @@ class Filme extends Model
 
 
 }
-
 
 

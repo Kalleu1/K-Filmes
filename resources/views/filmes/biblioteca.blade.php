@@ -8,6 +8,7 @@
         <div class="library-header">
             <h1 class="library-title">📚 Minha Biblioteca</h1>
             <p class="library-subtitle">Sua coleção pessoal</p>
+            <a href="{{ route('colecoes.index') }}" class="btn-secondary">Minhas coleções</a>
         </div>
 
         {{-- Barra de busca e filtros minimalistas --}}

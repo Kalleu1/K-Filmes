@@ -6,6 +6,7 @@
         || request()->routeIs('filmes.assistidos')
         || request()->routeIs('filmes.naoAssistidos');
     $isDiscover = request()->routeIs('discover.*');
+    $isCollections = request()->routeIs('colecoes.*');
 @endphp
 
 <nav class="bottom-nav" aria-label="Navegacao principal mobile">
@@ -26,6 +27,11 @@
     <a href="{{ route('filmes.biblioteca') }}" class="bottom-nav__item {{ $isLibrary ? 'is-active' : '' }}" @if($isLibrary) aria-current="page" @endif>
         <i class="fa-solid fa-clapperboard bottom-nav__icon" aria-hidden="true"></i>
         <span class="bottom-nav__label">Biblioteca</span>
+    </a>
+
+    <a href="{{ route('colecoes.index') }}" class="bottom-nav__item {{ $isCollections ? 'is-active' : '' }}" @if($isCollections) aria-current="page" @endif>
+        <i class="fa-solid fa-folder bottom-nav__icon" aria-hidden="true"></i>
+        <span class="bottom-nav__label">Coleções</span>
     </a>
 
     <a href="{{ route('discover.index') }}" class="bottom-nav__item {{ $isDiscover ? 'is-active' : '' }}" @if($isDiscover) aria-current="page" @endif>

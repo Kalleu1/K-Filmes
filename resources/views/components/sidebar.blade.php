@@ -89,6 +89,14 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('colecoes.index') }}" class="nav-link nav-link-tertiary">
+                                <div class="nav-icon">🗂️</div>
+                                <span class="nav-text">Minhas Coleções</span>
+                                <div class="nav-glow"></div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('filmes.filme-do-dia') }}" class="nav-link nav-link-tertiary">
                                 <div class="nav-icon">🎲</div>
                                 <span class="nav-text">Sortear Filme</span>
