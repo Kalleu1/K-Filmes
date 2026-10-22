@@ -8,7 +8,7 @@
             style="--collection-backdrop: url('{{ $heroFilme->poster_banner_url ?: $heroFilme->poster_url }}')"
         @endif>
         <div class="collections-container collection-hero__content">
-            <a href="{{ route('colecoes.index') }}" class="collection-back-link">← Minhas coleções</a>
+            <x-back-button context="page" href="{{ route('colecoes.index') }}" />
             <div class="collection-hero__copy">
                 <p class="collections-eyebrow">Coleção pessoal</p>
                 <h1>{{ $colecao->nome }}</h1>
@@ -25,7 +25,19 @@
                     <p class="collections-eyebrow">Em ordem de adição</p>
                     <h2>Filmes da coleção</h2>
                 </div>
-                <span>{{ $colecao->filmes->count() }}</span>
+                <div class="collection-section-heading__tools">
+                    <span>{{ $colecao->filmes->count() }}</span>
+                    <div class="collection-view-switcher" aria-label="Modo de visualização">
+                        <a href="{{ request()->fullUrlWithQuery(['view' => 'grid']) }}" class="{{ $viewMode === 'grid' ? 'is-active' : '' }}" title="Visualização em linhas">
+                            <i class="fa-solid fa-grip" aria-hidden="true"></i>
+                            <span class="sr-only">Linhas</span>
+                        </a>
+                        <a href="{{ request()->fullUrlWithQuery(['view' => 'list']) }}" class="{{ $viewMode === 'list' ? 'is-active' : '' }}" title="Visualização em fila">
+                            <i class="fa-solid fa-list" aria-hidden="true"></i>
+                            <span class="sr-only">Fila</span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
             @if($colecao->filmes->isEmpty())
@@ -34,7 +46,7 @@
                     <p>Adicione filmes da sua biblioteca usando o painel ao lado.</p>
                 </div>
             @else
-                <div class="collection-film-list">
+                <div class="collection-film-list {{ $viewMode === 'grid' ? 'collection-film-list--grid' : '' }}">
                     @foreach($colecao->filmes as $filme)
                         <article class="collection-film">
                             <a href="{{ route('filmes.show', $filme) }}" class="collection-film__poster">
@@ -68,7 +80,7 @@
                     <div><dt>Criada em</dt><dd>{{ $colecao->created_at->format('d/m/Y') }}</dd></div>
                 </dl>
                 <div class="collection-panel__actions">
-                    <a href="{{ route('colecoes.edit', $colecao) }}" class="collections-action collections-action--secondary">Editar coleção</a>
+                    <a href="{{ route('colecoes.edit', $colecao) }}" class="collections-action collections-action--secondary collection-edit-action">Editar coleção</a>
                     <form method="POST" action="{{ route('colecoes.destroy', $colecao) }}" onsubmit="return confirm('Excluir esta coleção?')">
                         @csrf
                         @method('DELETE')

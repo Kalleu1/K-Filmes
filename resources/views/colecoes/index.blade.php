@@ -4,6 +4,7 @@
 @section('content')
 <main class="collections-page collections-index-page">
     <div class="collections-container">
+        <x-back-button context="page" href="{{ route('dashboard') }}" />
         <header class="collections-list-header">
             <div>
                 <p class="collections-eyebrow">Sua curadoria</p>

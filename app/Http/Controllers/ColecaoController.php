@@ -50,13 +50,16 @@ class ColecaoController extends Controller
         $heroFilme = $colecao->filmes->first(function (Filme $filme) {
             return $filme->poster_banner || $filme->poster;
         });
+        $viewMode = in_array(request('view'), ['list', 'grid'], true)
+            ? request('view')
+            : 'list';
 
         $filmesDisponiveis = Filme::where('user_id', Auth::id())
             ->whereNotIn('id', $colecao->filmes->modelKeys())
             ->orderBy('nome')
             ->get();
 
-        return view('colecoes.show', compact('colecao', 'filmesDisponiveis', 'heroFilme'));
+        return view('colecoes.show', compact('colecao', 'filmesDisponiveis', 'heroFilme', 'viewMode'));
     }
 
     public function edit(int $id): View

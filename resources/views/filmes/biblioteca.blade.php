@@ -8,7 +8,6 @@
         <div class="library-header">
             <h1 class="library-title">📚 Minha Biblioteca</h1>
             <p class="library-subtitle">Sua coleção pessoal</p>
-            <a href="{{ route('colecoes.index') }}" class="btn-secondary">Minhas coleções</a>
         </div>
 
         {{-- Barra de busca e filtros minimalistas --}}
@@ -178,11 +177,17 @@
         <div class="library-results">
 
             <x-back-button context="icon" href="{{ route('dashboard') }}"/>
-            @if($filmes->total() > 0)
-                <div class="results-count">
-                   Filmes Encontrados: {{ $filmes->total() }} filme{{ $filmes->total() !== 1 ? 's' : '' }}
-                </div>
-            @endif
+            <div class="library-results-toolbar">
+                @if($filmes->total() > 0)
+                    <div class="results-count">
+                       Filmes Encontrados: {{ $filmes->total() }} filme{{ $filmes->total() !== 1 ? 's' : '' }}
+                    </div>
+                @endif
+                <a href="{{ route('colecoes.index') }}" class="library-collections-link">
+                    <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+                    Ver minhas coleções
+                </a>
+            </div>
 
             
 
