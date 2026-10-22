@@ -52,7 +52,7 @@ class ColecaoController extends Controller
         });
         $viewMode = in_array(request('view'), ['list', 'grid'], true)
             ? request('view')
-            : 'list';
+            : 'grid';
 
         $filmesDisponiveis = Filme::where('user_id', Auth::id())
             ->whereNotIn('id', $colecao->filmes->modelKeys())
@@ -102,6 +102,17 @@ class ColecaoController extends Controller
 
         $nextPosition = (int) ($colecao->filmes()->max('position') ?? -1) + 1;
         $colecao->filmes()->attach($filme->id, ['position' => $nextPosition]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Filme adicionado à coleção.',
+                'filme' => [
+                    'id' => $filme->id,
+                    'nome' => $filme->nome,
+                ],
+            ]);
+        }
 
         return back()->with('success', 'Filme adicionado à coleção.');
     }

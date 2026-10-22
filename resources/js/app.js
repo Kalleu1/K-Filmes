@@ -8,6 +8,7 @@ import initDashboard from './pages/dashboard';
 import './components/loading/auto-loading';
 import { initMobileNavigation } from './ui/navigation';
 import ArtworkSelector from './components/poster-selector';
+import initColecoes from './pages/colecoes';
 
 window.ArtworkSelector = ArtworkSelector;
 window.PosterSelector = ArtworkSelector; // Backward-compatible alias
@@ -25,4 +26,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initPersonalMovie();
     initMovieDetails();
     initDashboard();
+    initColecoes();
 });

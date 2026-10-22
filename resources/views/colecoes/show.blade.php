@@ -8,7 +8,7 @@
             style="--collection-backdrop: url('{{ $heroFilme->poster_banner_url ?: $heroFilme->poster_url }}')"
         @endif>
         <div class="collections-container collection-hero__content">
-            <x-back-button context="page" href="{{ route('colecoes.index') }}" />
+            <x-back-button context="hero" href="{{ route('colecoes.index') }}" />
             <div class="collection-hero__copy">
                 <p class="collections-eyebrow">Coleção pessoal</p>
                 <h1>{{ $colecao->nome }}</h1>
@@ -28,13 +28,13 @@
                 <div class="collection-section-heading__tools">
                     <span>{{ $colecao->filmes->count() }}</span>
                     <div class="collection-view-switcher" aria-label="Modo de visualização">
-                        <a href="{{ request()->fullUrlWithQuery(['view' => 'grid']) }}" class="{{ $viewMode === 'grid' ? 'is-active' : '' }}" title="Visualização em linhas">
+                        <a href="{{ request()->fullUrlWithQuery(['view' => 'grid']) }}" class="{{ $viewMode === 'grid' ? 'is-active' : '' }}" title="Visualização em grade">
                             <i class="fa-solid fa-grip" aria-hidden="true"></i>
-                            <span class="sr-only">Linhas</span>
+                            <span class="sr-only">Grade</span>
                         </a>
-                        <a href="{{ request()->fullUrlWithQuery(['view' => 'list']) }}" class="{{ $viewMode === 'list' ? 'is-active' : '' }}" title="Visualização em fila">
+                        <a href="{{ request()->fullUrlWithQuery(['view' => 'list']) }}" class="{{ $viewMode === 'list' ? 'is-active' : '' }}" title="Visualização em lista">
                             <i class="fa-solid fa-list" aria-hidden="true"></i>
-                            <span class="sr-only">Fila</span>
+                            <span class="sr-only">Lista</span>
                         </a>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                             <form method="POST" action="{{ route('colecoes.filmes.destroy', [$colecao, $filme]) }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="collection-film__remove" aria-label="Remover {{ $filme->nome }}">Remover</button>
+                                <button type="button" class="collection-film__remove" data-action="open-remove-film-modal" data-filme-name="{{ $filme->nome }}" aria-label="Remover {{ $filme->nome }}">Remover</button>
                             </form>
                         </article>
                     @endforeach
@@ -91,22 +91,52 @@
 
             <div class="collection-panel collection-panel--add">
                 <p class="collections-eyebrow">Adicionar título</p>
-                <form method="POST" action="{{ route('colecoes.filmes.store', $colecao) }}">
-                    @csrf
-                    <label for="filme_id">Escolha um filme da biblioteca</label>
-                    <select id="filme_id" name="filme_id" required>
-                        <option value="">Selecione um filme</option>
-                        @foreach($filmesDisponiveis as $filme)
-                            <option value="{{ $filme->id }}">{{ $filme->nome }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="collections-action" {{ $filmesDisponiveis->isEmpty() ? 'disabled' : '' }}>Adicionar filme</button>
-                </form>
+                <label for="collection-film-search">Busque na sua biblioteca</label>
+                <div class="collection-add-search">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <input id="collection-film-search" type="search" placeholder="Digite o nome do filme..." autocomplete="off" {{ $filmesDisponiveis->isEmpty() ? 'disabled' : '' }}>
+                </div>
+                <p class="collection-panel__search-status" data-collection-search-status>
+                    {{ $filmesDisponiveis->count() }} {{ $filmesDisponiveis->count() === 1 ? 'filme disponível' : 'filmes disponíveis' }}
+                </p>
+                <div class="collection-available-films" data-collection-available-films>
+                    @foreach($filmesDisponiveis as $filme)
+                        <form method="POST" action="{{ route('colecoes.filmes.store', $colecao) }}" class="collection-available-film" data-collection-film data-film-name="{{ \Illuminate\Support\Str::lower($filme->nome) }}">
+                            @csrf
+                            <input type="hidden" name="filme_id" value="{{ $filme->id }}">
+                            <span>{{ $filme->nome }}</span>
+                            <button type="submit" class="collection-add-film" aria-label="Adicionar {{ $filme->nome }}">
+                                <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                                <span>Adicionar</span>
+                            </button>
+                        </form>
+                    @endforeach
+                </div>
                 @if($filmesDisponiveis->isEmpty())
                     <p class="collection-panel__hint">Todos os filmes da biblioteca já estão nesta coleção.</p>
                 @endif
+                <p class="collection-panel__hint collection-search-empty" data-collection-search-empty hidden>Nenhum filme encontrado com esse nome.</p>
             </div>
         </aside>
     </div>
 </main>
+
+<div id="removeCollectionFilmModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content delete-modal" role="dialog" aria-modal="true" aria-labelledby="removeCollectionFilmTitle">
+        <div class="modal-header">
+            <h2 id="removeCollectionFilmTitle" class="modal-title">Remover da coleção</h2>
+            <button type="button" class="modal-close" data-action="close-modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+            <div class="delete-warning">
+                <h3>Tem certeza?</h3>
+                <p>O filme <strong data-remove-film-name></strong> será removido desta coleção. Ele continuará na sua biblioteca.</p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" data-action="close-modal">Cancelar</button>
+                <button type="button" class="btn-delete-confirm" data-action="confirm-remove-film">Sim, remover</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -229,6 +229,11 @@
   text-decoration: none;
 }
 
+.collection-hero .back-button--hero {
+  left: 0;
+  bottom: 2rem;
+}
+
 .collection-hero__copy {
   max-width: 38rem;
 }
@@ -406,6 +411,97 @@
   margin: 1rem 0 .45rem;
   color: #bdb9c2;
   font-size: .8rem;
+}
+
+.collection-add-search {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 2.7rem;
+  padding: 0 .75rem;
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: .45rem;
+  color: var(--color-text-secondary);
+  background: #1b1a20;
+}
+
+.collection-add-search:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, .12);
+}
+
+.collection-add-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--color-text-main);
+  background: transparent;
+}
+
+.collection-add-search input::placeholder {
+  color: #85818a;
+}
+
+.collection-panel__search-status {
+  margin: .7rem 0;
+  color: #8f8c95;
+  font-size: .75rem;
+}
+
+.collection-available-films {
+  display: flex;
+  max-height: 15rem;
+  flex-direction: column;
+  gap: .4rem;
+  overflow-y: auto;
+  padding-right: .2rem;
+}
+
+.collection-available-film {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .7rem;
+  padding: .55rem .6rem;
+  border-radius: .4rem;
+  background: rgba(255, 255, 255, .04);
+}
+
+.collection-available-film span {
+  overflow: hidden;
+  color: var(--color-text-main);
+  font-size: .8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collection-add-film {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: .3rem;
+  padding: .35rem .5rem;
+  border: 1px solid var(--color-primary);
+  border-radius: .35rem;
+  color: var(--color-button-text);
+  background: var(--color-primary);
+  cursor: pointer;
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+.collection-add-film:hover {
+  background: var(--color-primary-hover);
+}
+
+.collection-add-film:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
+.collection-search-empty {
+  margin-top: .8rem;
 }
 
 .collection-panel--add select {
